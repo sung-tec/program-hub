@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sung-tool</title>
+  <meta name="description" content="sung-tool 개인 작업 허브" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="logo">sung-tool</a>
+      <nav class="nav">
+        <a href="./" class="active">홈</a>
+        <a href="about.html">소개</a>
+        <a href="projects.html">프로젝트</a>
+        <a href="downloads.html">다운로드</a>
+        <a href="#labs">실험실</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">PERSONAL WORK HUB</p>
+        <h1>SUNG<br />TECK</h1>
+        <p class="hero-text">
+          자동화, 코드, 도구, 실험 기록을 한곳에 모으는
+          sung-tool 작업 허브
+        </p>
+
+        <div class="hero-actions">
+          <a href="about.html" class="btn btn-primary">소개 보기</a>
+          <a href="projects.html" class="btn btn-secondary">프로젝트 보기</a>
+        </div>
+      </div>
+
+      <div class="hero-glow hero-glow-1"></div>
+      <div class="hero-glow hero-glow-2"></div>
+      <div class="hero-grid"></div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">FEATURES</p>
+          <h2>단정하고 보기 쉬운 구성</h2>
+          <p>
+            처음에는 너무 많은 메뉴보다 핵심 내용만 정리하는 방식이 좋습니다.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <article class="card">
+            <span class="card-badge">01</span>
+            <h3>프로젝트 정리</h3>
+            <p>만든 프로그램, 자동화 도구, 실험 결과를 보기 좋게 정리.</p>
+          </article>
+
+          <article class="card">
+            <span class="card-badge">02</span>
+            <h3>작업 기록</h3>
+            <p>수정 내역, 아이디어, 개선 사항을 짧고 명확하게 보관.</p>
+          </article>
+
+          <article class="card">
+            <span class="card-badge">03</span>
+            <h3>다운로드 허브</h3>
+            <p>ZIP, EXE, 문서 파일을 연결해 한곳에서 관리.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="info-panel">
+          <div class="info-text">
+            <p class="section-label">START SIMPLE</p>
+            <h2>처음에는 가볍게 시작하면 된다</h2>
+            <p>
+              홈, 소개, 프로젝트 정도만 먼저 구성하고
+              이후에 다운로드, 작업 기록, 자료실을 천천히 추가하면 된다.
+            </p>
+          </div>
+
+          <div class="mini-list">
+            <div class="mini-item">홈 페이지</div>
+            <div class="mini-item">소개 페이지</div>
+            <div class="mini-item">프로젝트 소개</div>
+            <div class="mini-item">다운로드 연결</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">QUICK LINK</p>
+          <h2>바로가기</h2>
+        </div>
+
+        <div class="quick-grid">
+          <a href="projects.html" class="quick-card">
+            <strong>프로젝트</strong>
+            <span>진행 중인 작업과 도구 정리</span>
+          </a>
+          <a href="downloads.html" class="quick-card">
+            <strong>다운로드</strong>
+            <span>배포 파일 및 자료 링크</span>
+          </a>
+          <a href="about.html" class="quick-card">
+            <strong>소개</strong>
+            <span>사이트 목적과 운영 방향</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 실험실 섹션 추가 -->
+    <section class="section" id="labs">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">LABS</p>
+          <h2>실험실</h2>
+          <p>상호작용 예제를 직접 열어보고 눌러볼 수 있는 공간입니다.</p>
+        </div>
+
+        <div class="content-card">
+          <p>아래 <strong>열어보기</strong>를 누르면 간단한 실험이 펼쳐집니다.</p>
+
+          <details class="demo-box">
+            <summary>클릭 실험 열어보기</summary>
+
+            <div class="demo-frame-wrap">
+              <div class="lab-demo">
+                <h3>클릭 카운터</h3>
+                <p class="lab-demo-desc">
+                  버튼을 누를 때마다 숫자가 올라갑니다.
+                </p>
+
+                <button type="button" class="btn btn-primary" id="countBtn">
+                  0번 클릭
+                </button>
+
+                <p id="resultText" class="lab-result">
+                  아직 클릭하지 않았습니다.
+                </p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 sung-tool</p>
+      <p>Clean Gradient Work Blog</p>
+    </div>
+  </footer>
+
+  <script>
+    const countBtn = document.getElementById("countBtn");
+    const resultText = document.getElementById("resultText");
+
+    if (countBtn && resultText) {
+      let count = 0;
+
+      countBtn.addEventListener("click", function () {
+        count += 1;
+        countBtn.textContent = count + "번 클릭";
+        resultText.textContent = "현재 " + count + "번 클릭했습니다.";
+      });
+    }
+  </script>
+</body>
+</html>
