@@ -1,0 +1,18 @@
+sung-tool 시작 가이드
+
+1. GitHub 저장소 생성
+2. 이 파일들을 업로드
+3. Settings > Pages
+4. Deploy from a branch / main / root 설정
+5. 주소 접속
+
+파일 설명
+- index.html : 메인 페이지
+- about.html : 소개
+- projects.html : 프로젝트
+- downloads.html : 다운로드
+- style.css : 공통 스타일
+
+다운로드 파일 추가 방법
+- downloads 폴더 안에 ZIP, EXE, PDF 등을 넣기
+- downloads.html에서 링크 연결
