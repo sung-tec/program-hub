@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Click Demo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: #fcf8f2;
+      color: #2f4753;
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border: 1px solid rgba(47, 71, 83, 0.12);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(90, 120, 135, 0.12);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      background: linear-gradient(90deg, #abd0e0, #dceaf0, #fcf8f2);
+      color: #2f4753;
+    }
+
+    .result {
+      margin-top: 16px;
+      color: #6c7f89;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>간단한 상호작용 예제</h1>
+    <p>버튼을 누르면 숫자가 올라갑니다.</p>
+    <button id="countBtn">0번 클릭</button>
+    <p class="result" id="resultText">아직 클릭하지 않았습니다.</p>
+  </div>
+
+  <script>
+    let count = 0;
+    const btn = document.getElementById("countBtn");
+    const result = document.getElementById("resultText");
+
+    btn.addEventListener("click", function () {
+      count += 1;
+      btn.textContent = count + "번 클릭";
+      result.textContent = "현재 " + count + "번 클릭했습니다.";
+    });
+  </script>
+</body>
+</html>
