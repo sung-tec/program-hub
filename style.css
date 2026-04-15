@@ -1,15 +1,15 @@
 :root {
-  --bg: #0b1020;
-  --bg-soft: #10162a;
-  --panel: rgba(18, 24, 43, 0.72);
-  --panel-strong: rgba(16, 22, 42, 0.9);
-  --text: #eef4ff;
-  --text-soft: #b9c4dc;
-  --line: rgba(255, 255, 255, 0.1);
-  --accent-1: #27d3b7;
-  --accent-2: #2ea3ff;
-  --accent-3: #7a5cff;
-  --shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+  --bg: #FCF8F2;
+  --bg-soft: #F6F1EB;
+  --panel: rgba(255, 255, 255, 0.78);
+  --panel-strong: rgba(252, 248, 242, 0.92);
+  --text: #2F4753;
+  --text-soft: #6C7F89;
+  --line: rgba(47, 71, 83, 0.12);
+  --accent-1: #ABD0E0;
+  --accent-2: #DCEAF0;
+  --accent-3: #8FB9CA;
+  --shadow: 0 18px 50px rgba(90, 120, 135, 0.14);
   --radius-lg: 24px;
   --radius-md: 18px;
   --radius-sm: 12px;
@@ -29,9 +29,9 @@ body {
   font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(39, 211, 183, 0.14), transparent 28%),
-    radial-gradient(circle at top right, rgba(122, 92, 255, 0.16), transparent 30%),
-    linear-gradient(135deg, #08101f 0%, #0c1630 45%, #101638 100%);
+    radial-gradient(circle at top left, rgba(171, 208, 224, 0.45), transparent 30%),
+    radial-gradient(circle at top right, rgba(252, 248, 242, 0.95), transparent 38%),
+    linear-gradient(135deg, #FCF8F2 0%, #F7F1EA 50%, #EAF3F7 100%);
   min-height: 100vh;
   line-height: 1.6;
 }
@@ -54,9 +54,9 @@ a {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(8, 13, 26, 0.55);
+  background: rgba(252, 248, 242, 0.78);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(47, 71, 83, 0.10);
 }
 
 .header-inner {
@@ -115,7 +115,7 @@ a {
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.16em;
-  color: #c7d2f3;
+  color: #7C95A1;
   text-transform: uppercase;
 }
 
@@ -170,15 +170,15 @@ a {
 }
 
 .btn-primary {
-  color: white;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  box-shadow: 0 12px 30px rgba(46, 163, 255, 0.28);
+  color: #2F4753;
+  background: linear-gradient(90deg, #ABD0E0, #DCEAF0, #FCF8F2);
+  box-shadow: 0 12px 30px rgba(171, 208, 224, 0.30);
 }
 
 .btn-secondary {
   color: var(--text);
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(47, 71, 83, 0.12);
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .btn.disabled {
@@ -199,7 +199,7 @@ a {
   height: 360px;
   top: 40px;
   right: 8%;
-  background: radial-gradient(circle, rgba(39, 211, 183, 0.36), transparent 70%);
+  background: radial-gradient(circle, rgba(171, 208, 224, 0.58), transparent 70%);
 }
 
 .hero-glow-2 {
@@ -207,7 +207,7 @@ a {
   height: 320px;
   bottom: 10px;
   left: 10%;
-  background: radial-gradient(circle, rgba(122, 92, 255, 0.28), transparent 70%);
+  background: radial-gradient(circle, rgba(252, 248, 242, 0.95), transparent 70%);
 }
 
 .hero-grid {
@@ -269,8 +269,8 @@ a {
 .quick-card,
 .project-card,
 .download-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035));
-  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 247, 242, 0.95));
+  border: 1px solid rgba(47, 71, 83, 0.10);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
 }
@@ -309,8 +309,8 @@ a {
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 800;
-  background: rgba(255, 255, 255, 0.08);
-  color: #dce8ff;
+  background: rgba(171, 208, 224, 0.35);
+  color: #2F4753;
 }
 
 .card-badge {
@@ -337,9 +337,9 @@ a {
 .mini-item {
   padding: 16px 18px;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-  color: #dbe6fb;
+  border: 1px solid rgba(47, 71, 83, 0.10);
+  background: rgba(171, 208, 224, 0.16);
+  color: #2F4753;
   font-weight: 600;
 }
 
@@ -384,8 +384,8 @@ a {
 
 .site-footer {
   padding: 30px 0 50px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(7, 11, 22, 0.35);
+  border-top: 1px solid rgba(47, 71, 83, 0.10);
+  background: rgba(252, 248, 242, 0.72);
 }
 
 .footer-inner {
