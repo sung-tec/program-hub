@@ -16,6 +16,7 @@
         <a href="about.html">소개</a>
         <a href="projects.html">프로젝트</a>
         <a href="downloads.html">다운로드</a>
+        <a href="#labs">실험실</a>
       </nav>
     </div>
   </header>
@@ -26,7 +27,7 @@
         <p class="eyebrow">PERSONAL WORK HUB</p>
         <h1>SUNG<br />TECK</h1>
         <p class="hero-text">
-         자동화, 코드, 도구, 실험 기록을 한곳에 모으는
+          자동화, 코드, 도구, 실험 기록을 한곳에 모으는
           sung-tool 작업 허브
         </p>
 
@@ -118,6 +119,42 @@
         </div>
       </div>
     </section>
+
+    <!-- 실험실 섹션 추가 -->
+    <section class="section" id="labs">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">LABS</p>
+          <h2>실험실</h2>
+          <p>상호작용 예제를 직접 열어보고 눌러볼 수 있는 공간입니다.</p>
+        </div>
+
+        <div class="content-card">
+          <p>아래 <strong>열어보기</strong>를 누르면 간단한 실험이 펼쳐집니다.</p>
+
+          <details class="demo-box">
+            <summary>클릭 실험 열어보기</summary>
+
+            <div class="demo-frame-wrap">
+              <div class="lab-demo">
+                <h3>클릭 카운터</h3>
+                <p class="lab-demo-desc">
+                  버튼을 누를 때마다 숫자가 올라갑니다.
+                </p>
+
+                <button type="button" class="btn btn-primary" id="countBtn">
+                  0번 클릭
+                </button>
+
+                <p id="resultText" class="lab-result">
+                  아직 클릭하지 않았습니다.
+                </p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -126,5 +163,20 @@
       <p>Clean Gradient Work Blog</p>
     </div>
   </footer>
+
+  <script>
+    const countBtn = document.getElementById("countBtn");
+    const resultText = document.getElementById("resultText");
+
+    if (countBtn && resultText) {
+      let count = 0;
+
+      countBtn.addEventListener("click", function () {
+        count += 1;
+        countBtn.textContent = count + "번 클릭";
+        resultText.textContent = "현재 " + count + "번 클릭했습니다.";
+      });
+    }
+  </script>
 </body>
 </html>
