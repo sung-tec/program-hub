@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실험실 | sung-tool</title>
+  <meta name="description" content="sung-tool 실험실 페이지" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="logo">sung-tool</a>
+      <nav class="nav">
+        <a href="./">홈</a>
+        <a href="about.html">소개</a>
+        <a href="projects.html">프로젝트</a>
+        <a href="downloads.html">다운로드</a>
+        <a href="labs.html" class="active">실험실</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="sub-hero">
+      <div class="container">
+        <p class="section-label">LABS</p>
+        <h1>실험실</h1>
+        <p class="sub-hero-text">
+          HTML, CSS, JavaScript로 만든 상호작용 예제를 모아두는 공간입니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">LIVE DEMO</p>
+          <h2>바로 눌러볼 수 있는 예제</h2>
+          <p>가벼운 실험부터 계산기, 미리보기, 상호작용 도구까지 확장할 수 있습니다.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>클릭 카운터</h2>
+          <p class="sub-hero-text">
+            버튼을 누를 때마다 숫자가 올라가는 가장 간단한 상호작용 예제입니다.
+          </p>
+
+          <div class="hero-actions">
+            <button type="button" class="btn btn-primary" id="countBtn">0번 클릭</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">초기화</button>
+          </div>
+
+          <p id="resultText" class="sub-hero-text">
+            아직 클릭하지 않았습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">PLANNED LABS</p>
+          <h2>추가 예정 실험</h2>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-tag">HTML</span>
+              <span class="project-status">예정</span>
+            </div>
+            <h2>색상 조합 실험기</h2>
+            <p>선택한 색상을 바로 비교하고 조합을 확인하는 미니 도구.</p>
+          </article>
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-tag">JS</span>
+              <span class="project-status">예정</span>
+            </div>
+            <h2>간단 계산기</h2>
+            <p>수치 입력 후 결과를 바로 계산해보는 테스트 페이지.</p>
+          </article>
+
+          <article class="project-card">
+            <div class="project-top">
+              <span class="project-tag">UI</span>
+              <span class="project-status">예정</span>
+            </div>
+            <h2>이미지 미리보기</h2>
+            <p>파일 선택 시 화면에 바로 미리보기가 나타나는 예제.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 sung-tool</p>
+      <p>Clean Gradient Work Blog</p>
+    </div>
+  </footer>
+
+  <script>
+    const countBtn = document.getElementById("countBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const resultText = document.getElementById("resultText");
+
+    let count = 0;
+
+    countBtn.addEventListener("click", function () {
+      count += 1;
+      countBtn.textContent = count + "번 클릭";
+      resultText.textContent = "현재 " + count + "번 클릭했습니다.";
+    });
+
+    resetBtn.addEventListener("click", function () {
+      count = 0;
+      countBtn.textContent = "0번 클릭";
+      resultText.textContent = "초기화되었습니다.";
+    });
+  </script>
+</body>
+</html>
