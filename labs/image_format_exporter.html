@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이미지 확장자 변경 내보내기</title>
+  <style>
+    :root {
+      --bg: #fcf8f2;
+      --panel: #f6f1ea;
+      --panel-2: #eaf2f6;
+      --text: #24313a;
+      --muted: #667782;
+      --line: #c8d6dd;
+      --accent: #abd0e0;
+      --accent-2: #fcf8f2;
+      --danger: #d95c5c;
+      --ok: #2f8f63;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(171, 208, 224, 0.65), transparent 30%),
+        radial-gradient(circle at top right, rgba(252, 248, 242, 0.92), transparent 38%),
+        linear-gradient(180deg, #eef4f7 0%, #fcf8f2 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 252, 247, 0.96);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 18px 40px rgba(74, 99, 112, 0.12);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .header {
+      padding: 22px 24px 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      padding: 0 24px 24px;
+    }
+
+    .dropzone {
+      border: 1.5px dashed #53617c;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(171,208,224,0.22), rgba(252,248,242,0.92));
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .dropzone.dragover {
+      transform: scale(1.01);
+      border-color: var(--accent-2);
+      background: linear-gradient(180deg, rgba(171,208,224,0.34), rgba(252,248,242,0.98));
+    }
+
+    .dropzone img {
+      max-width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .drop-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .drop-sub {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .controls {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .group {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #d9e1f3;
+      font-weight: 700;
+    }
+
+    input[type="text"], select, input[type="range"] {
+      width: 100%;
+    }
+
+    input[type="text"], select {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid #374155;
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, #abd0e0, #dbecef);
+      color: white;
+    }
+
+    .secondary {
+      background: #dfeaf0;
+      color: var(--text);
+      border: 1px solid #39445a;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .meta {
+      margin-top: 4px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #2d3749;
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .meta div span { color: var(--muted); display: inline-block; min-width: 92px; }
+
+    .status {
+      min-height: 22px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 0 24px 22px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 860px) {
+      .main { grid-template-columns: 1fr; }
+      .row, .btns { grid-template-columns: 1fr; }
+      .title { font-size: 24px; }
+      body { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">이미지 확장자 변경 내보내기</h1>
+        <p class="desc">
+          이미지를 넣으면 JPG, PNG, WEBP 형식으로 변환하여 저장할 수 있는 단일 HTML입니다.<br>
+          브라우저에서 바로 실행되며 설치가 필요 없습니다.
+        </p>
+      </div>
+
+      <div class="main">
+        <div>
+          <input id="fileInput" type="file" accept="image/*" class="hidden" />
+          <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="이미지 업로드 영역">
+            <div id="dropContent">
+              <div class="drop-title">이미지를 클릭하거나 끌어다 놓으세요</div>
+              <div class="drop-sub">지원: JPG, PNG, WEBP, GIF, BMP 등 브라우저에서 읽을 수 있는 이미지</div>
+            </div>
+            <img id="preview" class="hidden" alt="미리보기" />
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="group">
+            <label for="outputName">파일명</label>
+            <input id="outputName" type="text" placeholder="예: converted_image" />
+            <div class="hint">확장자는 자동으로 붙습니다.</div>
+          </div>
+
+          <div class="row">
+            <div class="group">
+              <label for="format">내보내기 형식</label>
+              <select id="format">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WEBP</option>
+              </select>
+            </div>
+            <div class="group">
+              <label for="quality">품질 <span id="qualityValue">0.92</span></label>
+              <input id="quality" type="range" min="0.1" max="1" step="0.01" value="0.92" />
+              <div class="hint">JPG, WEBP에만 적용됩니다.</div>
+            </div>
+          </div>
+
+          <div class="meta" id="metaBox">
+            <div><span>원본 파일</span><strong id="metaName">없음</strong></div>
+            <div><span>원본 형식</span><strong id="metaType">없음</strong></div>
+            <div><span>크기</span><strong id="metaSize">-</strong></div>
+            <div><span>해상도</span><strong id="metaDim">-</strong></div>
+          </div>
+
+          <div class="btns">
+            <button id="downloadBtn" class="primary" disabled>변환 후 다운로드</button>
+            <button id="resetBtn" class="secondary">초기화</button>
+          </div>
+
+          <div id="status" class="status"></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        참고: Chromium 계열 브라우저에서는 저장 버튼을 누르면 저장 위치를 직접 고를 수 있습니다. 지원하지 않는 브라우저에서는 기본 다운로드 폴더로 저장됩니다. PNG는 투명 배경을 유지할 수 있고, JPG는 투명 영역이 흰색으로 바뀔 수 있습니다.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const dropContent = document.getElementById('dropContent');
+    const preview = document.getElementById('preview');
+    const outputName = document.getElementById('outputName');
+    const format = document.getElementById('format');
+    const quality = document.getElementById('quality');
+    const qualityValue = document.getElementById('qualityValue');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    const metaName = document.getElementById('metaName');
+    const metaType = document.getElementById('metaType');
+    const metaSize = document.getElementById('metaSize');
+    const metaDim = document.getElementById('metaDim');
+
+    let currentFile = null;
+    let currentImage = null;
+
+    function setStatus(message = '', kind = '') {
+      status.textContent = message;
+      status.className = 'status';
+      if (kind) status.classList.add(kind);
+    }
+
+    function bytesToText(bytes) {
+      if (!bytes && bytes !== 0) return '-';
+      const units = ['B', 'KB', 'MB', 'GB'];
+      let value = bytes;
+      let i = 0;
+      while (value >= 1024 && i < units.length - 1) {
+        value /= 1024;
+        i++;
+      }
+      return `${value.toFixed(value < 10 && i > 0 ? 2 : 1)} ${units[i]}`;
+    }
+
+    function extensionFromMime(mime) {
+      switch (mime) {
+        case 'image/png': return 'png';
+        case 'image/jpeg': return 'jpg';
+        case 'image/webp': return 'webp';
+        default: return 'png';
+      }
+    }
+
+    function resetAll() {
+      currentFile = null;
+      currentImage = null;
+      fileInput.value = '';
+      preview.src = '';
+      preview.classList.add('hidden');
+      dropContent.classList.remove('hidden');
+      outputName.value = '';
+      metaName.textContent = '없음';
+      metaType.textContent = '없음';
+      metaSize.textContent = '-';
+      metaDim.textContent = '-';
+      downloadBtn.disabled = true;
+      setStatus('');
+    }
+
+    async function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        setStatus('이미지 파일만 넣을 수 있습니다.', 'err');
+        return;
+      }
+
+      try {
+        const dataUrl = await readAsDataURL(file);
+        const img = await loadImage(dataUrl);
+
+        currentFile = file;
+        currentImage = img;
+
+        preview.src = dataUrl;
+        preview.classList.remove('hidden');
+        dropContent.classList.add('hidden');
+
+        const baseName = file.name.replace(/\.[^.]+$/, '');
+        outputName.value = baseName || 'converted_image';
+
+        metaName.textContent = file.name;
+        metaType.textContent = file.type || '알 수 없음';
+        metaSize.textContent = bytesToText(file.size);
+        metaDim.textContent = `${img.naturalWidth} × ${img.naturalHeight}`;
+
+        downloadBtn.disabled = false;
+        setStatus('이미지를 불러왔습니다.', 'ok');
+      } catch (err) {
+        console.error(err);
+        setStatus('이미지를 읽는 중 오류가 발생했습니다.', 'err');
+      }
+    }
+
+    function readAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    async function convertAndDownload() {
+      if (!currentImage) {
+        setStatus('먼저 이미지를 넣어주세요.', 'err');
+        return;
+      }
+
+      const mime = format.value;
+      const ext = extensionFromMime(mime);
+      const q = Number(quality.value);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = currentImage.naturalWidth;
+      canvas.height = currentImage.naturalHeight;
+      const ctx = canvas.getContext('2d');
+
+      if (mime === 'image/jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.drawImage(currentImage, 0, 0);
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          setStatus('변환에 실패했습니다.', 'err');
+          return;
+        }
+
+        const safeName = (outputName.value || 'converted_image').trim().replace(/[\/:*?"<>|]+/g, '_');
+        const fileName = `${safeName}.${ext}`;
+
+        try {
+          if ('showSaveFilePicker' in window) {
+            const handle = await window.showSaveFilePicker({
+              suggestedName: fileName,
+              types: [{
+                description: '이미지 파일',
+                accept: { [mime]: [`.${ext}`] }
+              }]
+            });
+            const writable = await handle.createWritable();
+            await writable.write(blob);
+            await writable.close();
+            setStatus(`${fileName} 파일을 선택한 위치에 저장했습니다.`, 'ok');
+            return;
+          }
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
+            setStatus('저장을 취소했습니다.', 'err');
+            return;
+          }
+          console.warn('showSaveFilePicker 사용 실패, 일반 다운로드로 전환합니다.', err);
+        }
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus(`${fileName} 파일을 기본 다운로드 폴더에 저장했습니다.`, 'ok');
+      }, mime, q);
+    }
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) loadFile(file);
+    });
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('dragover');
+      });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer?.files?.[0];
+      if (file) loadFile(file);
+    });
+
+    quality.addEventListener('input', () => {
+      qualityValue.textContent = Number(quality.value).toFixed(2);
+    });
+
+    downloadBtn.addEventListener('click', convertAndDownload);
+    resetBtn.addEventListener('click', resetAll);
+
+    resetAll();
+  </script>
+</body>
+</html>
