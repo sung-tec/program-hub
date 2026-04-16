@@ -6,6 +6,152 @@
   <title>실험실 | sung-tool</title>
   <meta name="description" content="sung-tool 실험실 페이지" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .labs-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .lab-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035));
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .lab-summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px;
+      align-items: flex-start;
+    }
+
+    .lab-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .lab-summary h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 1.9rem);
+      letter-spacing: -0.03em;
+    }
+
+    .lab-desc {
+      margin: 10px 0 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .lab-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .lab-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-soft);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .lab-caret {
+      flex: 0 0 auto;
+      min-width: 72px;
+      text-align: right;
+      color: var(--text-soft);
+      font-weight: 700;
+      transition: transform 0.2s ease, color 0.2s ease;
+      padding-top: 6px;
+    }
+
+    .lab-card[open] .lab-caret {
+      transform: rotate(180deg);
+      color: var(--text);
+    }
+
+    .lab-body {
+      padding: 0 24px 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .lab-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .lab-iframe-shell {
+      height: min(78vh, 900px);
+      min-height: 560px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .lab-iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+    }
+
+    .lab-loading {
+      display: grid;
+      place-items: center;
+      height: 100%;
+      color: var(--text-soft);
+      font-weight: 600;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .lab-empty,
+    .lab-error {
+      padding: 28px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035));
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .lab-code {
+      margin-top: 12px;
+      font-family: Consolas, monospace;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      word-break: break-all;
+    }
+
+    @media (max-width: 760px) {
+      .lab-summary {
+        flex-direction: column;
+      }
+
+      .lab-caret {
+        text-align: left;
+        min-width: auto;
+        padding-top: 0;
+      }
+
+      .lab-iframe-shell {
+        min-height: 500px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -27,7 +173,8 @@
         <p class="section-label">LABS</p>
         <h1>실험실</h1>
         <p class="sub-hero-text">
-          HTML, CSS, JavaScript로 만든 상호작용 예제를 모아두는 공간입니다.
+          <code>labs/</code> 폴더에 HTML 파일을 넣으면 카드가 자동으로 생성되고,
+          카드를 열면 페이지 안에서 바로 실행됩니다.
         </p>
       </div>
     </section>
@@ -35,63 +182,16 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <p class="section-label">LIVE DEMO</p>
-          <h2>바로 눌러볼 수 있는 예제</h2>
-          <p>가벼운 실험부터 계산기, 미리보기, 상호작용 도구까지 확장할 수 있습니다.</p>
-        </div>
-
-        <div class="content-card">
-          <h2>클릭 카운터</h2>
-          <p class="sub-hero-text">
-            버튼을 누를 때마다 숫자가 올라가는 가장 간단한 상호작용 예제입니다.
-          </p>
-
-          <div class="hero-actions">
-            <button type="button" class="btn btn-primary" id="countBtn">0번 클릭</button>
-            <button type="button" class="btn btn-secondary" id="resetBtn">초기화</button>
-          </div>
-
-          <p id="resultText" class="sub-hero-text">
-            아직 클릭하지 않았습니다.
+          <p class="section-label">AUTO DISCOVERY</p>
+          <h2>자동 생성되는 도구 목록</h2>
+          <p>
+            새 HTML 파일을 <code>labs/</code> 폴더에 업로드하고 커밋하면,
+            다음 배포 후 이 페이지에서 자동으로 카드가 생깁니다.
           </p>
         </div>
-      </div>
-    </section>
 
-    <section class="section section-soft">
-      <div class="container">
-        <div class="section-head">
-          <p class="section-label">PLANNED LABS</p>
-          <h2>추가 예정 실험</h2>
-        </div>
-
-        <div class="project-grid">
-          <article class="project-card">
-            <div class="project-top">
-              <span class="project-tag">HTML</span>
-              <span class="project-status">예정</span>
-            </div>
-            <h2>색상 조합 실험기</h2>
-            <p>선택한 색상을 바로 비교하고 조합을 확인하는 미니 도구.</p>
-          </article>
-
-          <article class="project-card">
-            <div class="project-top">
-              <span class="project-tag">JS</span>
-              <span class="project-status">예정</span>
-            </div>
-            <h2>간단 계산기</h2>
-            <p>수치 입력 후 결과를 바로 계산해보는 테스트 페이지.</p>
-          </article>
-
-          <article class="project-card">
-            <div class="project-top">
-              <span class="project-tag">UI</span>
-              <span class="project-status">예정</span>
-            </div>
-            <h2>이미지 미리보기</h2>
-            <p>파일 선택 시 화면에 바로 미리보기가 나타나는 예제.</p>
-          </article>
+        <div id="labsGrid" class="labs-grid">
+          <div class="lab-empty">실험실 목록을 불러오는 중...</div>
         </div>
       </div>
     </section>
@@ -100,28 +200,172 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2026 sung-tool</p>
-      <p>Clean Gradient Work Blog</p>
+      <p>Auto Lab Loader</p>
     </div>
   </footer>
 
   <script>
-    const countBtn = document.getElementById("countBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const resultText = document.getElementById("resultText");
+    const OWNER = "sung-tec";
+    const REPO = "program-hub";
+    const BRANCH = "main";
+    const LABS_DIR = "labs";
 
-    let count = 0;
+    const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${LABS_DIR}?ref=${BRANCH}`;
+    const labsGrid = document.getElementById("labsGrid");
 
-    countBtn.addEventListener("click", function () {
-      count += 1;
-      countBtn.textContent = count + "번 클릭";
-      resultText.textContent = "현재 " + count + "번 클릭했습니다.";
-    });
+    function escapeHtml(str = "") {
+      return str.replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
 
-    resetBtn.addEventListener("click", function () {
-      count = 0;
-      countBtn.textContent = "0번 클릭";
-      resultText.textContent = "초기화되었습니다.";
-    });
+    function humanizeFilename(name) {
+      return name
+        .replace(/\.html$/i, "")
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\b\w/g, (m) => m.toUpperCase());
+    }
+
+    async function fetchToolMeta(item) {
+      try {
+        const res = await fetch(item.download_url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`파일 읽기 실패: ${res.status}`);
+
+        const text = await res.text();
+        const doc = new DOMParser().parseFromString(text, "text/html");
+
+        const title =
+          doc.querySelector("title")?.textContent?.trim() ||
+          doc.querySelector("h1")?.textContent?.trim() ||
+          humanizeFilename(item.name);
+
+        const description =
+          doc.querySelector('meta[name="description"]')?.getAttribute("content")?.trim() ||
+          doc.querySelector(".desc")?.textContent?.trim() ||
+          doc.querySelector("p")?.textContent?.trim() ||
+          "브라우저에서 바로 실행할 수 있는 HTML 도구입니다.";
+
+        return { title, description };
+      } catch (err) {
+        console.warn(item.name, err);
+        return {
+          title: humanizeFilename(item.name),
+          description: "설명을 읽지 못했습니다. 파일은 정상 실행할 수 있습니다."
+        };
+      }
+    }
+
+    function createLabCard(item, meta) {
+      const encodedName = encodeURIComponent(item.name);
+      const labUrl = `${LABS_DIR}/${encodedName}`;
+
+      const details = document.createElement("details");
+      details.className = "lab-card";
+
+      details.innerHTML = `
+        <summary class="lab-summary">
+          <div>
+            <p class="section-label">HTML TOOL</p>
+            <h2>${escapeHtml(meta.title)}</h2>
+            <p class="lab-desc">${escapeHtml(meta.description)}</p>
+            <div class="lab-meta-row">
+              <span class="lab-pill">${escapeHtml(item.name)}</span>
+              <span class="lab-pill">열면 바로 실행</span>
+            </div>
+          </div>
+          <div class="lab-caret">⌄</div>
+        </summary>
+
+        <div class="lab-body">
+          <div class="lab-actions">
+            <a class="btn btn-primary" href="${labUrl}" target="_blank" rel="noopener">
+              새 탭에서 열기
+            </a>
+            <a class="btn btn-secondary" href="${labUrl}" download>
+              HTML 다운로드
+            </a>
+          </div>
+
+          <div class="lab-iframe-shell" data-src="${labUrl}">
+            <div class="lab-loading">카드를 열면 이 안에서 바로 실행됩니다.</div>
+          </div>
+        </div>
+      `;
+
+      details.addEventListener("toggle", () => {
+        const shell = details.querySelector(".lab-iframe-shell");
+        if (!shell) return;
+
+        if (details.open && shell.dataset.loaded !== "true") {
+          const iframe = document.createElement("iframe");
+          iframe.className = "lab-iframe";
+          iframe.loading = "lazy";
+          iframe.src = shell.dataset.src;
+          iframe.title = meta.title;
+
+          shell.innerHTML = "";
+          shell.appendChild(iframe);
+          shell.dataset.loaded = "true";
+        }
+      });
+
+      return details;
+    }
+
+    async function initLabs() {
+      try {
+        const res = await fetch(API_URL, {
+          headers: { "Accept": "application/vnd.github+json" },
+          cache: "no-store"
+        });
+
+        if (!res.ok) {
+          throw new Error(`GitHub API 오류: ${res.status}`);
+        }
+
+        const items = await res.json();
+        const htmlFiles = items.filter(
+          (item) =>
+            item.type === "file" &&
+            item.name.toLowerCase().endsWith(".html") &&
+            !item.name.startsWith("_")
+        );
+
+        if (!htmlFiles.length) {
+          labsGrid.innerHTML = `
+            <div class="lab-empty">
+              <h2>아직 실험 파일이 없습니다.</h2>
+              <p><code>labs/</code> 폴더에 <code>.html</code> 파일을 넣고 커밋하면 자동으로 카드가 생깁니다.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const metas = await Promise.all(htmlFiles.map(fetchToolMeta));
+
+        labsGrid.innerHTML = "";
+        htmlFiles.forEach((item, idx) => {
+          labsGrid.appendChild(createLabCard(item, metas[idx]));
+        });
+      } catch (err) {
+        console.error(err);
+        labsGrid.innerHTML = `
+          <div class="lab-error">
+            <h2>실험실 목록을 불러오지 못했습니다.</h2>
+            <p>저장소 공개 여부, 브랜치 이름, <code>labs/</code> 폴더 경로를 확인하세요.</p>
+            <div class="lab-code">${escapeHtml(API_URL)}</div>
+          </div>
+        `;
+      }
+    }
+
+    initLabs();
   </script>
 </body>
 </html>
