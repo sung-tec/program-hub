@@ -1,0 +1,1386 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>반응속도 테스트</title>
+  <style>
+    :root {
+      --bg: #fcf8f2;
+      --panel: rgba(255, 253, 249, 0.96);
+      --panel-soft: #eef5f8;
+      --text: #24313a;
+      --muted: #6a7b84;
+      --line: #c9d7de;
+      --accent: #abd0e0;
+      --accent-strong: #8fbfd4;
+      --wait: #f1c46b;
+      --go: #7fd49a;
+      --danger: #d96161;
+      --shadow: rgba(74, 99, 112, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: #e8f3fa;
+      background:
+        radial-gradient(circle at top left, rgba(124, 210, 255, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(130, 255, 190, 0.12), transparent 26%),
+        linear-gradient(180deg, #071118 0%, #0b1822 48%, #101b24 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(10, 20, 28, 0.88);
+      border: 1px solid rgba(126, 173, 196, 0.22);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .header {
+      padding: 24px 24px 10px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 24px 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      border: 1px solid var(--line);
+      background: rgba(12, 24, 33, 0.92);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .mini-btn:hover,
+    button:hover { transform: translateY(-1px); }
+
+    .main {
+      padding: 0 24px 24px;
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 20px;
+    }
+
+    .test-area {
+      min-height: 580px;
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(171,208,224,0.18), rgba(255,253,249,0.92));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.25s ease, transform 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .test-area:hover {
+      transform: translateY(-1px);
+    }
+
+    .test-area.state-idle {
+      background: linear-gradient(180deg, rgba(171,208,224,0.20), rgba(255,253,249,0.94));
+    }
+
+    .test-area.state-wait {
+      background: linear-gradient(180deg, rgba(241,196,107,0.26), rgba(255,250,239,0.96));
+    }
+
+    .test-area.state-go {
+      background: linear-gradient(180deg, rgba(127,212,154,0.28), rgba(245,255,248,0.96));
+    }
+
+    .test-area.state-too-soon {
+      background: linear-gradient(180deg, rgba(217,97,97,0.26), rgba(255,245,245,0.96));
+    }
+
+    .center-box {
+      text-align: center;
+      max-width: 620px;
+      width: 100%;
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+    }
+
+    .state-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.85);
+      color: var(--text);
+    }
+
+    .big-text {
+      font-size: 52px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      word-break: keep-all;
+    }
+
+    .sub-text {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 580px;
+    }
+
+    .pulse-ring {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      border: 14px solid rgba(255,255,255,0.72);
+      box-shadow: 0 12px 30px rgba(74, 99, 112, 0.10), inset 0 0 28px rgba(255,255,255,0.5);
+      position: relative;
+    }
+
+    .pulse-ring::after {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.72);
+    }
+
+    .test-area.state-wait .pulse-ring {
+      animation: pulseWait 1.3s infinite ease-in-out;
+    }
+
+    .test-area.state-go .pulse-ring {
+      animation: pulseGo 0.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseWait {
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.06); opacity: 0.82; }
+    }
+
+    @keyframes pulseGo {
+      0%, 100% { transform: scale(1); box-shadow: 0 12px 30px rgba(74, 99, 112, 0.12), 0 0 0 0 rgba(127,212,154,0.45); }
+      50% { transform: scale(1.08); box-shadow: 0 12px 30px rgba(74, 99, 112, 0.16), 0 0 0 18px rgba(127,212,154,0); }
+    }
+
+    .side-panel {
+      background: rgba(8, 18, 26, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .section-title,
+    .history-title,
+    .rank-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, #2fd6ff, #7fffb2);
+      color: #041118;
+      border: 1px solid #b8d7e4;
+    }
+
+    .secondary {
+      background: rgba(12, 24, 33, 0.92);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .info-box,
+    .history-box,
+    .rank-box {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .history-list,
+    .rank-list {
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow: auto;
+      margin-top: 10px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #f8fbfc;
+      border: 1px solid #d9e5ea;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .history-sub {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: #f8fbfc;
+      border: 1px solid #d9e5ea;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .rank-num {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .rank-name {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .rank-ms {
+      color: #2e4a58;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .confetti-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 12px;
+      height: 18px;
+      border-radius: 3px;
+      opacity: 0;
+      animation: confettiFall 1.8s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-40px) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(420px) rotate(540deg);
+        opacity: 0;
+      }
+    }
+
+    .name-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .name-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    .best-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(127,212,154,0.25), rgba(171,208,224,0.18));
+      border: 1px solid #b8d7c0;
+      color: #23553d;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mode-card {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mode-card.active {
+      border-color: #9fc6d7;
+      box-shadow: inset 0 0 0 1px rgba(171,208,224,0.35);
+      background: linear-gradient(180deg, rgba(171,208,224,0.12), #ffffff);
+    }
+
+    .mode-name {
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .mode-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .tiny-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .level-box {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .level-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .level-name {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .level-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .xp-bar {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      background: #edf4f7;
+      border: 1px solid #d7e4ea;
+      overflow: hidden;
+    }
+
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #abd0e0, #7fd49a);
+      transition: width 0.35s ease;
+    }
+
+    .share-box {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .share-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .share-output {
+      width: 100%;
+      min-height: 88px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      background: #fff;
+      resize: vertical;
+    }
+
+    .achieve-box {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .achieve-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .achieve-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: #f8fbfc;
+      border: 1px solid #d9e5ea;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .achieve-item.done {
+      background: linear-gradient(90deg, rgba(127,212,154,0.14), rgba(171,208,224,0.10));
+      border-color: #bfdcc8;
+    }
+
+    .achieve-state {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .duel-box {
+      background: rgba(12, 24, 33, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .duel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .duel-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #f8fbfc;
+      display: grid;
+      gap: 6px;
+    }
+
+    .duel-name {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .duel-score {
+      font-size: 22px;
+      font-weight: 900;
+      color: #2e4a58;
+    }
+
+    .duel-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .footer {
+      padding: 0 24px 22px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr; }
+      .stats, .btn-row { grid-template-columns: 1fr; }
+      .big-text { font-size: 38px; }
+      .test-area { min-height: 460px; }
+      body { padding: 14px; }
+      .title { font-size: 25px; }
+      .top-actions { justify-content: stretch; }
+      .mini-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">반응속도 테스트</h1>
+        <p class="desc">
+          시작 후 잠시 기다리다가 화면이 초록색으로 바뀌는 순간 바로 클릭하면 반응속도를 측정합니다.<br>
+          시작 카운트다운, 효과음, 자동 5회 측정, 랭킹, 전체화면, 로컬 저장까지 포함한 단일 HTML입니다.
+        </p>
+      </div>
+
+      <div class="top-actions">
+        <button id="fullscreenBtn" class="mini-btn">전체화면</button>
+        <button id="saveRecordBtn" class="mini-btn">기록 저장 켜기</button>
+      </div>
+
+      <div class="main">
+        <div id="testArea" class="test-area state-idle" tabindex="0" role="button" aria-label="반응속도 테스트 영역">
+          <div id="confettiWrap" class="confetti-wrap"></div>
+          <div class="center-box">
+            <div id="stateBadge" class="state-badge">준비 상태</div>
+            <div class="pulse-ring" aria-hidden="true"></div>
+            <div id="bigText" class="big-text">클릭해서 시작</div>
+            <div id="subText" class="sub-text">
+              시작 버튼을 누르거나 이 화면을 클릭하세요. 먼저 3, 2, 1 카운트다운이 나오고 잠시 뒤 색이 바뀝니다.
+            </div>
+          </div>
+        </div>
+
+        <div class="side-panel">
+          <h2 class="section-title">기록</h2>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">마지막 기록</div>
+              <div id="lastValue" class="stat-value">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">최고 기록</div>
+              <div id="bestValue" class="stat-value">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">평균 기록</div>
+              <div id="avgValue" class="stat-value">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">성공 횟수</div>
+              <div id="countValue" class="stat-value">0</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">현재 모드</div>
+              <div id="modeValue" class="stat-value">일반</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">목표 횟수</div>
+              <div id="targetValue" class="stat-value">5</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">진행 횟수</div>
+              <div id="progressValue" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">등급</div>
+              <div id="gradeValue" class="stat-value">-</div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button id="startBtn" class="primary">테스트 시작</button>
+            <button id="resetBtn" class="secondary">기록 초기화</button>
+          </div>
+
+          <div class="btn-row">
+            <button id="soundBtn" class="secondary">효과음 켜기</button>
+            <button id="autoBtn" class="primary">5회 자동 측정</button>
+          </div>
+
+          <div class="name-row">
+            <input id="playerName" class="name-input" type="text" placeholder="이름 입력 예: 성승생" maxlength="20" />
+            <div id="bestBadge" class="best-badge">최고기록 대기중</div>
+          </div>
+
+          <div class="mode-grid">
+            <div id="modeNormalCard" class="mode-card active">
+              <div class="mode-name">일반 모드</div>
+              <div class="mode-desc">한 번씩 측정하면서 기록을 쌓는 기본 모드입니다.</div>
+              <button id="normalModeBtn" class="tiny-btn">일반 모드 선택</button>
+            </div>
+            <div id="modeComboCard" class="mode-card">
+              <div class="mode-name">콤보 모드</div>
+              <div class="mode-desc">좋은 기록을 연속으로 유지하면 콤보가 쌓입니다.</div>
+              <button id="comboModeBtn" class="tiny-btn">콤보 모드 선택</button>
+            </div>
+          </div>
+
+          <div class="level-box">
+            <div class="level-top">
+              <div>
+                <div id="levelName" class="level-name">LV.1 초심자</div>
+                <div id="levelSub" class="level-sub">반응 테스트를 시작해보세요.</div>
+              </div>
+              <div id="comboBadge" class="best-badge">콤보 x0</div>
+            </div>
+            <div class="xp-bar"><div id="xpFill" class="xp-fill"></div></div>
+          </div>
+
+          <div class="info-box">
+            <p>
+              기준 감각:<br>
+              200ms 이하 매우 빠름 / 201~260ms 빠른 편 / 261~320ms 보통 / 321ms 이상 느린 편
+            </p>
+          </div>
+
+          <div class="history-box">
+            <h3 class="history-title">최근 기록</h3>
+            <div id="historyList" class="history-list"></div>
+          </div>
+
+          <div class="rank-box">
+            <h3 class="rank-title">내 랭킹</h3>
+            <div id="rankList" class="rank-list"></div>
+          </div>
+
+          <div class="achieve-box">
+            <h3 class="rank-title">업적</h3>
+            <div id="achieveList" class="achieve-list"></div>
+          </div>
+
+          <div class="duel-box">
+            <h3 class="rank-title">2인 대결 모드</h3>
+            <div class="duel-grid">
+              <div class="duel-card">
+                <div class="duel-name">플레이어 1</div>
+                <input id="duelName1" class="name-input" type="text" placeholder="이름 입력" maxlength="20" />
+                <div id="duelScore1" class="duel-score">-</div>
+              </div>
+              <div class="duel-card">
+                <div class="duel-name">플레이어 2</div>
+                <input id="duelName2" class="name-input" type="text" placeholder="이름 입력" maxlength="20" />
+                <div id="duelScore2" class="duel-score">-</div>
+              </div>
+            </div>
+            <div class="duel-actions">
+              <button id="duelP1Btn" class="tiny-btn">P1 측정</button>
+              <button id="duelP2Btn" class="tiny-btn">P2 측정</button>
+              <button id="duelResetBtn" class="tiny-btn">대결 초기화</button>
+            </div>
+            <div id="duelResult" class="history-sub">대결 모드에서 버튼을 눌러 각 플레이어 기록을 저장하세요.</div>
+          </div>
+
+          <div class="share-box">
+            <h3 class="rank-title">기록 공유용 내보내기</h3>
+            <div class="share-row">
+              <textarea id="shareOutput" class="share-output" readonly placeholder="요약 생성 버튼을 누르면 여기에 공유용 문구가 나옵니다."></textarea>
+              <div style="display:grid; gap:10px; align-content:start;">
+                <button id="makeShareBtn" class="tiny-btn">요약 생성</button>
+                <button id="copyShareBtn" class="tiny-btn">복사</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        팁: 모바일에서도 터치로 동작합니다. 기록 저장을 켜면 브라우저에 내 기록이 남습니다.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const testArea = document.getElementById('testArea');
+    const stateBadge = document.getElementById('stateBadge');
+    const bigText = document.getElementById('bigText');
+    const subText = document.getElementById('subText');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const soundBtn = document.getElementById('soundBtn');
+    const autoBtn = document.getElementById('autoBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const saveRecordBtn = document.getElementById('saveRecordBtn');
+
+    const lastValue = document.getElementById('lastValue');
+    const bestValue = document.getElementById('bestValue');
+    const avgValue = document.getElementById('avgValue');
+    const countValue = document.getElementById('countValue');
+    const modeValue = document.getElementById('modeValue');
+    const targetValue = document.getElementById('targetValue');
+    const progressValue = document.getElementById('progressValue');
+    const gradeValue = document.getElementById('gradeValue');
+    const historyList = document.getElementById('historyList');
+    const rankList = document.getElementById('rankList');
+    const normalModeBtn = document.getElementById('normalModeBtn');
+    const comboModeBtn = document.getElementById('comboModeBtn');
+    const modeNormalCard = document.getElementById('modeNormalCard');
+    const modeComboCard = document.getElementById('modeComboCard');
+    const levelName = document.getElementById('levelName');
+    const levelSub = document.getElementById('levelSub');
+    const comboBadge = document.getElementById('comboBadge');
+    const xpFill = document.getElementById('xpFill');
+    const shareOutput = document.getElementById('shareOutput');
+    const makeShareBtn = document.getElementById('makeShareBtn');
+    const copyShareBtn = document.getElementById('copyShareBtn');
+    const achieveList = document.getElementById('achieveList');
+    const duelName1 = document.getElementById('duelName1');
+    const duelName2 = document.getElementById('duelName2');
+    const duelScore1 = document.getElementById('duelScore1');
+    const duelScore2 = document.getElementById('duelScore2');
+    const duelP1Btn = document.getElementById('duelP1Btn');
+    const duelP2Btn = document.getElementById('duelP2Btn');
+    const duelResetBtn = document.getElementById('duelResetBtn');
+    const duelResult = document.getElementById('duelResult');
+    const confettiWrap = document.getElementById('confettiWrap');
+    const playerName = document.getElementById('playerName');
+    const bestBadge = document.getElementById('bestBadge');
+
+    let state = 'idle';
+    let waitTimer = null;
+    let countdownTimer = null;
+    let startTime = 0;
+    let records = [];
+    let soundEnabled = false;
+    let autoMode = false;
+    let autoTarget = 5;
+    let autoProgress = 0;
+    let saveEnabled = false;
+    let namedRecords = [];
+    let gameMode = 'normal';
+    let comboCount = 0;
+    let xp = 0;
+    let duelScores = { p1: null, p2: null };
+    let pendingDuelPlayer = null;
+
+    function setVisual(newState, title, desc, badge) {
+      state = newState;
+      testArea.className = `test-area state-${newState}`;
+      bigText.textContent = title;
+      subText.textContent = desc;
+      stateBadge.textContent = badge;
+    }
+
+    function clearWaitTimer() {
+      if (waitTimer) {
+        clearTimeout(waitTimer);
+        waitTimer = null;
+      }
+    }
+
+    function clearCountdown() {
+      if (countdownTimer) {
+        clearTimeout(countdownTimer);
+        countdownTimer = null;
+      }
+    }
+
+    function getGrade(ms) {
+      if (ms <= 200) return '매우 빠름';
+      if (ms <= 260) return '빠름';
+      if (ms <= 320) return '보통';
+      return '느림';
+    }
+
+    function getLevelInfo(totalXp) {
+      if (totalXp >= 240) return { level: 5, name: '반응 마스터', min: 240, max: 320 };
+      if (totalXp >= 160) return { level: 4, name: '집중 헌터', min: 160, max: 240 };
+      if (totalXp >= 90) return { level: 3, name: '민첩 플레이어', min: 90, max: 160 };
+      if (totalXp >= 35) return { level: 2, name: '속도 입문자', min: 35, max: 90 };
+      return { level: 1, name: '초심자', min: 0, max: 35 };
+    }
+
+    function updateModeCards() {
+      modeNormalCard.classList.toggle('active', gameMode === 'normal');
+      modeComboCard.classList.toggle('active', gameMode === 'combo');
+    }
+
+    function updateLevelUI() {
+      const info = getLevelInfo(xp);
+      const span = info.max - info.min;
+      const current = Math.max(0, Math.min(span, xp - info.min));
+      const percent = info.level === 5 ? 100 : (current / span) * 100;
+      levelName.textContent = `LV.${info.level} ${info.name}`;
+      levelSub.textContent = `현재 XP ${xp} / ${info.level === 5 ? '최고 단계 도달' : `다음 단계까지 ${Math.max(0, info.max - xp)} XP`}`;
+      xpFill.style.width = `${percent}%`;
+      comboBadge.textContent = `콤보 x${comboCount}`;
+      updateModeCards();
+      renderAchievements();
+    }
+
+    function renderAchievements() {
+      const best = records.length ? Math.min(...records) : Infinity;
+      const avg = records.length ? Math.round(records.reduce((a, b) => a + b, 0) / records.length) : Infinity;
+      const items = [
+        { label: '첫 기록 달성', done: records.length >= 1 },
+        { label: '10회 이상 측정', done: records.length >= 10 },
+        { label: '평균 280ms 이하', done: avg <= 280 },
+        { label: '최고 220ms 이하', done: best <= 220 },
+        { label: '콤보 3회 달성', done: comboCount >= 3 },
+        { label: 'LV.3 도달', done: xp >= 90 }
+      ];
+      achieveList.innerHTML = '';
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = `achieve-item${item.done ? ' done' : ''}`;
+        el.innerHTML = `<div>${item.label}</div><div class="achieve-state">${item.done ? '완료' : '진행중'}</div>`;
+        achieveList.appendChild(el);
+      });
+    }
+
+    function saveRecordsToLocal() {
+      if (!saveEnabled) return;
+      localStorage.setItem('reaction_records_v1', JSON.stringify(records));
+      localStorage.setItem('reaction_records_enabled_v1', '1');
+    }
+
+    function loadRecordsFromLocal() {
+      try {
+        const enabled = localStorage.getItem('reaction_records_enabled_v1');
+        if (enabled === '1') {
+          saveEnabled = true;
+          saveRecordBtn.textContent = '기록 저장 끄기';
+        }
+        const raw = localStorage.getItem('reaction_records_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            records = parsed.filter(v => Number.isFinite(v));
+          }
+        }
+        const namedRaw = localStorage.getItem('reaction_named_records_v1');
+        if (namedRaw) {
+          const parsedNamed = JSON.parse(namedRaw);
+          if (Array.isArray(parsedNamed)) {
+            namedRecords = parsedNamed.filter(v => v && Number.isFinite(v.ms));
+          }
+        }
+        const savedName = localStorage.getItem('reaction_player_name_v1');
+        if (savedName) playerName.value = savedName;
+      } catch (err) {
+        console.warn('기록 불러오기 실패', err);
+      }
+    }
+
+    function playTone(type = 'go') {
+      if (!soundEnabled) return;
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      const ctx = new AudioContextClass();
+      const gain = ctx.createGain();
+      gain.connect(ctx.destination);
+
+      const tones = type === 'fail'
+        ? [220, 180]
+        : type === 'best'
+        ? [880, 1174, 1568]
+        : type === 'ok'
+        ? [660, 880]
+        : [900];
+
+      tones.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        const start = ctx.currentTime + idx * 0.07;
+        const end = start + 0.14;
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.07, start + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, end);
+        osc.start(start);
+        osc.stop(end);
+      });
+
+      setTimeout(() => ctx.close(), 450);
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = '';
+      if (!records.length) {
+        historyList.innerHTML = '<div class="history-item"><span>기록 없음</span><span class="history-sub">-</span></div>';
+        return;
+      }
+
+      [...records].reverse().slice(0, 12).forEach((ms, idx) => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `<span>${ms} ms</span><span class="history-sub">${records.length - idx}회차</span>`;
+        historyList.appendChild(item);
+      });
+    }
+
+    function renderRanks() {
+      rankList.innerHTML = '';
+      if (!namedRecords.length && !records.length) {
+        rankList.innerHTML = '<div class="rank-item"><div class="rank-num">-</div><div class="rank-name">아직 기록 없음</div><div class="rank-ms">-</div></div>';
+        return;
+      }
+
+      const source = namedRecords.length
+        ? [...namedRecords].sort((a, b) => a.ms - b.ms).slice(0, 10)
+        : [...records].sort((a, b) => a - b).slice(0, 10).map(ms => ({ name: '익명', ms }));
+
+      source.forEach((entry, idx) => {
+        const item = document.createElement('div');
+        item.className = 'rank-item';
+        item.innerHTML = `
+          <div class="rank-num">TOP ${idx + 1}</div>
+          <div class="rank-name">${entry.name} · ${getGrade(entry.ms)}</div>
+          <div class="rank-ms">${entry.ms} ms</div>
+        `;
+        rankList.appendChild(item);
+      });
+    }
+
+    function updateModeStats() {
+      modeValue.textContent = autoMode ? '자동 5회' : (gameMode === 'combo' ? '콤보' : '일반');
+      targetValue.textContent = String(autoTarget);
+      progressValue.textContent = String(autoMode ? autoProgress : comboCount);
+      if (!records.length) {
+        gradeValue.textContent = '-';
+      } else {
+        const avg = Math.round(records.reduce((a, b) => a + b, 0) / records.length);
+        gradeValue.textContent = getGrade(avg);
+      }
+      updateLevelUI();
+    }
+
+    function updateStats() {
+      if (!records.length) {
+        lastValue.textContent = '-';
+        bestValue.textContent = '-';
+        avgValue.textContent = '-';
+        countValue.textContent = '0';
+        bestBadge.textContent = '최고기록 대기중';
+        updateModeStats();
+        renderRanks();
+        return;
+      }
+
+      const last = records[records.length - 1];
+      const best = Math.min(...records);
+      const avg = Math.round(records.reduce((a, b) => a + b, 0) / records.length);
+
+      lastValue.textContent = `${last}`;
+      bestValue.textContent = `${best}`;
+      avgValue.textContent = `${avg}`;
+      countValue.textContent = String(records.length);
+      bestBadge.textContent = `내 최고기록 ${best} ms`;
+      updateModeStats();
+      renderRanks();
+    }
+
+    function startTest() {
+      clearWaitTimer();
+      setVisual('wait', '기다리세요...', '아직 누르면 안 됩니다. 색이 바뀔 때까지 기다리세요.', '대기 중');
+      const delay = 1200 + Math.random() * 2600;
+      waitTimer = setTimeout(() => {
+        startTime = performance.now();
+        setVisual('go', '지금 클릭!', '초록색으로 바뀌는 순간 바로 클릭하세요.', '클릭 가능');
+        playTone('go');
+      }, delay);
+    }
+
+    function runCountdownThenStart() {
+      clearWaitTimer();
+      clearCountdown();
+      setVisual('idle', '3', '곧 시작합니다. 화면을 보면서 준비하세요.', '카운트다운');
+      countdownTimer = setTimeout(() => {
+        setVisual('idle', '2', '곧 시작합니다. 화면을 보면서 준비하세요.', '카운트다운');
+        countdownTimer = setTimeout(() => {
+          setVisual('idle', '1', '곧 시작합니다. 화면을 보면서 준비하세요.', '카운트다운');
+          countdownTimer = setTimeout(() => {
+            clearCountdown();
+            startTest();
+          }, 650);
+        }, 650);
+      }, 650);
+    }
+
+    function handleTooSoon() {
+      clearWaitTimer();
+      clearCountdown();
+      playTone('fail');
+      if (gameMode === 'combo') comboCount = 0;
+      setVisual('too-soon', '너무 빨랐어요', '초록색으로 바뀌기 전에 클릭했습니다. 다시 시작하세요.', '실패');
+      if (autoMode) {
+        autoMode = false;
+        autoProgress = 0;
+      }
+      updateModeStats();
+    }
+
+    function launchConfetti() {
+      confettiWrap.innerHTML = '';
+      const colors = ['#abd0e0', '#7fd49a', '#f1c46b', '#ffffff', '#8fbfd4'];
+      for (let i = 0; i < 26; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti';
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.top = `${-20 - Math.random() * 80}px`;
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.transform = `translateY(0) rotate(${Math.random() * 180}deg)`;
+        piece.style.animationDelay = `${Math.random() * 0.25}s`;
+        confettiWrap.appendChild(piece);
+      }
+      setTimeout(() => { confettiWrap.innerHTML = ''; }, 2200);
+    }
+
+    function finalizeDuelScore(reaction) {
+      if (!pendingDuelPlayer) return;
+      if (pendingDuelPlayer === 'p1') {
+        duelScores.p1 = reaction;
+        duelScore1.textContent = `${reaction} ms`;
+      } else {
+        duelScores.p2 = reaction;
+        duelScore2.textContent = `${reaction} ms`;
+      }
+      pendingDuelPlayer = null;
+
+      const n1 = duelName1.value.trim() || '플레이어 1';
+      const n2 = duelName2.value.trim() || '플레이어 2';
+      if (duelScores.p1 !== null && duelScores.p2 !== null) {
+        if (duelScores.p1 < duelScores.p2) duelResult.textContent = `${n1} 승리! (${duelScores.p1}ms vs ${duelScores.p2}ms)`;
+        else if (duelScores.p2 < duelScores.p1) duelResult.textContent = `${n2} 승리! (${duelScores.p2}ms vs ${duelScores.p1}ms)`;
+        else duelResult.textContent = `무승부! (${duelScores.p1}ms)`;
+      } else {
+        duelResult.textContent = '다른 플레이어의 기록도 측정해보세요.';
+      }
+    }
+
+    function handleSuccess() {
+      const reaction = Math.round(performance.now() - startTime);
+      const prevBest = records.length ? Math.min(...records) : null;
+      records.push(reaction);
+
+      const name = (playerName.value || '익명').trim() || '익명';
+      namedRecords.push({ name, ms: reaction, at: Date.now() });
+      if (saveEnabled) {
+        localStorage.setItem('reaction_player_name_v1', name);
+        localStorage.setItem('reaction_named_records_v1', JSON.stringify(namedRecords));
+      }
+
+      let gainedXp = 4;
+      if (reaction <= 200) gainedXp = 18;
+      else if (reaction <= 240) gainedXp = 14;
+      else if (reaction <= 280) gainedXp = 10;
+      else if (reaction <= 320) gainedXp = 7;
+
+      if (gameMode === 'combo') {
+        if (reaction <= 280) {
+          comboCount += 1;
+          gainedXp += Math.min(12, comboCount * 2);
+        } else {
+          comboCount = 0;
+        }
+      }
+
+      xp += gainedXp;
+      finalizeDuelScore(reaction);
+      saveRecordsToLocal();
+      updateStats();
+      renderHistory();
+
+      const isNewBest = prevBest === null || reaction < prevBest;
+      if (isNewBest) {
+        playTone('best');
+        launchConfetti();
+        setVisual('idle', `${reaction} ms`, `최고기록 갱신! +${gainedXp} XP`, '신기록 달성');
+      } else {
+        playTone('ok');
+        setVisual('idle', `${reaction} ms`, `좋아요. +${gainedXp} XP 획득`, '측정 완료');
+      }
+
+      if (autoMode) {
+        autoProgress += 1;
+        updateModeStats();
+        if (autoProgress < autoTarget) {
+          setTimeout(() => runCountdownThenStart(), 900);
+        } else {
+          const recent = records.slice(-autoTarget);
+          const autoAvg = Math.round(recent.reduce((a, b) => a + b, 0) / recent.length);
+          setVisual('idle', `${autoAvg} ms`, `자동 5회 평균 기록은 ${autoAvg} ms 입니다. 다시 하려면 자동 측정 버튼을 누르세요.`, '자동 완료');
+          autoMode = false;
+          autoProgress = 0;
+          updateModeStats();
+        }
+      }
+    }
+
+    function handleAreaClick() {
+      if (state === 'idle' || state === 'too-soon') {
+        runCountdownThenStart();
+        return;
+      }
+      if (state === 'wait') {
+        handleTooSoon();
+        return;
+      }
+      if (state === 'go') {
+        handleSuccess();
+      }
+    }
+
+    function resetAll() {
+      clearWaitTimer();
+      clearCountdown();
+      records = [];
+      namedRecords = [];
+      autoMode = false;
+      autoProgress = 0;
+      comboCount = 0;
+      xp = 0;
+      shareOutput.value = '';
+      if (saveEnabled) {
+        localStorage.removeItem('reaction_records_v1');
+        localStorage.removeItem('reaction_named_records_v1');
+      }
+      updateStats();
+      renderHistory();
+      renderRanks();
+      setVisual('idle', '클릭해서 시작', '시작 버튼을 누르거나 이 화면을 클릭하세요. 먼저 3, 2, 1 카운트다운이 나오고 잠시 뒤 색이 바뀝니다.', '준비 상태');
+
+    normalModeBtn.addEventListener('click', () => {
+      gameMode = 'normal';
+      comboCount = 0;
+      updateModeStats();
+      setVisual('idle', '일반 모드', '기본 반응속도 테스트 모드입니다. 바로 시작할 수 있습니다.', '모드 변경');
+    });
+
+    comboModeBtn.addEventListener('click', () => {
+      gameMode = 'combo';
+      comboCount = 0;
+      updateModeStats();
+      setVisual('idle', '콤보 모드', '280ms 이하 기록을 이어가며 콤보와 XP를 쌓아보세요.', '모드 변경');
+    });
+
+    makeShareBtn.addEventListener('click', () => {
+      const name = (playerName.value || '익명').trim() || '익명';
+      const best = records.length ? Math.min(...records) : '-';
+      const avg = records.length ? Math.round(records.reduce((a, b) => a + b, 0) / records.length) : '-';
+      const grade = records.length ? getGrade(avg) : '-';
+      const level = getLevelInfo(xp);
+      shareOutput.value = `[반응속도 테스트 기록]
+이름: ${name}
+최고 기록: ${best} ms
+평균 기록: ${avg} ms
+등급: ${grade}
+레벨: LV.${level.level} ${level.name}
+콤보: x${comboCount}`;
+    });
+
+    copyShareBtn.addEventListener('click', async () => {
+      if (!shareOutput.value.trim()) return;
+      try {
+        await navigator.clipboard.writeText(shareOutput.value);
+        setVisual(state, bigText.textContent, '공유용 문구를 복사했습니다.', stateBadge.textContent);
+      } catch (err) {
+        console.warn(err);
+      }
+    });
+
+    duelP1Btn.addEventListener('click', () => {
+      pendingDuelPlayer = 'p1';
+      setVisual('idle', 'P1 준비', '카운트다운 후 플레이어 1의 반응속도를 측정합니다.', '대결 모드');
+      runCountdownThenStart();
+    });
+
+    duelP2Btn.addEventListener('click', () => {
+      pendingDuelPlayer = 'p2';
+      setVisual('idle', 'P2 준비', '카운트다운 후 플레이어 2의 반응속도를 측정합니다.', '대결 모드');
+      runCountdownThenStart();
+    });
+
+    duelResetBtn.addEventListener('click', () => {
+      duelScores = { p1: null, p2: null };
+      pendingDuelPlayer = null;
+      duelScore1.textContent = '-';
+      duelScore2.textContent = '-';
+      duelResult.textContent = '대결 모드에서 버튼을 눌러 각 플레이어 기록을 저장하세요.';
+    });
+    }
+
+    testArea.addEventListener('click', handleAreaClick);
+    testArea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleAreaClick();
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      autoMode = false;
+      autoProgress = 0;
+      updateModeStats();
+      runCountdownThenStart();
+    });
+
+    resetBtn.addEventListener('click', resetAll);
+
+    soundBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      soundBtn.textContent = soundEnabled ? '효과음 끄기' : '효과음 켜기';
+    });
+
+    autoBtn.addEventListener('click', () => {
+      autoMode = true;
+      autoProgress = 0;
+      updateModeStats();
+      runCountdownThenStart();
+    });
+
+    saveRecordBtn.addEventListener('click', () => {
+      saveEnabled = !saveEnabled;
+      saveRecordBtn.textContent = saveEnabled ? '기록 저장 끄기' : '기록 저장 켜기';
+      if (saveEnabled) {
+        localStorage.setItem('reaction_records_enabled_v1', '1');
+        localStorage.setItem('reaction_player_name_v1', (playerName.value || '').trim());
+        localStorage.setItem('reaction_named_records_v1', JSON.stringify(namedRecords));
+        saveRecordsToLocal();
+      } else {
+        localStorage.removeItem('reaction_records_enabled_v1');
+      }
+    });
+
+    playerName.addEventListener('input', () => {
+      if (saveEnabled) {
+        localStorage.setItem('reaction_player_name_v1', playerName.value.trim());
+      }
+    });
+
+    fullscreenBtn.addEventListener('click', async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      fullscreenBtn.textContent = document.fullscreenElement ? '전체화면 종료' : '전체화면';
+    });
+
+    loadRecordsFromLocal();
+    updateLevelUI();
+    updateStats();
+    renderHistory();
+    renderRanks();
+    updateModeStats();
+    setVisual('idle', '클릭해서 시작', '시작 버튼을 누르거나 이 화면을 클릭하세요. 먼저 3, 2, 1 카운트다운이 나오고 잠시 뒤 색이 바뀝니다.', '준비 상태');
+  </script>
+</body>
+</html>
