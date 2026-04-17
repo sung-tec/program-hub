@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>스도쿠 생성기</title>
+  <style>
+    :root {
+      --bg: #fcf8f2;
+      --panel: rgba(255,253,249,0.96);
+      --panel-soft: #eef5f8;
+      --text: #24313a;
+      --muted: #6a7b84;
+      --line: #c9d7de;
+      --accent: #abd0e0;
+      --accent-strong: #8fbfd4;
+      --ok: #2f8f63;
+      --warn: #c98a2f;
+      --danger: #d96161;
+      --fixed-bg: #f3f8fa;
+      --selected-bg: #dff1f7;
+      --related-bg: #eef8fb;
+      --same-bg: #e7f5fb;
+      --shadow: rgba(74,99,112,0.12);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(171, 208, 224, 0.55), transparent 32%),
+        radial-gradient(circle at top right, rgba(252, 248, 242, 0.95), transparent 40%),
+        linear-gradient(180deg, #eff5f7 0%, #fcf8f2 100%);
+      min-height: 100vh;
+      padding: 14px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 40px var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .header {
+      padding: 20px 18px 8px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 18px;
+      padding: 0 18px 18px;
+    }
+
+    .panel {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    select, input, button {
+      font-family: inherit;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: linear-gradient(90deg, #abd0e0, #dfeef4);
+      color: #1c2a32;
+      border: 1px solid #b8d7e4;
+    }
+
+    .secondary {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: #fff4f4;
+      color: #9a3e3e;
+      border: 1px solid #efcaca;
+    }
+
+    .info-box {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .info-item span:first-child {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .info-item strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .status {
+      min-height: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.warn { color: var(--warn); }
+    .status.err { color: var(--danger); }
+
+    .game-wrap {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .game-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .game-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .game-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sudoku-shell {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .board {
+      width: min(92vw, 560px);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      border: 3px solid #7d95a1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #7d95a1;
+      gap: 1px;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .cell {
+      position: relative;
+      border: none;
+      background: #ffffff;
+      color: var(--text);
+      font-size: clamp(18px, 2.2vw, 28px);
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      min-width: 0;
+      min-height: 0;
+      cursor: pointer;
+    }
+
+    .cell.fixed {
+      background: var(--fixed-bg);
+      color: #2b3d47;
+    }
+
+    .cell.selected {
+      background: var(--selected-bg);
+      z-index: 2;
+    }
+
+    .cell.related {
+      background: var(--related-bg);
+    }
+
+    .cell.same {
+      background: var(--same-bg);
+    }
+
+    .cell.error {
+      color: var(--danger);
+    }
+
+    .cell.thick-right { box-shadow: inset -2px 0 0 #7d95a1; }
+    .cell.thick-bottom { box-shadow: inset 0 -2px 0 #7d95a1; }
+    .cell.thick-right.thick-bottom { box-shadow: inset -2px 0 0 #7d95a1, inset 0 -2px 0 #7d95a1; }
+
+    .notes {
+      position: absolute;
+      inset: 3px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      font-size: 10px;
+      font-weight: 700;
+      color: #7b8b94;
+      pointer-events: none;
+    }
+
+    .note {
+      display: grid;
+      place-items: center;
+      opacity: 0;
+    }
+
+    .note.show { opacity: 1; }
+
+    .controls-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .number-pad {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .num-btn {
+      min-height: 54px;
+      font-size: 18px;
+      font-weight: 900;
+      background: #f7fbfd;
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .num-btn.action {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .note-toggle.active {
+      background: linear-gradient(90deg, #abd0e0, #dfeef4);
+      color: #1c2a32;
+      border: 1px solid #b8d7e4;
+    }
+
+    .footer {
+      padding: 0 18px 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr; }
+      .panel { order: 2; }
+      .game-wrap { order: 1; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .header { padding: 18px 14px 8px; }
+      .main { padding: 0 14px 14px; }
+      .footer { padding: 0 14px 14px; }
+      .title { font-size: 24px; }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .number-pad { grid-template-columns: repeat(5, 1fr); }
+      .num-btn { min-height: 48px; font-size: 17px; }
+      .board { width: min(94vw, 520px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">스도쿠 생성기</h1>
+        <p class="desc">
+          난이도를 선택하면 자동으로 스도쿠를 생성하고 바로 플레이할 수 있습니다. 휴대폰에서도 잘 눌리도록 큰 버튼과 숫자 패드를 넣은 단일 HTML 버전입니다.
+        </p>
+      </div>
+
+      <div class="main">
+        <div class="panel">
+          <h2 class="section-title">게임 설정</h2>
+
+          <div>
+            <label for="difficulty">난이도</label>
+            <select id="difficulty">
+              <option value="easy">쉬움</option>
+              <option value="normal" selected>보통</option>
+              <option value="hard">어려움</option>
+              <option value="expert">전문가</option>
+            </select>
+          </div>
+
+          <div class="toolbar">
+            <button id="generateBtn" class="primary">새 퍼즐</button>
+            <button id="resetBtn" class="secondary">다시 시작</button>
+            <button id="checkBtn" class="secondary">검사</button>
+            <button id="solveBtn" class="secondary">해답 보기</button>
+            <button id="hintBtn" class="secondary">힌트 1칸</button>
+            <button id="clearBtn" class="danger">지우기</button>
+          </div>
+
+          <div class="info-box">
+            <div class="info-item"><span>난이도</span><strong id="infoDifficulty">보통</strong></div>
+            <div class="info-item"><span>빈칸 수</span><strong id="infoBlanks">0</strong></div>
+            <div class="info-item"><span>선택 칸</span><strong id="infoSelected">-</strong></div>
+            <div class="info-item"><span>진행률</span><strong id="infoProgress">0%</strong></div>
+            <div class="info-item"><span>힌트 사용</span><strong id="infoHints">0</strong></div>
+          </div>
+
+          <div id="status" class="status"></div>
+
+          <div class="info-box">
+            사용 방법:<br>
+            1. 칸을 누른 뒤 아래 숫자 패드로 입력<br>
+            2. 메모 모드를 켜면 후보 숫자를 적을 수 있음<br>
+            3. 휴대폰에서는 화면 아래 숫자 패드를 중심으로 사용<br>
+            4. 검사를 누르면 현재 틀린 칸을 표시
+          </div>
+        </div>
+
+        <div class="game-wrap">
+          <div class="game-top">
+            <div>
+              <h2 class="game-title">모바일 친화형 스도쿠</h2>
+              <div id="gameSub" class="game-sub">새 퍼즐 버튼으로 시작하세요.</div>
+            </div>
+          </div>
+
+          <div class="sudoku-shell">
+            <div id="board" class="board"></div>
+          </div>
+
+          <div class="controls-grid">
+            <div class="toolbar" style="grid-template-columns: 1fr 1fr 1fr;">
+              <button id="noteToggle" class="secondary note-toggle">메모 모드 OFF</button>
+              <button id="eraseToggle" class="secondary">선택칸 지우기</button>
+              <button id="autoNotesBtn" class="secondary">후보 자동채우기</button>
+            </div>
+
+            <div id="numberPad" class="number-pad"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        참고: 이 스도쿠는 브라우저 안에서 직접 생성됩니다. 같은 난이도를 눌러도 매번 다른 퍼즐이 만들어집니다.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const difficultyEl = document.getElementById('difficulty');
+    const generateBtn = document.getElementById('generateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const checkBtn = document.getElementById('checkBtn');
+    const solveBtn = document.getElementById('solveBtn');
+    const hintBtn = document.getElementById('hintBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const boardEl = document.getElementById('board');
+    const numberPad = document.getElementById('numberPad');
+    const statusEl = document.getElementById('status');
+    const gameSub = document.getElementById('gameSub');
+    const noteToggle = document.getElementById('noteToggle');
+    const eraseToggle = document.getElementById('eraseToggle');
+    const autoNotesBtn = document.getElementById('autoNotesBtn');
+
+    const infoDifficulty = document.getElementById('infoDifficulty');
+    const infoBlanks = document.getElementById('infoBlanks');
+    const infoSelected = document.getElementById('infoSelected');
+    const infoProgress = document.getElementById('infoProgress');
+    const infoHints = document.getElementById('infoHints');
+
+    const blankMap = {
+      easy: 36,
+      normal: 45,
+      hard: 53,
+      expert: 58,
+    };
+
+    let state = {
+      puzzle: [],
+      solution: [],
+      current: [],
+      fixed: [],
+      notes: [],
+      selected: null,
+      noteMode: false,
+      hintsUsed: 0,
+      solvedShown: false,
+      difficulty: 'normal',
+    };
+
+    function setStatus(message = '', kind = '') {
+      statusEl.textContent = message;
+      statusEl.className = 'status';
+      if (kind) statusEl.classList.add(kind);
+    }
+
+    function deepCopyGrid(grid) {
+      return grid.map(row => [...row]);
+    }
+
+    function makeEmptyGrid() {
+      return Array.from({ length: 9 }, () => Array(9).fill(0));
+    }
+
+    function makeEmptyNotes() {
+      return Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
+    }
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function isValid(grid, row, col, num) {
+      for (let x = 0; x < 9; x++) {
+        if (grid[row][x] === num) return false;
+        if (grid[x][col] === num) return false;
+      }
+      const boxRow = Math.floor(row / 3) * 3;
+      const boxCol = Math.floor(col / 3) * 3;
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (grid[boxRow + r][boxCol + c] === num) return false;
+        }
+      }
+      return true;
+    }
+
+    function fillGrid(grid) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (grid[row][col] === 0) {
+            for (const num of shuffle([1,2,3,4,5,6,7,8,9])) {
+              if (isValid(grid, row, col, num)) {
+                grid[row][col] = num;
+                if (fillGrid(grid)) return true;
+                grid[row][col] = 0;
+              }
+            }
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    function findEmpty(grid) {
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (grid[r][c] === 0) return [r, c];
+        }
+      }
+      return null;
+    }
+
+    function countSolutions(grid, limit = 2) {
+      const empty = findEmpty(grid);
+      if (!empty) return 1;
+      const [row, col] = empty;
+      let count = 0;
+      for (let num = 1; num <= 9; num++) {
+        if (isValid(grid, row, col, num)) {
+          grid[row][col] = num;
+          count += countSolutions(grid, limit);
+          if (count >= limit) {
+            grid[row][col] = 0;
+            return count;
+          }
+          grid[row][col] = 0;
+        }
+      }
+      return count;
+    }
+
+    function generatePuzzle() {
+      const difficulty = difficultyEl.value;
+      const blanks = blankMap[difficulty] || 45;
+      const solution = makeEmptyGrid();
+      fillGrid(solution);
+      const puzzle = deepCopyGrid(solution);
+
+      const positions = shuffle(Array.from({ length: 81 }, (_, i) => i));
+      let removed = 0;
+
+      for (const pos of positions) {
+        if (removed >= blanks) break;
+        const row = Math.floor(pos / 9);
+        const col = pos % 9;
+        const backup = puzzle[row][col];
+        puzzle[row][col] = 0;
+        const copy = deepCopyGrid(puzzle);
+        const solutions = countSolutions(copy, 2);
+        if (solutions !== 1) {
+          puzzle[row][col] = backup;
+        } else {
+          removed++;
+        }
+      }
+
+      state = {
+        puzzle: deepCopyGrid(puzzle),
+        solution: deepCopyGrid(solution),
+        current: deepCopyGrid(puzzle),
+        fixed: puzzle.map(row => row.map(v => v !== 0)),
+        notes: makeEmptyNotes(),
+        selected: null,
+        noteMode: false,
+        hintsUsed: 0,
+        solvedShown: false,
+        difficulty,
+      };
+
+      noteToggle.textContent = '메모 모드 OFF';
+      noteToggle.classList.remove('active');
+      gameSub.textContent = `${difficultyLabel(difficulty)} 난이도 퍼즐이 생성되었습니다.`;
+      setStatus('새 스도쿠를 만들었습니다.', 'ok');
+      renderAll();
+    }
+
+    function difficultyLabel(value) {
+      switch (value) {
+        case 'easy': return '쉬움';
+        case 'normal': return '보통';
+        case 'hard': return '어려움';
+        case 'expert': return '전문가';
+        default: return value;
+      }
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = '';
+      const selected = state.selected;
+      const selectedValue = selected ? state.current[selected.row][selected.col] : 0;
+
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          const value = state.current[row][col];
+          const fixed = state.fixed[row][col];
+          const btn = document.createElement('button');
+          btn.className = 'cell';
+          if (fixed) btn.classList.add('fixed');
+          if ((col + 1) % 3 === 0 && col !== 8) btn.classList.add('thick-right');
+          if ((row + 1) % 3 === 0 && row !== 8) btn.classList.add('thick-bottom');
+
+          if (selected) {
+            const sameRow = selected.row === row;
+            const sameCol = selected.col === col;
+            const sameBox = Math.floor(selected.row / 3) === Math.floor(row / 3) && Math.floor(selected.col / 3) === Math.floor(col / 3);
+            if (sameRow || sameCol || sameBox) btn.classList.add('related');
+            if (selected.row === row && selected.col === col) btn.classList.add('selected');
+            if (selectedValue && value === selectedValue) btn.classList.add('same');
+          }
+
+          if (!fixed && value && value !== state.solution[row][col]) {
+            btn.classList.add('error');
+          }
+
+          if (value) {
+            btn.textContent = String(value);
+          } else {
+            const notesWrap = document.createElement('div');
+            notesWrap.className = 'notes';
+            for (let n = 1; n <= 9; n++) {
+              const note = document.createElement('span');
+              note.className = 'note' + (state.notes[row][col].has(n) ? ' show' : '');
+              note.textContent = String(n);
+              notesWrap.appendChild(note);
+            }
+            btn.appendChild(notesWrap);
+          }
+
+          btn.addEventListener('click', () => {
+            state.selected = { row, col };
+            renderAll();
+          });
+          boardEl.appendChild(btn);
+        }
+      }
+    }
+
+    function renderNumberPad() {
+      numberPad.innerHTML = '';
+      for (let n = 1; n <= 9; n++) {
+        const btn = document.createElement('button');
+        btn.className = 'num-btn';
+        btn.textContent = String(n);
+        btn.addEventListener('click', () => handleNumberInput(n));
+        numberPad.appendChild(btn);
+      }
+
+      const erase = document.createElement('button');
+      erase.className = 'num-btn action';
+      erase.textContent = '지우기';
+      erase.addEventListener('click', clearSelectedCell);
+      numberPad.appendChild(erase);
+    }
+
+    function handleNumberInput(num) {
+      if (!state.selected) {
+        setStatus('먼저 칸을 선택하세요.', 'warn');
+        return;
+      }
+      const { row, col } = state.selected;
+      if (state.fixed[row][col]) {
+        setStatus('고정된 숫자는 바꿀 수 없습니다.', 'warn');
+        return;
+      }
+
+      if (state.noteMode) {
+        if (state.current[row][col] !== 0) return;
+        if (state.notes[row][col].has(num)) state.notes[row][col].delete(num);
+        else state.notes[row][col].add(num);
+        renderAll();
+        return;
+      }
+
+      state.current[row][col] = num;
+      state.notes[row][col].clear();
+      renderAll();
+      if (isComplete()) {
+        const correct = isSolvedCorrectly();
+        setStatus(correct ? '완성했습니다! 정답입니다.' : '모든 칸을 채웠지만 틀린 곳이 있습니다.', correct ? 'ok' : 'warn');
+      }
+    }
+
+    function clearSelectedCell() {
+      if (!state.selected) return;
+      const { row, col } = state.selected;
+      if (state.fixed[row][col]) return;
+      state.current[row][col] = 0;
+      state.notes[row][col].clear();
+      renderAll();
+    }
+
+    function autoFillNotes() {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (state.current[row][col] !== 0) continue;
+          state.notes[row][col].clear();
+          for (let num = 1; num <= 9; num++) {
+            const temp = state.current[row][col];
+            state.current[row][col] = 0;
+            if (isValidForCurrent(row, col, num)) state.notes[row][col].add(num);
+            state.current[row][col] = temp;
+          }
+        }
+      }
+      renderAll();
+      setStatus('후보 숫자를 자동으로 채웠습니다.', 'ok');
+    }
+
+    function isValidForCurrent(row, col, num) {
+      for (let x = 0; x < 9; x++) {
+        if (x !== col && state.current[row][x] === num) return false;
+        if (x !== row && state.current[x][col] === num) return false;
+      }
+      const boxRow = Math.floor(row / 3) * 3;
+      const boxCol = Math.floor(col / 3) * 3;
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const rr = boxRow + r;
+          const cc = boxCol + c;
+          if ((rr !== row || cc !== col) && state.current[rr][cc] === num) return false;
+        }
+      }
+      return true;
+    }
+
+    function checkBoard() {
+      if (!state.current.length) return;
+      renderBoard();
+      const correct = isSolvedCorrectly();
+      setStatus(correct ? '현재 상태는 모두 맞습니다.' : '틀린 칸이 있으면 빨간 숫자로 보입니다.', correct ? 'ok' : 'warn');
+    }
+
+    function solveBoard() {
+      state.current = deepCopyGrid(state.solution);
+      state.solvedShown = true;
+      renderAll();
+      setStatus('해답을 표시했습니다.', 'ok');
+    }
+
+    function giveHint() {
+      const empties = [];
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (state.current[row][col] !== state.solution[row][col]) {
+            empties.push({ row, col });
+          }
+        }
+      }
+      if (!empties.length) {
+        setStatus('이미 완성되었습니다.', 'ok');
+        return;
+      }
+      const pick = empties[Math.floor(Math.random() * empties.length)];
+      state.current[pick.row][pick.col] = state.solution[pick.row][pick.col];
+      state.notes[pick.row][pick.col].clear();
+      state.selected = pick;
+      state.hintsUsed += 1;
+      renderAll();
+      setStatus(`힌트를 사용했습니다. (${pick.row + 1}, ${pick.col + 1}) 칸`, 'ok');
+    }
+
+    function resetBoard() {
+      if (!state.puzzle.length) return;
+      state.current = deepCopyGrid(state.puzzle);
+      state.notes = makeEmptyNotes();
+      state.selected = null;
+      state.hintsUsed = 0;
+      state.solvedShown = false;
+      renderAll();
+      setStatus('퍼즐을 처음 상태로 되돌렸습니다.', 'ok');
+    }
+
+    function isComplete() {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (state.current[row][col] === 0) return false;
+        }
+      }
+      return true;
+    }
+
+    function isSolvedCorrectly() {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (state.current[row][col] !== state.solution[row][col]) return false;
+        }
+      }
+      return true;
+    }
+
+    function updateInfo() {
+      infoDifficulty.textContent = difficultyLabel(state.difficulty);
+      let blanks = 0;
+      let filled = 0;
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (!state.fixed[row][col]) blanks++;
+          if (!state.fixed[row][col] && state.current[row][col] !== 0) filled++;
+        }
+      }
+      infoBlanks.textContent = String(blanks);
+      infoSelected.textContent = state.selected ? `${state.selected.row + 1}, ${state.selected.col + 1}` : '-';
+      infoProgress.textContent = blanks ? `${Math.round((filled / blanks) * 100)}%` : '100%';
+      infoHints.textContent = String(state.hintsUsed);
+    }
+
+    function renderAll() {
+      renderBoard();
+      renderNumberPad();
+      updateInfo();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!state.current.length) return;
+      if (e.key >= '1' && e.key <= '9') {
+        handleNumberInput(Number(e.key));
+      } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
+        clearSelectedCell();
+      } else if (e.key.toLowerCase() === 'n') {
+        state.noteMode = !state.noteMode;
+        noteToggle.textContent = state.noteMode ? '메모 모드 ON' : '메모 모드 OFF';
+        noteToggle.classList.toggle('active', state.noteMode);
+      }
+    });
+
+    generateBtn.addEventListener('click', generatePuzzle);
+    resetBtn.addEventListener('click', resetBoard);
+    checkBtn.addEventListener('click', checkBoard);
+    solveBtn.addEventListener('click', solveBoard);
+    hintBtn.addEventListener('click', giveHint);
+    clearBtn.addEventListener('click', clearSelectedCell);
+    eraseToggle.addEventListener('click', clearSelectedCell);
+    autoNotesBtn.addEventListener('click', autoFillNotes);
+
+    noteToggle.addEventListener('click', () => {
+      state.noteMode = !state.noteMode;
+      noteToggle.textContent = state.noteMode ? '메모 모드 ON' : '메모 모드 OFF';
+      noteToggle.classList.toggle('active', state.noteMode);
+    });
+
+    generatePuzzle();
+  </script>
+</body>
+</html>

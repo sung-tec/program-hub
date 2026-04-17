@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>랜덤 추첨기</title>
+  <style>
+    :root {
+      --bg: #fcf8f2;
+      --panel: rgba(255, 253, 249, 0.96);
+      --panel-soft: #eef5f8;
+      --text: #24313a;
+      --muted: #6a7b84;
+      --line: #c9d7de;
+      --accent: #abd0e0;
+      --accent-strong: #8fbfd4;
+      --ok: #2f8f63;
+      --danger: #d96161;
+      --shadow: rgba(74, 99, 112, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(171, 208, 224, 0.55), transparent 32%),
+        radial-gradient(circle at top right, rgba(252, 248, 242, 0.95), transparent 40%),
+        linear-gradient(180deg, #eff5f7 0%, #fcf8f2 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 40px var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .header {
+      padding: 24px 24px 10px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .main {
+      padding: 0 24px 24px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    textarea, input[type="number"], input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 290px;
+      resize: vertical;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .check-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-strong);
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: linear-gradient(90deg, #abd0e0, #dfeef4);
+      color: #1c2a32;
+      border: 1px solid #b8d7e4;
+    }
+
+    .secondary {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: #fff4f4;
+      color: #b24141;
+      border: 1px solid #efcaca;
+    }
+
+    .result-box {
+      min-height: 180px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .winner-main {
+      background: linear-gradient(180deg, rgba(171,208,224,0.28), rgba(255,253,249,0.95));
+      border: 1px solid #b8d7e4;
+      border-radius: 20px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .winner-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .winner-name {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      word-break: break-word;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .list-panel {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .list-title {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eef5f8;
+      border: 1px solid #cfe0e8;
+      font-size: 13px;
+      font-weight: 700;
+      color: #2f4350;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+      max-height: 250px;
+      overflow: auto;
+    }
+
+    .history-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .history-top {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .history-sub {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 0 24px 22px;
+    }
+
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr; }
+      .grid-2, .btn-row, .stats { grid-template-columns: 1fr; }
+      body { padding: 14px; }
+      .title { font-size: 25px; }
+      .winner-name { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">랜덤 추첨기</h1>
+        <p class="desc">
+          이름이나 항목을 한 줄에 하나씩 넣고 추첨 버튼을 누르면 랜덤으로 뽑아줍니다.<br>
+          중복 제거, 여러 명 추첨, 추첨 이력 저장까지 포함된 단일 HTML 웹앱입니다.
+        </p>
+      </div>
+
+      <div class="main">
+        <div class="panel">
+          <h2 class="section-title">추첨 대상 입력</h2>
+          <label class="label" for="itemsInput">한 줄에 하나씩 입력</label>
+          <textarea id="itemsInput" placeholder="예시&#10;김철수&#10;이영희&#10;박민수&#10;사과&#10;바나나"></textarea>
+
+          <div class="grid-2">
+            <div>
+              <label class="label" for="pickCount">뽑을 개수</label>
+              <input id="pickCount" type="number" min="1" value="1" />
+            </div>
+            <div>
+              <label class="label" for="titleInput">추첨 제목</label>
+              <input id="titleInput" type="text" placeholder="예: 점심 당번 추첨" />
+            </div>
+          </div>
+
+          <div class="check-row">
+            <label><input id="removeDuplicates" type="checkbox" checked /> 중복 항목 제거</label>
+            <label><input id="noRepeatWinners" type="checkbox" checked /> 이미 뽑힌 항목 제외</label>
+          </div>
+
+          <div class="btn-row">
+            <button id="pickBtn" class="primary">추첨하기</button>
+            <button id="sampleBtn" class="secondary">예시 넣기</button>
+            <button id="resetBtn" class="danger">초기화</button>
+          </div>
+
+          <div id="status" class="status"></div>
+        </div>
+
+        <div class="panel result-box">
+          <h2 class="section-title">추첨 결과</h2>
+
+          <div class="winner-main">
+            <div class="winner-label">현재 대표 결과</div>
+            <div id="winnerMain" class="winner-name">아직 추첨 전</div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">전체 항목 수</div>
+              <div id="totalCount" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">이번 추첨 수</div>
+              <div id="pickedCount" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">남은 항목 수</div>
+              <div id="remainingCount" class="stat-value">0</div>
+            </div>
+          </div>
+
+          <div class="list-panel">
+            <h3 class="list-title">이번에 뽑힌 항목</h3>
+            <div id="pickedList" class="chips"></div>
+          </div>
+
+          <div class="list-panel">
+            <h3 class="list-title">추첨 이력</h3>
+            <div id="historyList" class="history-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        팁: 명단을 붙여넣은 뒤 중복 제거를 켜면 같은 이름이 여러 번 들어가 있어도 한 번만 추첨 대상에 포함할 수 있습니다.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const itemsInput = document.getElementById('itemsInput');
+    const pickCount = document.getElementById('pickCount');
+    const titleInput = document.getElementById('titleInput');
+    const removeDuplicates = document.getElementById('removeDuplicates');
+    const noRepeatWinners = document.getElementById('noRepeatWinners');
+    const pickBtn = document.getElementById('pickBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    const winnerMain = document.getElementById('winnerMain');
+    const totalCount = document.getElementById('totalCount');
+    const pickedCount = document.getElementById('pickedCount');
+    const remainingCount = document.getElementById('remainingCount');
+    const pickedList = document.getElementById('pickedList');
+    const historyList = document.getElementById('historyList');
+
+    let alreadyPicked = [];
+    let history = [];
+
+    function setStatus(message = '', kind = '') {
+      status.textContent = message;
+      status.className = 'status';
+      if (kind) status.classList.add(kind);
+    }
+
+    function parseItems() {
+      const raw = itemsInput.value
+        .split('\n')
+        .map(v => v.trim())
+        .filter(Boolean);
+
+      if (!removeDuplicates.checked) return raw;
+      return [...new Set(raw)];
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderPicked(items) {
+      pickedList.innerHTML = '';
+      if (!items.length) {
+        pickedList.innerHTML = '<span class="chip">아직 없음</span>';
+        return;
+      }
+
+      items.forEach(item => {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = item;
+        pickedList.appendChild(chip);
+      });
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = '';
+      if (!history.length) {
+        historyList.innerHTML = '<div class="history-item"><div class="history-top">추첨 이력이 없습니다.</div><div class="history-sub">추첨하기 버튼을 누르면 여기에 기록됩니다.</div></div>';
+        return;
+      }
+
+      [...history].reverse().forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `
+          <div class="history-top">${entry.title}</div>
+          <div class="history-sub">결과: ${entry.results.join(', ')}</div>
+          <div class="history-sub">시간: ${entry.time}</div>
+        `;
+        historyList.appendChild(item);
+      });
+    }
+
+    function updateStats(total, picked, remaining) {
+      totalCount.textContent = String(total);
+      pickedCount.textContent = String(picked);
+      remainingCount.textContent = String(remaining);
+    }
+
+    function pickRandom() {
+      const allItems = parseItems();
+      const requestedCount = Math.max(1, Number(pickCount.value) || 1);
+
+      if (!allItems.length) {
+        setStatus('추첨할 항목을 먼저 입력하세요.', 'err');
+        winnerMain.textContent = '입력 필요';
+        renderPicked([]);
+        updateStats(0, 0, 0);
+        return;
+      }
+
+      let pool = [...allItems];
+      if (noRepeatWinners.checked) {
+        pool = pool.filter(item => !alreadyPicked.includes(item));
+      }
+
+      if (!pool.length) {
+        setStatus('남은 항목이 없습니다. 초기화 후 다시 추첨하세요.', 'err');
+        winnerMain.textContent = '남은 항목 없음';
+        renderPicked([]);
+        updateStats(allItems.length, 0, 0);
+        return;
+      }
+
+      const actualCount = Math.min(requestedCount, pool.length);
+      const results = shuffle(pool).slice(0, actualCount);
+
+      if (noRepeatWinners.checked) {
+        alreadyPicked.push(...results);
+      }
+
+      winnerMain.textContent = results[0] || '결과 없음';
+      renderPicked(results);
+      updateStats(allItems.length, results.length, Math.max(0, allItems.length - alreadyPicked.length));
+
+      const title = titleInput.value.trim() || '랜덤 추첨';
+      history.push({
+        title,
+        results,
+        time: new Date().toLocaleString('ko-KR')
+      });
+      renderHistory();
+
+      const message = actualCount < requestedCount
+        ? `남은 항목이 부족해 ${actualCount}개만 추첨했습니다.`
+        : `${actualCount}개를 추첨했습니다.`;
+      setStatus(message, 'ok');
+    }
+
+    function resetAll() {
+      itemsInput.value = '';
+      pickCount.value = 1;
+      titleInput.value = '';
+      removeDuplicates.checked = true;
+      noRepeatWinners.checked = true;
+      alreadyPicked = [];
+      history = [];
+      winnerMain.textContent = '아직 추첨 전';
+      renderPicked([]);
+      renderHistory();
+      updateStats(0, 0, 0);
+      setStatus('초기화했습니다.', 'ok');
+    }
+
+    function loadSample() {
+      itemsInput.value = ['김철수', '이영희', '박민수', '최수진', '정하늘', '오지훈', '강민서', '한유진'].join('\n');
+      pickCount.value = 1;
+      titleInput.value = '예시 추첨';
+      alreadyPicked = [];
+      history = [];
+      winnerMain.textContent = '아직 추첨 전';
+      renderPicked([]);
+      renderHistory();
+      updateStats(parseItems().length, 0, parseItems().length);
+      setStatus('예시 데이터를 넣었습니다.', 'ok');
+    }
+
+    itemsInput.addEventListener('input', () => {
+      const items = parseItems();
+      const remaining = noRepeatWinners.checked
+        ? Math.max(0, items.length - alreadyPicked.filter(v => items.includes(v)).length)
+        : items.length;
+      updateStats(items.length, 0, remaining);
+    });
+
+    noRepeatWinners.addEventListener('change', () => {
+      const items = parseItems();
+      const remaining = noRepeatWinners.checked
+        ? Math.max(0, items.length - alreadyPicked.filter(v => items.includes(v)).length)
+        : items.length;
+      updateStats(items.length, 0, remaining);
+    });
+
+    removeDuplicates.addEventListener('change', () => {
+      const items = parseItems();
+      const remaining = noRepeatWinners.checked
+        ? Math.max(0, items.length - alreadyPicked.filter(v => items.includes(v)).length)
+        : items.length;
+      updateStats(items.length, 0, remaining);
+    });
+
+    pickBtn.addEventListener('click', pickRandom);
+    sampleBtn.addEventListener('click', loadSample);
+    resetBtn.addEventListener('click', resetAll);
+
+    renderPicked([]);
+    renderHistory();
+    updateStats(0, 0, 0);
+  </script>
+</body>
+</html>
