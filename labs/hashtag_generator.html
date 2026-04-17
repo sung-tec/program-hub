@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>해시태그 생성기</title>
+  <style>
+    :root {
+      --bg: #fcf8f2;
+      --panel: rgba(255,253,249,0.96);
+      --panel-soft: #eef5f8;
+      --text: #24313a;
+      --muted: #6a7b84;
+      --line: #c9d7de;
+      --accent: #abd0e0;
+      --accent-strong: #8fbfd4;
+      --ok: #2f8f63;
+      --warn: #c98a2f;
+      --danger: #d96161;
+      --shadow: rgba(74,99,112,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(171, 208, 224, 0.55), transparent 32%),
+        radial-gradient(circle at top right, rgba(252, 248, 242, 0.95), transparent 40%),
+        linear-gradient(180deg, #eff5f7 0%, #fcf8f2 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 40px var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .header {
+      padding: 24px 24px 10px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 20px;
+      padding: 0 24px 24px;
+    }
+
+    .panel {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    textarea, input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: linear-gradient(90deg, #abd0e0, #dfeef4);
+      color: #1c2a32;
+      border: 1px solid #b8d7e4;
+    }
+
+    .secondary {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: #fff4f4;
+      color: #9a3e3e;
+      border: 1px solid #efcaca;
+    }
+
+    .info-box {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .status {
+      min-height: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.warn { color: var(--warn); }
+    .status.err { color: var(--danger); }
+
+    .result-wrap {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .result-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tag-groups {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tag-group {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fafcfd;
+      display: grid;
+      gap: 10px;
+    }
+
+    .group-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .group-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .group-count {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid #cfe0e8;
+      background: #eef6fa;
+      color: #29404c;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: #e0f0f7;
+    }
+
+    .output-box {
+      display: grid;
+      gap: 10px;
+    }
+
+    .output-box textarea {
+      min-height: 120px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: #f5f9fb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 0 24px 22px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 14px; }
+      .title { font-size: 24px; }
+      .grid-2, .toolbar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">해시태그 생성기</h1>
+        <p class="desc">
+          주제와 설명을 넣으면 SNS, 유튜브, 블로그, 쇼츠 등에 쓸 수 있는 해시태그를 자동으로 정리해줍니다. 기본 / 세부 / 감성 / 검색형 해시태그를 나눠서 보여주는 단일 HTML입니다.
+        </p>
+      </div>
+
+      <div class="main">
+        <div class="panel">
+          <h2 class="section-title">입력</h2>
+
+          <div>
+            <label for="mainTopic">메인 주제</label>
+            <input id="mainTopic" type="text" placeholder="예: 스도쿠, 게임리뷰, 아이온2, 공부브이로그" />
+          </div>
+
+          <div>
+            <label for="description">설명 / 핵심 내용</label>
+            <textarea id="description" placeholder="예: 휴대폰에서도 가능한 스도쿠 생성기, HTML 단일 파일, 퍼즐 게임, 두뇌훈련"></textarea>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="platform">플랫폼</label>
+              <select id="platform">
+                <option value="instagram">인스타그램</option>
+                <option value="youtube" selected>유튜브</option>
+                <option value="shorts">쇼츠</option>
+                <option value="blog">블로그</option>
+                <option value="general">일반</option>
+              </select>
+            </div>
+            <div>
+              <label for="tone">스타일</label>
+              <select id="tone">
+                <option value="balanced" selected>균형형</option>
+                <option value="search">검색형</option>
+                <option value="trendy">트렌디형</option>
+                <option value="simple">심플형</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="tagCount">생성 개수</label>
+              <select id="tagCount">
+                <option value="15">15개</option>
+                <option value="20" selected>20개</option>
+                <option value="30">30개</option>
+                <option value="40">40개</option>
+              </select>
+            </div>
+            <div>
+              <label for="languageMix">언어 혼합</label>
+              <select id="languageMix">
+                <option value="ko" selected>한글 중심</option>
+                <option value="mix">한글 + 영어</option>
+                <option value="en">영어 중심</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <button id="generateBtn" class="primary">해시태그 생성</button>
+            <button id="sampleBtn" class="secondary">예시 넣기</button>
+            <button id="resetBtn" class="danger">초기화</button>
+            <button id="copyAllBtn" class="secondary">전체 복사</button>
+          </div>
+
+          <div id="status" class="status"></div>
+
+          <div class="info-box">
+            팁:<br>
+            1. 메인 주제는 짧고 분명하게 넣는 것이 좋음<br>
+            2. 설명에는 핵심 키워드를 쉼표나 문장으로 넣으면 좋음<br>
+            3. 플랫폼에 따라 추천 구성이 조금 달라짐<br>
+            4. 생성 후 태그를 개별 클릭하면 하나씩 복사 가능
+          </div>
+        </div>
+
+        <div class="result-wrap">
+          <div class="result-top">
+            <div>
+              <h2 class="result-title">생성 결과</h2>
+              <div id="resultSub" class="result-sub">입력 후 해시태그 생성 버튼을 눌러보세요.</div>
+            </div>
+            <div class="stats-row">
+              <div class="pill">총 개수 <span id="totalTags">0</span></div>
+              <div class="pill">문자 수 <span id="totalChars">0</span></div>
+            </div>
+          </div>
+
+          <div id="tagGroups" class="tag-groups"></div>
+
+          <div class="output-box">
+            <label for="finalOutput">한 줄 출력</label>
+            <textarea id="finalOutput" readonly placeholder="생성된 해시태그가 한 줄로 정리되어 여기에 표시됩니다."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        참고: 이 생성기는 입력한 주제와 설명을 바탕으로 브라우저 안에서 조합형 태그를 만듭니다. 실제 최신 인기 태그를 수집하는 방식은 아니므로, 최종 업로드 전에 직접 한 번 다듬는 것이 좋습니다.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const mainTopic = document.getElementById('mainTopic');
+    const description = document.getElementById('description');
+    const platform = document.getElementById('platform');
+    const tone = document.getElementById('tone');
+    const tagCount = document.getElementById('tagCount');
+    const languageMix = document.getElementById('languageMix');
+    const generateBtn = document.getElementById('generateBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const status = document.getElementById('status');
+    const tagGroups = document.getElementById('tagGroups');
+    const finalOutput = document.getElementById('finalOutput');
+    const totalTags = document.getElementById('totalTags');
+    const totalChars = document.getElementById('totalChars');
+    const resultSub = document.getElementById('resultSub');
+
+    let currentTags = [];
+
+    const stopWords = new Set(['그리고','하지만','에서','으로','있는','하는','입니다','입니다.','the','and','for','with','this','that','from','into','your']);
+
+    function setStatus(message = '', kind = '') {
+      status.textContent = message;
+      status.className = 'status';
+      if (kind) status.classList.add(kind);
+    }
+
+    function normalizeToken(token) {
+      return token
+        .toLowerCase()
+        .replace(/[^가-힣a-z0-9]/g, '')
+        .trim();
+    }
+
+    function titleCase(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
+    function tokenize(text) {
+      return (text || '')
+        .split(/[\s,./|\-_=+!?()[\]{}:;"'`~]+/)
+        .map(normalizeToken)
+        .filter(Boolean)
+        .filter(w => w.length > 1)
+        .filter(w => !stopWords.has(w));
+    }
+
+    function unique(arr) {
+      return [...new Set(arr.filter(Boolean))];
+    }
+
+    function toHashtag(token) {
+      return '#' + token.replace(/\s+/g, '').replace(/#/g, '');
+    }
+
+    function buildEnglishVariants(token) {
+      const map = {
+        '스도쿠': ['sudoku', 'sudokugame'],
+        '퍼즐': ['puzzle', 'braingame'],
+        '게임': ['game', 'gaming'],
+        '공부': ['study', 'studytime'],
+        '리뷰': ['review'],
+        '브이로그': ['vlog'],
+        '유튜브': ['youtube'],
+        '쇼츠': ['shorts', 'youtubeshorts'],
+        '블로그': ['blog'],
+        '코딩': ['coding', 'programming'],
+        'html': ['html', 'webapp'],
+        '앱': ['app'],
+        '생성기': ['generator'],
+        '아이온2': ['aion2'],
+      };
+      return map[token] || [];
+    }
+
+    function generateHashtags() {
+      const topic = mainTopic.value.trim();
+      const desc = description.value.trim();
+      const platformValue = platform.value;
+      const toneValue = tone.value;
+      const count = Number(tagCount.value) || 20;
+      const lang = languageMix.value;
+
+      if (!topic) {
+        setStatus('메인 주제를 입력하세요.', 'err');
+        return;
+      }
+
+      const baseTokens = unique([normalizeToken(topic), ...tokenize(desc)]).filter(Boolean);
+      const prettyTopic = topic.replace(/\s+/g, '');
+
+      const core = [];
+      const detail = [];
+      const mood = [];
+      const search = [];
+
+      core.push(toHashtag(prettyTopic));
+      core.push(toHashtag(prettyTopic + '추천'));
+      core.push(toHashtag(prettyTopic + '정보'));
+
+      baseTokens.forEach(token => {
+        core.push(toHashtag(token));
+        detail.push(toHashtag(token + '팁'));
+        detail.push(toHashtag(token + '정리'));
+        detail.push(toHashtag(token + '가이드'));
+        search.push(toHashtag(token + '방법'));
+        search.push(toHashtag(token + '추천'));
+        search.push(toHashtag(token + '후기'));
+        mood.push(toHashtag('꿀팁' + token));
+        mood.push(toHashtag(token + '모음'));
+
+        if (lang !== 'ko') {
+          buildEnglishVariants(token).forEach(en => {
+            core.push(toHashtag(en));
+            detail.push(toHashtag(en + 'tips'));
+            search.push(toHashtag(en + 'guide'));
+          });
+        }
+      });
+
+      if (lang === 'mix' || lang === 'en') {
+        const englishTopic = normalizeToken(topic);
+        if (englishTopic && /[a-z0-9]/.test(englishTopic)) {
+          core.push(toHashtag(englishTopic));
+          search.push(toHashtag(englishTopic + 'guide'));
+        }
+      }
+
+      const platformTags = {
+        instagram: ['인스타감성', '인스타추천', '데일리', '감성기록'],
+        youtube: ['유튜브', '유튜브추천', '콘텐츠', '영상추천'],
+        shorts: ['쇼츠', '유튜브쇼츠', '짧은영상', '쇼츠추천'],
+        blog: ['블로그', '블로그추천', '정보글', '정리글'],
+        general: ['추천', '정보', '가이드', '팁']
+      };
+
+      (platformTags[platformValue] || []).forEach(tag => mood.push(toHashtag(tag)));
+
+      if (toneValue === 'search') {
+        search.push(toHashtag(prettyTopic + '검색'));
+        search.push(toHashtag(prettyTopic + '설명'));
+        search.push(toHashtag(prettyTopic + '핵심'));
+      } else if (toneValue === 'trendy') {
+        mood.push(toHashtag('요즘' + prettyTopic));
+        mood.push(toHashtag('핫한' + prettyTopic));
+        mood.push(toHashtag(prettyTopic + '챌린지'));
+      } else if (toneValue === 'simple') {
+        core.length = Math.min(core.length, 8);
+        detail.length = Math.min(detail.length, 6);
+        mood.length = Math.min(mood.length, 4);
+        search.length = Math.min(search.length, 6);
+      }
+
+      const grouped = {
+        기본: unique(core),
+        세부: unique(detail),
+        감성: unique(mood),
+        검색형: unique(search)
+      };
+
+      let merged = unique([
+        ...grouped['기본'],
+        ...grouped['세부'],
+        ...grouped['감성'],
+        ...grouped['검색형']
+      ]).slice(0, count);
+
+      currentTags = merged;
+      renderGroups(grouped, merged);
+      finalOutput.value = merged.join(' ');
+      totalTags.textContent = String(merged.length);
+      totalChars.textContent = String(finalOutput.value.length);
+      resultSub.textContent = `${platform.options[platform.selectedIndex].text} · ${tone.options[tone.selectedIndex].text} 기준으로 정리했습니다.`;
+      setStatus('해시태그를 생성했습니다.', 'ok');
+    }
+
+    function renderGroups(grouped, merged) {
+      tagGroups.innerHTML = '';
+      Object.entries(grouped).forEach(([title, tags]) => {
+        const filtered = tags.filter(tag => merged.includes(tag));
+        if (!filtered.length) return;
+
+        const section = document.createElement('div');
+        section.className = 'tag-group';
+        section.innerHTML = `
+          <div class="group-head">
+            <h3 class="group-title">${title}</h3>
+            <div class="group-count">${filtered.length}개</div>
+          </div>
+          <div class="chips"></div>
+        `;
+
+        const chips = section.querySelector('.chips');
+        filtered.forEach(tag => {
+          const chip = document.createElement('button');
+          chip.className = 'chip';
+          chip.textContent = tag;
+          chip.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(tag);
+              setStatus(`${tag} 복사 완료`, 'ok');
+            } catch (err) {
+              setStatus('복사에 실패했습니다.', 'err');
+            }
+          });
+          chips.appendChild(chip);
+        });
+
+        tagGroups.appendChild(section);
+      });
+    }
+
+    async function copyAll() {
+      if (!currentTags.length) {
+        setStatus('먼저 해시태그를 생성하세요.', 'warn');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(finalOutput.value);
+        setStatus('전체 해시태그를 복사했습니다.', 'ok');
+      } catch (err) {
+        setStatus('복사에 실패했습니다.', 'err');
+      }
+    }
+
+    function resetAll() {
+      mainTopic.value = '';
+      description.value = '';
+      platform.value = 'youtube';
+      tone.value = 'balanced';
+      tagCount.value = '20';
+      languageMix.value = 'ko';
+      tagGroups.innerHTML = '';
+      finalOutput.value = '';
+      currentTags = [];
+      totalTags.textContent = '0';
+      totalChars.textContent = '0';
+      resultSub.textContent = '입력 후 해시태그 생성 버튼을 눌러보세요.';
+      setStatus('초기화했습니다.', 'ok');
+    }
+
+    function loadSample() {
+      mainTopic.value = '스도쿠 생성기';
+      description.value = '휴대폰에서도 가능한 HTML 스도쿠 생성기, 퍼즐 게임, 두뇌훈련, 터치 최적화, 단일 파일 웹앱';
+      platform.value = 'youtube';
+      tone.value = 'search';
+      tagCount.value = '20';
+      languageMix.value = 'mix';
+      setStatus('예시를 넣었습니다.', 'ok');
+    }
+
+    generateBtn.addEventListener('click', generateHashtags);
+    sampleBtn.addEventListener('click', loadSample);
+    resetBtn.addEventListener('click', resetAll);
+    copyAllBtn.addEventListener('click', copyAll);
+  </script>
+</body>
+</html>
