@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="회의 내용을 붙여 넣으면 핵심 요약, 액션 아이템, 후속 질문, AI 프롬프트까지 정리해주는 무료 회의록 요약기입니다.">
+  <title>회의록 요약기</title>
+  <style>
+    :root {
+      --bg: #eef4f1;
+      --panel: #fbfdfb;
+      --ink: #16221d;
+      --muted: #627169;
+      --line: #cfded6;
+      --accent: #176b5b;
+      --accent-2: #d97706;
+      --soft: #dff0ea;
+      --shadow: 0 18px 45px rgba(28, 58, 47, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(23, 107, 91, 0.14), transparent 26%),
+        radial-gradient(circle at top right, rgba(217, 119, 6, 0.12), transparent 24%),
+        linear-gradient(180deg, #f7fbf8 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    .hero {
+      padding: 28px;
+      border: 1px solid rgba(207, 222, 214, 0.9);
+      border-radius: 32px;
+      background: rgba(251, 253, 251, 0.88);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .brand-mark {
+      width: 74px;
+      height: 74px;
+      object-fit: cover;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #183e8d 0%, #10295f 100%);
+      box-shadow: 0 12px 28px rgba(16, 41, 95, 0.18);
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      margin: 14px 0 12px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-inner {
+      padding: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select,
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select:focus,
+    textarea:focus,
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(23, 107, 91, 0.1);
+    }
+
+    textarea {
+      min-height: 300px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h2,
+    h3 {
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .result-box {
+      min-height: 108px;
+      white-space: pre-wrap;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-box {
+      min-height: 220px;
+    }
+
+    .tip-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .note {
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff7eb;
+      border: 1px solid #f2d2a4;
+      color: #8a5410;
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 920px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 28px;
+      }
+
+      .hero,
+      .card-inner {
+        padding: 18px;
+      }
+
+      .form-grid,
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .brand-mark {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+      }
+
+      .brand-sub {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <span class="eyebrow">AI 활용 웹툴</span>
+      <div class="brand">
+        <img class="brand-mark" src="./assets/penguin-mascot.png" alt="서비스 로고 펭귄 마스코트">
+        <div class="brand-copy">
+          <h1 class="brand-title">회의록 요약기</h1>
+          <p class="brand-sub">Penguin Meeting Lab</p>
+        </div>
+      </div>
+      <p>
+        회의 내용을 붙여 넣으면 핵심 요약, 결정 사항, 액션 아이템, 후속 질문, AI용 프롬프트까지 한 번에 정리합니다.
+        팀 회의, 면담 기록, 강의 메모, 인터뷰 노트 정리에 바로 쓸 수 있습니다.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-inner">
+          <div class="form-grid">
+            <div>
+              <label for="meetingType">회의 유형</label>
+              <select id="meetingType">
+                <option value="팀 회의">팀 회의</option>
+                <option value="프로젝트 회의">프로젝트 회의</option>
+                <option value="면담/인터뷰">면담/인터뷰</option>
+                <option value="강의/스터디">강의/스터디</option>
+              </select>
+            </div>
+            <div>
+              <label for="summaryTone">정리 방식</label>
+              <select id="summaryTone">
+                <option value="담백하고 빠르게">담백하고 빠르게</option>
+                <option value="실무 보고용으로">실무 보고용으로</option>
+                <option value="액션아이템 중심으로">액션아이템 중심으로</option>
+              </select>
+            </div>
+            <div>
+              <label for="audience">공유 대상</label>
+              <select id="audience">
+                <option value="팀원 공유">팀원 공유</option>
+                <option value="상사 보고">상사 보고</option>
+                <option value="개인 정리">개인 정리</option>
+                <option value="클라이언트 공유">클라이언트 공유</option>
+              </select>
+            </div>
+            <div>
+              <label for="meetingName">회의 이름</label>
+              <input id="meetingName" type="text" placeholder="예: 주간 마케팅 회의, 서비스 개선 회의">
+            </div>
+          </div>
+
+          <label for="sourceText">회의 원문</label>
+          <textarea id="sourceText" placeholder="회의 내용을 붙여 넣으세요.&#10;&#10;예: 오늘 회의에서는 5월 캠페인 일정, 랜딩페이지 수정, 광고 예산 조정에 대해 이야기했습니다..."></textarea>
+
+          <div class="actions">
+            <button class="primary" id="generateBtn">요약 만들기</button>
+            <button class="secondary" id="sampleBtn">샘플 넣기</button>
+            <button class="secondary" id="resetBtn">초기화</button>
+          </div>
+
+          <p class="footer-note">
+            이 도구는 입력된 내용을 바탕으로 회의록 구조를 빠르게 잡아주는 로컬 웹툴입니다.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-inner">
+          <div class="stat-row">
+            <div class="stat">
+              <strong id="charCount">0</strong>
+              <span>글자 수</span>
+            </div>
+            <div class="stat">
+              <strong id="lineCount">0</strong>
+              <span>문장 수</span>
+            </div>
+            <div class="stat">
+              <strong id="actionCount">0</strong>
+              <span>액션 수</span>
+            </div>
+            <div class="stat">
+              <strong id="issueCount">0</strong>
+              <span>핵심 이슈 수</span>
+            </div>
+          </div>
+
+          <h3>핵심 요약</h3>
+          <div class="result-box" id="summaryText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>결정 사항 / 액션 아이템</h3>
+          <div class="result-box" id="actionText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>후속 질문</h3>
+          <div class="result-box" id="questionText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>AI 프롬프트</h3>
+          <div class="result-box prompt-box" id="promptText">아직 생성된 프롬프트가 없습니다.</div>
+
+          <div class="actions">
+            <button class="primary" id="copySummaryBtn">요약 복사</button>
+            <button class="secondary" id="copyPromptBtn">프롬프트 복사</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top: 18px;">
+      <div class="card-inner">
+        <h2>회의록 잘 정리하는 팁</h2>
+        <ul class="tip-list">
+          <li>누가 무엇을 언제까지 할지 나오면 회의록 가치가 크게 올라갑니다.</li>
+          <li>단순 대화 나열보다 결정 사항과 미결 사항을 분리하는 편이 좋습니다.</li>
+          <li>회의 목적, 논의 포인트, 다음 액션 순서로 정리하면 공유하기 편합니다.</li>
+        </ul>
+        <div class="note" style="margin-top: 16px;">
+          티스토리 글에는 이 툴 아래에 "회의록 예시", "액션아이템 정리법", "상사 보고용 요약 팁"을 붙이면 검색 유입에 더 유리합니다.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const sourceText = document.getElementById("sourceText");
+    const meetingType = document.getElementById("meetingType");
+    const summaryTone = document.getElementById("summaryTone");
+    const audience = document.getElementById("audience");
+    const meetingName = document.getElementById("meetingName");
+    const summaryText = document.getElementById("summaryText");
+    const actionText = document.getElementById("actionText");
+    const questionText = document.getElementById("questionText");
+    const promptText = document.getElementById("promptText");
+    const charCount = document.getElementById("charCount");
+    const lineCount = document.getElementById("lineCount");
+    const actionCount = document.getElementById("actionCount");
+    const issueCount = document.getElementById("issueCount");
+
+    const sampleText = "오늘 주간 마케팅 회의에서는 5월 신규 캠페인 일정과 랜딩페이지 개선 방향을 논의했습니다. 광고 예산은 기존안보다 10% 축소하고, 대신 전환율이 높은 채널에 집중하기로 했습니다. 디자이너는 금요일까지 랜딩페이지 시안을 공유하고, 마케터는 월요일까지 광고 문구 3안을 정리하기로 했습니다. 다만 캠페인 시작일은 개발 일정 확인 후 최종 확정하기로 했습니다. 다음 회의에서는 소재 테스트 결과와 예상 전환 수치를 함께 보기로 했습니다.";
+
+    function normalizeText(text) {
+      return text
+        .replace(/\r/g, "")
+        .replace(/[ \t]+/g, " ")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
+
+    function splitSentences(text) {
+      return text
+        .split(/(?<=[.!?다요])\s+|\n+/)
+        .map((sentence) => sentence.trim())
+        .filter(Boolean);
+    }
+
+    function pickKeyPoints(sentences) {
+      const keywords = ["결정", "정리", "예산", "일정", "공유", "확정", "논의", "중심", "다음", "캠페인", "수정", "보고"];
+      const ranked = [...sentences].sort((a, b) => {
+        const aScore = keywords.reduce((sum, word) => sum + (a.includes(word) ? 1 : 0), 0);
+        const bScore = keywords.reduce((sum, word) => sum + (b.includes(word) ? 1 : 0), 0);
+        return bScore - aScore;
+      });
+      return ranked.slice(0, 3);
+    }
+
+    function extractActions(sentences) {
+      const actionKeywords = ["하기로", "공유", "정리", "확인", "준비", "전달", "작성", "수정", "확정", "보기로"];
+      const actions = sentences.filter((sentence) =>
+        actionKeywords.some((word) => sentence.includes(word))
+      );
+
+      if (actions.length > 0) {
+        return actions.map((sentence) => `- ${sentence}`).join("\n");
+      }
+
+      return "- 원문에서 명확한 액션 아이템이 드러나지 않습니다.\n- 담당자, 마감일, 다음 단계 기준으로 한 줄씩 보강해 보세요.";
+    }
+
+    function extractQuestions(text) {
+      const questions = [];
+
+      if (!/언제|기한|금요일|월요일|다음 주|까지/.test(text)) {
+        questions.push("- 마감 일정은 언제까지인지 더 명확히 적어두면 좋습니다.");
+      }
+      if (!/누가|담당|마케터|디자이너|개발|팀장|담당자/.test(text)) {
+        questions.push("- 각 액션 아이템의 담당자가 누구인지 확인이 필요합니다.");
+      }
+      if (!/확정|결정|최종/.test(text)) {
+        questions.push("- 이번 회의에서 실제로 확정된 항목과 보류된 항목을 구분해 보세요.");
+      }
+      if (questions.length === 0) {
+        questions.push("- 다음 회의 전 확인해야 할 수치나 결과물이 무엇인지 한 줄로 추가하면 더 좋습니다.");
+      }
+
+      return questions.join("\n");
+    }
+
+    function buildSummary(keyPoints, rawSentences) {
+      const intro = `이번 ${meetingType.value}에서는 ${meetingName.value.trim() || "주요 안건"}을 중심으로 논의가 진행되었습니다.`;
+      const bullets = keyPoints.map((item) => `- ${item}`).join("\n");
+      const closer =
+        rawSentences.length > 4
+          ? "전체적으로 일정, 실행 항목, 후속 확인 포인트를 중심으로 정리할 필요가 있습니다."
+          : "짧은 회의 기록이므로 결정 사항과 액션 담당자를 추가하면 공유용 회의록으로 더 적합해집니다.";
+      return `${intro}\n\n${bullets}\n\n${closer}`;
+    }
+
+    function buildPrompt(raw, summary, actions, questions) {
+      return [
+        `아래 ${meetingType.value} 내용을 ${summaryTone.value} 방식으로 정리해 주세요.`,
+        `공유 대상: ${audience.value}`,
+        `회의 이름: ${meetingName.value.trim() || "미입력"}`,
+        "",
+        "요청 사항:",
+        "1. 회의 목적과 핵심 논의 포인트를 3줄 이내로 요약할 것",
+        "2. 확정된 결정 사항과 미결 사항을 분리할 것",
+        "3. 액션 아이템은 담당자/할 일/기한 형태로 정리할 것",
+        "4. 상사나 팀원이 바로 읽을 수 있게 군더더기 없이 작성할 것",
+        "5. 필요하면 후속 질문 3개도 함께 제안할 것",
+        "",
+        "[원문]",
+        raw,
+        "",
+        "[현재 요약]",
+        summary,
+        "",
+        "[액션 아이템]",
+        actions,
+        "",
+        "[후속 질문]",
+        questions
+      ].join("\n");
+    }
+
+    function generate() {
+      const raw = normalizeText(sourceText.value);
+      if (!raw) {
+        alert("회의 내용을 먼저 입력해 주세요.");
+        sourceText.focus();
+        return;
+      }
+
+      const sentences = splitSentences(raw);
+      const keyPoints = pickKeyPoints(sentences);
+      const summary = buildSummary(keyPoints, sentences);
+      const actions = extractActions(sentences);
+      const questions = extractQuestions(raw);
+      const prompt = buildPrompt(raw, summary, actions, questions);
+
+      summaryText.textContent = summary;
+      actionText.textContent = actions;
+      questionText.textContent = questions;
+      promptText.textContent = prompt;
+
+      charCount.textContent = raw.length.toLocaleString("ko-KR");
+      lineCount.textContent = sentences.length.toLocaleString("ko-KR");
+      actionCount.textContent = String((actions.match(/^- /gm) || []).length);
+      issueCount.textContent = String(keyPoints.length);
+    }
+
+    function resetForm() {
+      sourceText.value = "";
+      meetingName.value = "";
+      summaryText.textContent = "아직 생성된 내용이 없습니다.";
+      actionText.textContent = "아직 생성된 내용이 없습니다.";
+      questionText.textContent = "아직 생성된 내용이 없습니다.";
+      promptText.textContent = "아직 생성된 프롬프트가 없습니다.";
+      charCount.textContent = "0";
+      lineCount.textContent = "0";
+      actionCount.textContent = "0";
+      issueCount.textContent = "0";
+    }
+
+    function loadSample() {
+      sourceText.value = sampleText;
+      meetingName.value = "주간 마케팅 회의";
+      meetingType.value = "팀 회의";
+      summaryTone.value = "실무 보고용으로";
+      audience.value = "상사 보고";
+      generate();
+    }
+
+    async function copyText(value, label) {
+      if (!value || value.includes("아직 생성된")) {
+        alert("먼저 내용을 생성해 주세요.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(value);
+        alert(label + "을(를) 복사했습니다.");
+      } catch (error) {
+        alert("브라우저에서 복사를 허용하지 않았습니다.");
+      }
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", generate);
+    document.getElementById("sampleBtn").addEventListener("click", loadSample);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+    document.getElementById("copySummaryBtn").addEventListener("click", () => {
+      copyText(
+        [summaryText.textContent, actionText.textContent, questionText.textContent].join("\n\n"),
+        "요약 결과"
+      );
+    });
+    document.getElementById("copyPromptBtn").addEventListener("click", () => copyText(promptText.textContent, "프롬프트"));
+  </script>
+</body>
+</html>
