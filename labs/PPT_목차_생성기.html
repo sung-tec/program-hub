@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="발표 주제만 입력하면 PPT 목차, 슬라이드 구성, 핵심 메시지, AI 프롬프트까지 정리해주는 무료 PPT 목차 생성기입니다.">
+  <title>PPT 목차 생성기</title>
+  <style>
+    :root {
+      --bg: #f1f0f8;
+      --panel: #fcfbff;
+      --ink: #1e1a29;
+      --muted: #69617d;
+      --line: #d9d2eb;
+      --accent: #3856b6;
+      --accent-2: #c76a1a;
+      --soft: #e7ebfb;
+      --shadow: 0 18px 45px rgba(50, 41, 88, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(56, 86, 182, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(199, 106, 26, 0.12), transparent 24%),
+        linear-gradient(180deg, #faf9ff 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    .hero {
+      padding: 28px;
+      border: 1px solid rgba(217, 210, 235, 0.95);
+      border-radius: 32px;
+      background: rgba(252, 251, 255, 0.9);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .brand-mark {
+      width: 74px;
+      height: 74px;
+      object-fit: cover;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #183e8d 0%, #10295f 100%);
+      box-shadow: 0 12px 28px rgba(16, 41, 95, 0.18);
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-inner {
+      padding: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select,
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select:focus,
+    textarea:focus,
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(56, 86, 182, 0.1);
+    }
+
+    textarea {
+      min-height: 260px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h2,
+    h3 {
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .result-box {
+      min-height: 140px;
+      white-space: pre-wrap;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-box {
+      min-height: 220px;
+    }
+
+    .tip-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .note {
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff7eb;
+      border: 1px solid #f2d2a4;
+      color: #8a5410;
+      font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 28px;
+      }
+
+      .hero,
+      .card-inner {
+        padding: 18px;
+      }
+
+      .form-grid,
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .brand-mark {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+      }
+
+      .brand-sub {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <span class="eyebrow">AI 활용 웹툴</span>
+      <div class="brand">
+        <img class="brand-mark" src="./assets/penguin-mascot.png" alt="서비스 로고 펭귄 마스코트">
+        <div class="brand-copy">
+          <h1 class="brand-title">PPT 목차 생성기</h1>
+          <p class="brand-sub">Penguin Deck Lab</p>
+        </div>
+      </div>
+      <p>
+        발표 주제와 목적만 입력하면 PPT 목차, 슬라이드 흐름, 핵심 메시지, AI용 프롬프트까지 정리해주는 무료 웹툴입니다.
+        발표자료, 보고서, 제안서, 강의자료 초안을 빠르게 만들고 싶을 때 유용합니다.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-inner">
+          <div class="form-grid">
+            <div>
+              <label for="deckType">발표 유형</label>
+              <select id="deckType">
+                <option value="업무 보고">업무 보고</option>
+                <option value="기획안 발표">기획안 발표</option>
+                <option value="학교 발표">학교 발표</option>
+                <option value="세미나 자료">세미나 자료</option>
+              </select>
+            </div>
+            <div>
+              <label for="slideCount">슬라이드 수</label>
+              <select id="slideCount">
+                <option value="5장 내외">5장 내외</option>
+                <option value="7장 내외">7장 내외</option>
+                <option value="10장 내외">10장 내외</option>
+                <option value="12장 이상">12장 이상</option>
+              </select>
+            </div>
+            <div>
+              <label for="audience">청중</label>
+              <select id="audience">
+                <option value="상사/팀장">상사/팀장</option>
+                <option value="팀원">팀원</option>
+                <option value="교수/학생">교수/학생</option>
+                <option value="고객/외부 발표">고객/외부 발표</option>
+              </select>
+            </div>
+            <div>
+              <label for="topic">발표 주제</label>
+              <input id="topic" type="text" placeholder="예: 5월 마케팅 캠페인 제안, ESG 경영 발표">
+            </div>
+          </div>
+
+          <label for="sourceText">발표 목적 / 포함할 내용</label>
+          <textarea id="sourceText" placeholder="발표 목적과 포함하고 싶은 내용을 입력하세요.&#10;&#10;예: 5월 신규 마케팅 캠페인 제안서입니다. 캠페인 배경, 목표, 타깃, 실행안, 예산, 기대 효과를 담고 싶습니다."></textarea>
+
+          <div class="actions">
+            <button class="primary" id="generateBtn">목차 만들기</button>
+            <button class="secondary" id="sampleBtn">샘플 넣기</button>
+            <button class="secondary" id="resetBtn">초기화</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-inner">
+          <div class="stat-row">
+            <div class="stat">
+              <strong id="charCount">0</strong>
+              <span>글자 수</span>
+            </div>
+            <div class="stat">
+              <strong id="slideStat">0</strong>
+              <span>추천 슬라이드</span>
+            </div>
+            <div class="stat">
+              <strong id="pointStat">0</strong>
+              <span>핵심 포인트</span>
+            </div>
+          </div>
+
+          <h3>추천 목차</h3>
+          <div class="result-box" id="outlineText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>슬라이드별 핵심 메시지</h3>
+          <div class="result-box" id="slideText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>AI 프롬프트</h3>
+          <div class="result-box prompt-box" id="promptText">아직 생성된 프롬프트가 없습니다.</div>
+
+          <div class="actions">
+            <button class="primary" id="copyOutlineBtn">목차 복사</button>
+            <button class="secondary" id="copyPromptBtn">프롬프트 복사</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top: 18px;">
+      <div class="card-inner">
+        <h2>PPT 목차 잘 짜는 팁</h2>
+        <ul class="tip-list">
+          <li>배경 → 문제 → 해결안 → 기대 효과 흐름은 대부분의 발표에서 안정적으로 잘 먹힙니다.</li>
+          <li>슬라이드가 많아질수록 메시지는 더 짧고 선명해야 합니다.</li>
+          <li>한 장에 한 메시지만 두면 발표도 쉬워지고 전달력도 좋아집니다.</li>
+        </ul>
+        <div class="note" style="margin-top: 16px;">
+          티스토리 글에는 이 툴 아래에 "발표자료 목차 예시", "보고용 PPT 구성법", "기획안 발표 흐름"을 함께 넣으면 검색 유입에 더 유리합니다.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const deckType = document.getElementById("deckType");
+    const slideCount = document.getElementById("slideCount");
+    const audience = document.getElementById("audience");
+    const topic = document.getElementById("topic");
+    const sourceText = document.getElementById("sourceText");
+    const outlineText = document.getElementById("outlineText");
+    const slideText = document.getElementById("slideText");
+    const promptText = document.getElementById("promptText");
+    const charCount = document.getElementById("charCount");
+    const slideStat = document.getElementById("slideStat");
+    const pointStat = document.getElementById("pointStat");
+
+    const samples = {
+      "업무 보고": {
+        topic: "5월 마케팅 캠페인 제안",
+        text: "5월 신규 마케팅 캠페인 제안용 발표입니다. 캠페인 배경, 목표, 타깃, 실행안, 예상 예산, 기대 효과를 담고 싶습니다."
+      },
+      "기획안 발표": {
+        topic: "신규 앱 리텐션 개선 기획안",
+        text: "앱 사용자 리텐션을 높이기 위한 기획안 발표입니다. 현재 문제, 원인, 개선 아이디어, 실행 우선순위, 기대 지표를 포함하고 싶습니다."
+      },
+      "학교 발표": {
+        topic: "ESG 경영의 필요성",
+        text: "학교 발표용 자료입니다. ESG 개념, 도입 배경, 기업 사례, 장점과 한계, 결론 흐름으로 정리하고 싶습니다."
+      },
+      "세미나 자료": {
+        topic: "생성형 AI 활용 트렌드",
+        text: "세미나 발표 자료입니다. 시장 흐름, 주요 활용 사례, 기대 효과, 주의점, 향후 전망을 담고 싶습니다."
+      }
+    };
+
+    function normalizeText(text) {
+      return text.replace(/\r/g, "").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+    }
+
+    function estimateSlides() {
+      if (slideCount.value === "5장 내외") return 5;
+      if (slideCount.value === "7장 내외") return 7;
+      if (slideCount.value === "10장 내외") return 10;
+      return 12;
+    }
+
+    function buildOutline() {
+      const base = [
+        "1. 발표 개요",
+        "2. 배경 및 문제 정의",
+        "3. 핵심 목표",
+        "4. 주요 내용 또는 실행안",
+        "5. 기대 효과",
+        "6. 결론 및 다음 단계"
+      ];
+
+      const expanded = [
+        "1. 발표 개요",
+        "2. 현황 및 배경",
+        "3. 문제점 또는 기회 요인",
+        "4. 목표 및 방향성",
+        "5. 주요 전략 또는 핵심 내용",
+        "6. 세부 실행안",
+        "7. 예상 일정",
+        "8. 예산 또는 자원 계획",
+        "9. 기대 효과",
+        "10. 결론 및 제안"
+      ];
+
+      return estimateSlides() <= 7 ? base.join("\n") : expanded.join("\n");
+    }
+
+    function buildSlides() {
+      const title = topic.value.trim() || "발표 주제";
+      const concise = [
+        `1장. ${title} 소개: 발표 목적과 전체 흐름을 짧게 보여줍니다.`,
+        "2장. 배경: 왜 이 주제가 필요한지 문제나 상황을 설명합니다.",
+        "3장. 목표: 발표를 통해 해결하거나 전달하려는 핵심을 정리합니다.",
+        "4장. 핵심 내용: 가장 중요한 전략, 주장, 아이디어를 제시합니다.",
+        "5장. 기대 효과: 실행 시 얻을 수 있는 변화나 결과를 정리합니다.",
+        "6장. 결론: 핵심 메시지를 다시 강조하고 다음 행동을 제안합니다."
+      ];
+
+      const detailed = [
+        `1장. ${title} 개요: 발표 주제와 목적, 청중에게 전달할 핵심을 소개합니다.`,
+        "2장. 배경: 현재 상황과 왜 이 주제가 필요한지 설명합니다.",
+        "3장. 문제 정의: 해결해야 할 핵심 문제 또는 기회를 정리합니다.",
+        "4장. 목표: 발표에서 제안하는 방향성과 목표를 제시합니다.",
+        "5장. 주요 아이디어: 핵심 전략이나 주장을 보여줍니다.",
+        "6장. 실행안 1: 가장 중요한 실행 항목을 설명합니다.",
+        "7장. 실행안 2: 추가 실행 전략이나 보완 아이디어를 제시합니다.",
+        "8장. 일정/예산: 실제 적용 시 필요한 일정 또는 자원 계획을 정리합니다.",
+        "9장. 기대 효과: 예상 성과와 변화 포인트를 보여줍니다.",
+        "10장. 결론: 최종 요약과 제안, 다음 단계를 정리합니다."
+      ];
+
+      return estimateSlides() <= 7 ? concise.join("\n") : detailed.join("\n");
+    }
+
+    function buildPrompt(raw, outline, slides) {
+      return [
+        `아래 발표 주제를 ${deckType.value} 형식의 PPT로 정리해 주세요.`,
+        `발표 주제: ${topic.value.trim() || "미입력"}`,
+        `슬라이드 수: ${slideCount.value}`,
+        `청중: ${audience.value}`,
+        "",
+        "요청 사항:",
+        "1. PPT 목차를 자연스럽고 설득력 있게 재구성할 것",
+        "2. 각 슬라이드별 제목과 핵심 메시지를 한 줄씩 제안할 것",
+        "3. 발표 흐름이 배경-문제-해결안-효과 구조를 갖추도록 할 것",
+        "4. 필요하면 발표 멘트까지 짧게 덧붙일 것",
+        "",
+        "[발표 목적/포함 내용]",
+        raw,
+        "",
+        "[현재 추천 목차]",
+        outline,
+        "",
+        "[현재 슬라이드 초안]",
+        slides
+      ].join("\n");
+    }
+
+    function generate() {
+      const raw = normalizeText(sourceText.value);
+      if (!topic.value.trim() && !raw) {
+        alert("발표 주제나 내용을 먼저 입력해 주세요.");
+        topic.focus();
+        return;
+      }
+
+      const outline = buildOutline();
+      const slides = buildSlides();
+      const prompt = buildPrompt(raw, outline, slides);
+      const slideNum = estimateSlides();
+
+      outlineText.textContent = outline;
+      slideText.textContent = slides;
+      promptText.textContent = prompt;
+
+      charCount.textContent = String((topic.value + raw).length.toLocaleString("ko-KR"));
+      slideStat.textContent = String(slideNum);
+      pointStat.textContent = String((outline.match(/\n/g) || []).length + 1);
+    }
+
+    function loadSample() {
+      const sample = samples[deckType.value];
+      topic.value = sample.topic;
+      sourceText.value = sample.text;
+      generate();
+    }
+
+    function resetForm() {
+      topic.value = "";
+      sourceText.value = "";
+      outlineText.textContent = "아직 생성된 내용이 없습니다.";
+      slideText.textContent = "아직 생성된 내용이 없습니다.";
+      promptText.textContent = "아직 생성된 프롬프트가 없습니다.";
+      charCount.textContent = "0";
+      slideStat.textContent = "0";
+      pointStat.textContent = "0";
+    }
+
+    async function copyText(value, label) {
+      if (!value || value.includes("아직 생성된")) {
+        alert("먼저 내용을 생성해 주세요.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(value);
+        alert(label + "을(를) 복사했습니다.");
+      } catch (error) {
+        alert("브라우저에서 복사를 허용하지 않았습니다.");
+      }
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", generate);
+    document.getElementById("sampleBtn").addEventListener("click", loadSample);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+    document.getElementById("copyOutlineBtn").addEventListener("click", () => {
+      copyText([outlineText.textContent, slideText.textContent].join("\n\n"), "목차");
+    });
+    document.getElementById("copyPromptBtn").addEventListener("click", () => copyText(promptText.textContent, "프롬프트"));
+  </script>
+</body>
+</html>

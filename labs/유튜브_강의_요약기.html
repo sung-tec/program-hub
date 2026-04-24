@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="유튜브 영상이나 강의 내용을 붙여 넣으면 핵심 요약, 목차, 복습 포인트, AI 프롬프트까지 정리해주는 무료 요약 웹툴입니다.">
+  <title>유튜브 강의 요약기</title>
+  <style>
+    :root {
+      --bg: #f3f4f8;
+      --panel: #fcfcff;
+      --ink: #1b1d25;
+      --muted: #666c7d;
+      --line: #d8dce8;
+      --accent: #b42318;
+      --accent-2: #2459b4;
+      --soft: #fbe7e5;
+      --shadow: 0 18px 45px rgba(45, 52, 74, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180, 35, 24, 0.11), transparent 28%),
+        radial-gradient(circle at top right, rgba(36, 89, 180, 0.10), transparent 24%),
+        linear-gradient(180deg, #fafbff 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    .hero {
+      padding: 28px;
+      border: 1px solid rgba(216, 220, 232, 0.95);
+      border-radius: 32px;
+      background: rgba(252, 252, 255, 0.9);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .brand-mark {
+      width: 74px;
+      height: 74px;
+      object-fit: cover;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #183e8d 0%, #10295f 100%);
+      box-shadow: 0 12px 28px rgba(16, 41, 95, 0.18);
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      max-width: 840px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-inner {
+      padding: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    select,
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select:focus,
+    textarea:focus,
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.1);
+    }
+
+    textarea {
+      min-height: 280px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h2,
+    h3 {
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .result-box {
+      min-height: 120px;
+      white-space: pre-wrap;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-box {
+      min-height: 210px;
+    }
+
+    .tip-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .note {
+      padding: 16px;
+      border-radius: 18px;
+      background: #fff7eb;
+      border: 1px solid #f2d2a4;
+      color: #8a5410;
+      font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 28px;
+      }
+
+      .hero,
+      .card-inner {
+        padding: 18px;
+      }
+
+      .form-grid,
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .brand-mark {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+      }
+
+      .brand-sub {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <span class="eyebrow">AI 활용 웹툴</span>
+      <div class="brand">
+        <img class="brand-mark" src="./assets/penguin-mascot.png" alt="서비스 로고 펭귄 마스코트">
+        <div class="brand-copy">
+          <h1 class="brand-title">유튜브 강의 요약기</h1>
+          <p class="brand-sub">Penguin Summary Lab</p>
+        </div>
+      </div>
+      <p>
+        유튜브 영상이나 강의 내용을 붙여 넣으면 핵심 요약, 목차형 정리, 복습 포인트, AI 프롬프트까지 한 번에 정리해주는 무료 웹툴입니다.
+        강의 노트, 공부 정리, 업무용 콘텐츠 요약에 바로 활용할 수 있습니다.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-inner">
+          <div class="form-grid">
+            <div>
+              <label for="contentType">콘텐츠 유형</label>
+              <select id="contentType">
+                <option value="유튜브 영상">유튜브 영상</option>
+                <option value="온라인 강의">온라인 강의</option>
+                <option value="세미나 영상">세미나 영상</option>
+                <option value="인터뷰/대담">인터뷰/대담</option>
+              </select>
+            </div>
+            <div>
+              <label for="summaryMode">요약 방식</label>
+              <select id="summaryMode">
+                <option value="핵심만 빠르게">핵심만 빠르게</option>
+                <option value="공부용으로 자세히">공부용으로 자세히</option>
+                <option value="복습 포인트 중심">복습 포인트 중심</option>
+              </select>
+            </div>
+            <div>
+              <label for="level">활용 목적</label>
+              <select id="level">
+                <option value="개인 공부">개인 공부</option>
+                <option value="업무 정리">업무 정리</option>
+                <option value="시험 대비">시험 대비</option>
+                <option value="콘텐츠 리뷰">콘텐츠 리뷰</option>
+              </select>
+            </div>
+            <div>
+              <label for="titleInput">영상/강의 제목</label>
+              <input id="titleInput" type="text" placeholder="예: 생성형 AI 활용법, 경제 뉴스 정리">
+            </div>
+          </div>
+
+          <label for="sourceText">영상 내용 / 자막 / 메모</label>
+          <textarea id="sourceText" placeholder="유튜브 자막이나 강의 메모를 붙여 넣으세요.&#10;&#10;예: 오늘 강의에서는 생성형 AI의 개념, 주요 활용 사례, 프롬프트 작성법, 주의할 점을 설명했습니다..."></textarea>
+
+          <div class="actions">
+            <button class="primary" id="generateBtn">요약 만들기</button>
+            <button class="secondary" id="sampleBtn">샘플 넣기</button>
+            <button class="secondary" id="resetBtn">초기화</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-inner">
+          <div class="stat-row">
+            <div class="stat">
+              <strong id="charCount">0</strong>
+              <span>글자 수</span>
+            </div>
+            <div class="stat">
+              <strong id="lineCount">0</strong>
+              <span>문장 수</span>
+            </div>
+            <div class="stat">
+              <strong id="pointCount">0</strong>
+              <span>핵심 포인트</span>
+            </div>
+            <div class="stat">
+              <strong id="reviewCount">0</strong>
+              <span>복습 포인트</span>
+            </div>
+          </div>
+
+          <h3>핵심 요약</h3>
+          <div class="result-box" id="summaryText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>목차형 정리</h3>
+          <div class="result-box" id="outlineText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>복습 포인트</h3>
+          <div class="result-box" id="reviewText">아직 생성된 내용이 없습니다.</div>
+
+          <h3>AI 프롬프트</h3>
+          <div class="result-box prompt-box" id="promptText">아직 생성된 프롬프트가 없습니다.</div>
+
+          <div class="actions">
+            <button class="primary" id="copySummaryBtn">요약 복사</button>
+            <button class="secondary" id="copyPromptBtn">프롬프트 복사</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top: 18px;">
+      <div class="card-inner">
+        <h2>강의 요약 잘하는 팁</h2>
+        <ul class="tip-list">
+          <li>강의 전체를 다 적기보다 핵심 개념, 예시, 결론 위주로 정리하는 편이 복습에 더 좋습니다.</li>
+          <li>목차형 정리는 나중에 다시 찾기 쉬워서 공부 효율을 높여줍니다.</li>
+          <li>복습 포인트를 질문형으로 정리하면 기억에 오래 남습니다.</li>
+        </ul>
+        <div class="note" style="margin-top: 16px;">
+          티스토리 글에는 이 툴 아래에 "유튜브 요약 예시", "강의 노트 정리법", "시험 대비 요약 팁"을 함께 넣으면 검색 유입에 더 유리합니다.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const contentType = document.getElementById("contentType");
+    const summaryMode = document.getElementById("summaryMode");
+    const level = document.getElementById("level");
+    const titleInput = document.getElementById("titleInput");
+    const sourceText = document.getElementById("sourceText");
+    const summaryText = document.getElementById("summaryText");
+    const outlineText = document.getElementById("outlineText");
+    const reviewText = document.getElementById("reviewText");
+    const promptText = document.getElementById("promptText");
+    const charCount = document.getElementById("charCount");
+    const lineCount = document.getElementById("lineCount");
+    const pointCount = document.getElementById("pointCount");
+    const reviewCount = document.getElementById("reviewCount");
+
+    const sampleText = "오늘 강의에서는 생성형 AI의 개념과 실무 활용 사례를 설명했습니다. 먼저 생성형 AI가 기존 검색 방식과 어떻게 다른지 이야기했고, 이후에는 문서 요약, 메일 작성, 회의록 정리 같은 활용 예시를 보여줬습니다. 프롬프트를 잘 쓰기 위해서는 목적, 맥락, 원하는 결과 형식을 함께 제시해야 한다고 강조했습니다. 마지막으로 AI 결과를 그대로 믿지 말고 반드시 사실 확인과 수정 과정을 거쳐야 한다고 정리했습니다.";
+
+    function normalizeText(text) {
+      return text.replace(/\r/g, "").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+    }
+
+    function splitSentences(text) {
+      return text
+        .split(/(?<=[.!?다요])\s+|\n+/)
+        .map((sentence) => sentence.trim())
+        .filter(Boolean);
+    }
+
+    function pickTop(sentences) {
+      const keywords = ["핵심", "설명", "정리", "예시", "활용", "강조", "마지막", "개념", "주의", "프롬프트"];
+      const ranked = [...sentences].sort((a, b) => {
+        const aScore = keywords.reduce((sum, word) => sum + (a.includes(word) ? 1 : 0), 0);
+        const bScore = keywords.reduce((sum, word) => sum + (b.includes(word) ? 1 : 0), 0);
+        return bScore - aScore;
+      });
+      return ranked.slice(0, 4);
+    }
+
+    function buildSummary(points) {
+      const intro = `${titleInput.value.trim() || contentType.value} 내용을 바탕으로 핵심만 정리하면 아래와 같습니다.`;
+      return `${intro}\n\n${points.map((point) => `- ${point}`).join("\n")}`;
+    }
+
+    function buildOutline(points) {
+      const labels = ["1. 주제 소개", "2. 핵심 개념", "3. 주요 예시", "4. 실전 적용", "5. 주의할 점"];
+      return points.map((point, index) => `${labels[index] || `${index + 1}. 추가 포인트`}: ${point}`).join("\n");
+    }
+
+    function buildReview(points, raw) {
+      const items = [];
+      if (/왜|어떻게|차이/.test(raw)) items.push("- 이 강의가 설명한 핵심 개념의 차이점을 스스로 한 문장으로 정리해 보세요.");
+      items.push("- 가장 중요한 개념 3개를 다시 적어보세요.");
+      items.push("- 실무나 공부에 바로 적용할 수 있는 포인트를 한 줄씩 정리해 보세요.");
+      if (/주의|검토|확인/.test(raw)) items.push("- 강의에서 강조한 주의사항이 무엇인지 다시 체크해 보세요.");
+      return items.slice(0, 4).join("\n");
+    }
+
+    function buildPrompt(raw, summary, outline, review) {
+      return [
+        `아래 ${contentType.value} 내용을 ${summaryMode.value} 방식으로 요약해 주세요.`,
+        `활용 목적: ${level.value}`,
+        `제목: ${titleInput.value.trim() || "미입력"}`,
+        "",
+        "요청 사항:",
+        "1. 5줄 이내 핵심 요약을 먼저 제시할 것",
+        "2. 목차형 정리로 재구성할 것",
+        "3. 시험 대비나 복습용 체크포인트를 3~5개 제안할 것",
+        "4. 중요 개념이 있다면 쉬운 말로 다시 설명할 것",
+        "",
+        "[원문]",
+        raw,
+        "",
+        "[현재 요약]",
+        summary,
+        "",
+        "[목차형 정리]",
+        outline,
+        "",
+        "[복습 포인트]",
+        review
+      ].join("\n");
+    }
+
+    function generate() {
+      const raw = normalizeText(sourceText.value);
+      if (!raw) {
+        alert("영상 내용이나 강의 메모를 먼저 입력해 주세요.");
+        sourceText.focus();
+        return;
+      }
+
+      const sentences = splitSentences(raw);
+      const points = pickTop(sentences);
+      const summary = buildSummary(points);
+      const outline = buildOutline(points);
+      const review = buildReview(points, raw);
+      const prompt = buildPrompt(raw, summary, outline, review);
+
+      summaryText.textContent = summary;
+      outlineText.textContent = outline;
+      reviewText.textContent = review;
+      promptText.textContent = prompt;
+
+      charCount.textContent = raw.length.toLocaleString("ko-KR");
+      lineCount.textContent = sentences.length.toLocaleString("ko-KR");
+      pointCount.textContent = String(points.length);
+      reviewCount.textContent = String((review.match(/^- /gm) || []).length);
+    }
+
+    function loadSample() {
+      titleInput.value = "생성형 AI 실무 활용법";
+      sourceText.value = sampleText;
+      generate();
+    }
+
+    function resetForm() {
+      titleInput.value = "";
+      sourceText.value = "";
+      summaryText.textContent = "아직 생성된 내용이 없습니다.";
+      outlineText.textContent = "아직 생성된 내용이 없습니다.";
+      reviewText.textContent = "아직 생성된 내용이 없습니다.";
+      promptText.textContent = "아직 생성된 프롬프트가 없습니다.";
+      charCount.textContent = "0";
+      lineCount.textContent = "0";
+      pointCount.textContent = "0";
+      reviewCount.textContent = "0";
+    }
+
+    async function copyText(value, label) {
+      if (!value || value.includes("아직 생성된")) {
+        alert("먼저 내용을 생성해 주세요.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(value);
+        alert(label + "을(를) 복사했습니다.");
+      } catch (error) {
+        alert("브라우저에서 복사를 허용하지 않았습니다.");
+      }
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", generate);
+    document.getElementById("sampleBtn").addEventListener("click", loadSample);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+    document.getElementById("copySummaryBtn").addEventListener("click", () => {
+      copyText([summaryText.textContent, outlineText.textContent, reviewText.textContent].join("\n\n"), "요약");
+    });
+    document.getElementById("copyPromptBtn").addEventListener("click", () => copyText(promptText.textContent, "프롬프트"));
+  </script>
+</body>
+</html>
