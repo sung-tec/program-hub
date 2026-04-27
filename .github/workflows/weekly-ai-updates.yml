@@ -1,0 +1,40 @@
+name: Weekly AI Update Summary
+
+on:
+  schedule:
+    # Monday 09:00 in Asia/Seoul.
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-ai-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate weekly AI summary
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_SUMMARY_MODEL: ${{ vars.OPENAI_SUMMARY_MODEL }}
+        run: python ai-updates/scripts/generate_weekly_ai_updates.py
+
+      - name: Commit summary
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ai-updates/latest.md ai-updates/archive/
+          if git diff --cached --quiet; then
+            echo "No AI update changes to commit."
+          else
+            git commit -m "docs: update weekly AI summary"
+            git push
+          fi
