@@ -1,0 +1,42 @@
+[
+  {
+    "name": "OpenAI API Changelog",
+    "url": "https://platform.openai.com/docs/changelog",
+    "kind": "html"
+  },
+  {
+    "name": "OpenAI Model Release Notes",
+    "url": "https://help.openai.com/en/articles/9624314-model-release-notes",
+    "kind": "html"
+  },
+  {
+    "name": "OpenAI Codex GitHub Releases",
+    "url": "https://api.github.com/repos/openai/codex/releases?per_page=20",
+    "kind": "github_releases"
+  },
+  {
+    "name": "Anthropic API Release Notes",
+    "url": "https://docs.anthropic.com/en/release-notes/api",
+    "kind": "html"
+  },
+  {
+    "name": "Claude Code Changelog",
+    "url": "https://code.claude.com/docs/en/changelog",
+    "kind": "html"
+  },
+  {
+    "name": "Google Gemini API Changelog",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog",
+    "kind": "html"
+  },
+  {
+    "name": "Gemini App Release Notes",
+    "url": "https://gemini.google/release-notes/",
+    "kind": "html"
+  },
+  {
+    "name": "Microsoft 365 Copilot Release Notes",
+    "url": "https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes",
+    "kind": "html"
+  }
+]
