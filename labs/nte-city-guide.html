@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>이환 NTE 도시 콘텐츠 완전 정리 - 2026-04-29</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5b667a;
+      --line: #dce3ef;
+      --accent: #0f766e;
+      --accent-2: #b45309;
+      --accent-3: #2563eb;
+      --good: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --soft: #eef6f5;
+      --soft-blue: #eef4ff;
+      --soft-amber: #fff7e8;
+      --shadow: 0 18px 55px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--accent-3);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f766e 0%, #17416f 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    header p,
+    header .meta {
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 42px 0 14px;
+      font-size: 26px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 28px 0 10px;
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    h4 {
+      margin: 18px 0 8px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.10);
+      white-space: nowrap;
+    }
+
+    .toc {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+    }
+
+    .toc a {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .summary {
+      margin: 22px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .callout {
+      border-left: 5px solid var(--accent);
+      background: var(--soft);
+      padding: 16px 18px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 18px 0;
+    }
+
+    .callout.warn {
+      border-left-color: var(--warn);
+      background: var(--soft-amber);
+    }
+
+    .callout.blue {
+      border-left-color: var(--accent-3);
+      background: var(--soft-blue);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 15px;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #eef2f7;
+      font-weight: 700;
+      color: #243149;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--muted);
+      white-space: nowrap;
+    }
+
+    .tag.top {
+      background: var(--good);
+    }
+
+    .tag.mid {
+      background: var(--accent-3);
+    }
+
+    .tag.low {
+      background: var(--warn);
+    }
+
+    .tag.skip {
+      background: var(--bad);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 14px;
+      align-items: start;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .step strong {
+      color: var(--accent);
+    }
+
+    .level {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 44px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--accent);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    ul,
+    ol {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li {
+      margin: 4px 0;
+    }
+
+    .checklist li {
+      margin: 8px 0;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .footer-note {
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 680px) {
+      .page {
+        padding: 18px 12px 36px;
+      }
+
+      header {
+        padding: 24px 18px;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        border-bottom: 1px solid var(--line);
+      }
+
+      td {
+        border: 0;
+        padding: 9px 12px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: 700;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>이환 NTE 도시 콘텐츠 완전 정리</h1>
+      <p>도시 타이쿤, 카페, 주간 강도, 배달, 택시, 레이싱, 낚시, 하우징을 “무엇부터 해야 하는지” 기준으로 정리한 실전 루틴표입니다.</p>
+      <div class="meta">
+        <span class="pill">검색 기준일: 2026-04-29</span>
+        <span class="pill">버전: 출시 1.0 초기</span>
+        <span class="pill">대상: 무과금/소과금 초반 효율</span>
+      </div>
+      <nav class="toc" aria-label="문서 목차">
+        <a href="#first">오늘 바로 할 일</a>
+        <a href="#milestones">타이쿤 목표</a>
+        <a href="#priority">콘텐츠 우선순위</a>
+        <a href="#contents">도시 콘텐츠별 공략</a>
+        <a href="#routine">일일/주간 루틴</a>
+        <a href="#fons">폰스 파밍</a>
+        <a href="#mistakes">실수 방지</a>
+        <a href="#sources">출처</a>
+      </nav>
+    </header>
+
+    <section class="summary" aria-label="핵심 요약">
+      <article class="card">
+        <h3>최우선 목표</h3>
+        <p><strong>메인 스토리로 탐색 가이드와 도시 타이쿤을 열고, 타이쿤 레벨 18까지 밀어서 무료 S급 치즈를 확보</strong>하는 것이 핵심입니다. 이후 치즈 무기와 각성 보상까지 이어집니다.</p>
+      </article>
+      <article class="card">
+        <h3>도시 스태미나</h3>
+        <p>전투용 Pixel과 별개입니다. 낚시, 리듬, 레이싱 같은 짧은 취미는 대략 6-10, 택시/배달은 대략 20 정도를 씁니다. 주간 초기화라 초반부터 비워야 손해가 적습니다.</p>
+      </article>
+      <article class="card">
+        <h3>카페가 핵심</h3>
+        <p>타이쿤 4 전후로 카페가 열리면 바로 운영하세요. 수익을 회수할수록 관리 EXP가 오르고, 메뉴/직원/장식/추가 매장으로 수익이 커집니다.</p>
+      </article>
+      <article class="card">
+        <h3>주간 콘텐츠</h3>
+        <p>타이쿤 10 전후 목표는 Pink Paws Heist입니다. 커뮤니티 기준 주간 큰 폰스 수입처로 언급되며, 스탯 보정형이라 캐릭터 육성보다 루트 숙지가 중요합니다.</p>
+      </article>
+    </section>
+
+    <section id="first">
+      <h2>오늘 바로 할 일</h2>
+      <div class="callout">
+        <strong>결론:</strong> 처음 하루는 “스토리 해금 → 도시 타이쿤 개방 → 카페 개방 → 헌터 교환소/주간 강도/치즈까지 달리기” 순서로 가면 됩니다. 도시 콘텐츠는 취향 콘텐츠가 아니라 무료 S급과 재화 루프에 붙어 있습니다.
+      </div>
+
+      <div class="timeline">
+        <div class="step">
+          <div class="level">1단계</div>
+          <div>
+            <strong>메인 스토리부터 밀기</strong>
+            <p>탐색 가이드, 일일 퀘스트, Pixel, 도시 타이쿤 메뉴가 열릴 때까지 스토리를 우선합니다. 초반부터 지도 구경만 오래 하면 핵심 보상판이 늦게 열립니다.</p>
+            <ul>
+              <li>탐색 가이드가 열리면 일일/헌터 퀘스트 보상을 확인합니다.</li>
+              <li>Pixel이 찼다면 절반 이상은 승급/레벨 재료 쪽에 먼저 씁니다.</li>
+              <li>워리테머 타워, 공중전화 같은 이동 포인트는 보이는 대로 활성화합니다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="level">2단계</div>
+          <div>
+            <strong>Good Morning, Hethereau 계열 안내를 따라 치즈 만나기</strong>
+            <p>탐색 가이드에 도시 타이쿤으로 이어지는 안내 퀘스트가 뜹니다. 치즈를 만나면 도시 타이쿤 시스템이 열리고, 여기서 도시 활동이 본격적으로 묶입니다.</p>
+            <ul>
+              <li>도시 타이쿤 메뉴를 열고 현재 요구 목표를 확인합니다.</li>
+              <li>목표가 “폰스 획득”이면 레이싱/택시/배달/취미 중 가능한 것을 돌립니다.</li>
+              <li>목표가 “특정 상점/아이템”이면 메인 스토리 잠금 여부를 먼저 확인합니다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="level">3단계</div>
+          <div>
+            <strong>타이쿤 4 전후: 카페 by Origen 개방 후 바로 운영</strong>
+            <p>카페는 초반 도시 루프의 엔진입니다. 수익 회수량이 관리 EXP로 이어지고, 관리 레벨이 오르면 메뉴, 직원, 매장 확장이 열립니다.</p>
+            <ul>
+              <li>직원 슬롯에 생활 스킬이 좋은 캐릭터를 배치합니다.</li>
+              <li>재료는 직접 사는 것보다 배송을 써서 시간을 아끼는 쪽이 추천됩니다.</li>
+              <li>장식은 외형용만이 아니라 인기도와 방문객 수, 수익에 연결됩니다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="level">4단계</div>
+          <div>
+            <strong>타이쿤 5-6: 집과 헌터 교환소 확인</strong>
+            <p>집은 단순 꾸미기가 아니라 이상 가구, 패시브 버프, 모듈 생성, 캐릭터 상호작용과 연결됩니다. 헌터 교환소는 월간 초기화가 걸린 보상이 있으니 빨리 열수록 좋습니다.</p>
+            <ul>
+              <li>첫 집은 최고급보다 기능 개방용으로 접근합니다.</li>
+              <li>이상 가구는 전투/재화 보너스가 있으므로 설명을 읽고 설치합니다.</li>
+              <li>헌터 교환소가 열리면 월간 구매 제한 재화를 먼저 확인합니다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="level">5단계</div>
+          <div>
+            <strong>타이쿤 10: Pink Paws Heist 해금 목표</strong>
+            <p>출시 초기 커뮤니티에서 강하게 추천되는 주간 콘텐츠입니다. 스탯 보정이 적용되는 형태로 알려져 있어, 강한 캐릭터보다 동선, 은신, 추출 타이밍이 중요합니다.</p>
+            <ul>
+              <li>주간 초기화 전에 열 수 있으면 최우선으로 한 번이라도 체험합니다.</li>
+              <li>방마다 순찰 루트를 보고 들어가고, 필요 없는 전투는 피합니다.</li>
+              <li>파티 플레이 시 정찰, 수집, 추출 역할을 나누면 효율이 좋습니다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="level">6단계</div>
+          <div>
+            <strong>타이쿤 18+: 무료 S급 치즈 확보</strong>
+            <p>치즈는 도시 타이쿤으로 얻는 S급 Cosmos 캐릭터입니다. 가챠 없이 얻고, 후속 타이쿤 진행으로 각성/무기 관련 보상이 이어지는 축이라 무과금일수록 가치가 큽니다.</p>
+            <ul>
+              <li>치즈 획득 후 바로 풀투자하기보다 현재 메인 딜러와 역할을 비교합니다.</li>
+              <li>Cosmos 축 팀을 운영한다면 메인/서브 딜러로 적극 고려합니다.</li>
+              <li>조작 난도가 있다는 평가가 있어 튜토리얼과 연습 전투를 먼저 권장합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="milestones">
+      <h2>도시 타이쿤 레벨 목표</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>목표</th>
+            <th>열리는 것</th>
+            <th>왜 중요한가</th>
+            <th>해야 할 행동</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="목표">타이쿤 개방</td>
+            <td data-label="열리는 것">도시 활동, 폰스 수입, 타이쿤 목표</td>
+            <td data-label="왜 중요한가">무료 캐릭터, 집, 차량, 교환소로 이어지는 도시 성장판 시작</td>
+            <td data-label="해야 할 행동">메인 스토리와 탐색 가이드 안내를 따라 치즈와 대화</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 4 전후</td>
+            <td data-label="열리는 것">카페/상점 운영</td>
+            <td data-label="왜 중요한가">패시브 폰스 수입과 관리 EXP의 시작점</td>
+            <td data-label="해야 할 행동">메뉴 설정, 재료 배송, 직원 배치, 장식 구매</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 5 전후</td>
+            <td data-label="열리는 것">집/부동산, 도시 스태미나 상한 증가</td>
+            <td data-label="왜 중요한가">이상 가구 보너스, 캐릭터 배치, 텔레포트 거점</td>
+            <td data-label="해야 할 행동">첫 집 구매, 이상 가구 확인, 무리한 고급 주택 구매는 보류</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 6 전후</td>
+            <td data-label="열리는 것">헌터 교환소</td>
+            <td data-label="왜 중요한가">월간 제한 교환품을 빨리 확인해야 손실이 적음</td>
+            <td data-label="해야 할 행동">뽑기 재화, 육성 재료, 생활 스킬 재료 우선 확인</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 10 전후</td>
+            <td data-label="열리는 것">Pink Paws Heist, 도시 스태미나 상한 추가 증가</td>
+            <td data-label="왜 중요한가">주간 폰스 수입과 도시 루프의 큰 축</td>
+            <td data-label="해야 할 행동">주간 초기화 전에 해금 및 보상 회수</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 18</td>
+            <td data-label="열리는 것">무료 S급 치즈</td>
+            <td data-label="왜 중요한가">가챠 없이 얻는 장기 전력, 도시 타이쿤 보상의 핵심</td>
+            <td data-label="해야 할 행동">치즈 튜토리얼, 팀 반응 확인, 필요 시 Cosmos 축으로 편성</td>
+          </tr>
+          <tr>
+            <td data-label="목표">레벨 21 전후</td>
+            <td data-label="열리는 것">치즈 전용/추천 무기 보상으로 언급됨</td>
+            <td data-label="왜 중요한가">무료 S급의 실전 완성도를 올리는 구간</td>
+            <td data-label="해야 할 행동">치즈를 쓸 계획이면 18에서 멈추지 말고 계속 진행</td>
+          </tr>
+          <tr>
+            <td data-label="목표">장기 45</td>
+            <td data-label="열리는 것">치즈 관련 추가 보상 전체 진행으로 언급됨</td>
+            <td data-label="왜 중요한가">무료 S급의 각성/무기 보상 완성 루트</td>
+            <td data-label="해야 할 행동">매주 도시 스태미나를 꾸준히 소모</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">주의: 레벨별 세부 해금은 출시 직후 패치나 서버별 진행에 따라 조금 달라질 수 있습니다. 위 표는 공개 가이드와 커뮤니티 1주차 정보의 공통 흐름을 합친 것입니다.</p>
+    </section>
+
+    <section id="priority">
+      <h2>도시 콘텐츠 우선순위</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>우선도</th>
+            <th>콘텐츠</th>
+            <th>해야 하는 이유</th>
+            <th>초반 운영법</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="우선도"><span class="tag top">필수</span></td>
+            <td data-label="콘텐츠">카페/상점 운영</td>
+            <td data-label="해야 하는 이유">수익과 관리 EXP가 계속 쌓이는 패시브 엔진</td>
+            <td data-label="초반 운영법">가능한 즉시 열고 재고를 끊기지 않게 유지. 직원 생활 스킬 적용 여부 확인</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag top">필수</span></td>
+            <td data-label="콘텐츠">Pink Paws Heist</td>
+            <td data-label="해야 하는 이유">주간 보상형 큰 폰스 수입처로 언급. 치즈 서사와도 연결</td>
+            <td data-label="초반 운영법">타이쿤 10 목표. 스탯 보정보다 루트 숙지, 은신, 추출 타이밍 우선</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag top">필수</span></td>
+            <td data-label="콘텐츠">헌터 교환소</td>
+            <td data-label="해야 하는 이유">월간 제한 교환품을 놓치면 손해</td>
+            <td data-label="초반 운영법">열리는 즉시 재화, 육성 재료, 생활 스킬 재료를 확인</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag mid">높음</span></td>
+            <td data-label="콘텐츠">집/하우징</td>
+            <td data-label="해야 하는 이유">이상 가구, 전투 보너스, 모듈 생성, 캐릭터 상호작용</td>
+            <td data-label="초반 운영법">첫 집은 기능 해금용. 고급 주택보다 이상 가구와 보너스 우선</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag mid">높음</span></td>
+            <td data-label="콘텐츠">택시/Swift Travel</td>
+            <td data-label="해야 하는 이유">폰스, 타이쿤 EXP, 지도 학습을 동시에 해결</td>
+            <td data-label="초반 운영법">긴 이동이 필요할 때 목적지 방향 손님 위주로 받아 동선 절약</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag mid">높음</span></td>
+            <td data-label="콘텐츠">레이싱</td>
+            <td data-label="해야 하는 이유">폰스와 차량 관련 보상, 운전 숙련도 상승</td>
+            <td data-label="초반 운영법">비 오는 날은 타이어/감속 체크. 최대 보상 조건은 나중에 재도전</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag mid">높음</span></td>
+            <td data-label="콘텐츠">배달/City Delivery</td>
+            <td data-label="해야 하는 이유">차량 기반 고비용 고수익 도시 활동</td>
+            <td data-label="초반 운영법">화물 파손 페널티가 있으므로 택시보다 조심스럽게 운전</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag low">상황</span></td>
+            <td data-label="콘텐츠">낚시/Sea Angler</td>
+            <td data-label="해야 하는 이유">낮은 스태미나로 폰스, 물고기, 카페/요리 재료, 낚시 전용 재화 획득</td>
+            <td data-label="초반 운영법">동선 가까울 때 짧게 여러 번. 주간 스태미나가 남을 때 소모용으로 좋음</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag low">상황</span></td>
+            <td data-label="콘텐츠">리듬/Super Sound</td>
+            <td data-label="해야 하는 이유">낮은 스태미나, 점수 보상, 밴드 서브 스토리</td>
+            <td data-label="초반 운영법">쉬운 난도부터 풀콤보 보상. 이어폰/헤드폰 사용 추천</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag low">상황</span></td>
+            <td data-label="콘텐츠">마작/Tetris/클로 머신</td>
+            <td data-label="해야 하는 이유">취향형 저비용 취미. 일일/주간 목표 채우기 좋음</td>
+            <td data-label="초반 운영법">룰을 모르거나 시간이 없으면 필수 루틴 뒤에만</td>
+          </tr>
+          <tr>
+            <td data-label="우선도"><span class="tag skip">보류</span></td>
+            <td data-label="콘텐츠">고가 차량/고급 주택 몰빵</td>
+            <td data-label="해야 하는 이유">초반 폰스가 묶여 카페, 교환소, 육성 재화가 늦어질 수 있음</td>
+            <td data-label="초반 운영법">필수 해금과 수익 구조가 잡힌 뒤 구매</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="contents">
+      <h2>도시 콘텐츠별 상세 공략</h2>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>카페/상점 운영</h3>
+          <p><strong>가장 먼저 키울 도시 콘텐츠입니다.</strong> 단발 보상보다 “시간이 지나도 돈이 들어오는 구조”가 훨씬 중요합니다.</p>
+          <ul class="checklist">
+            <li><strong>직원 배치:</strong> 캐릭터 생활 스킬은 고용해야 적용됩니다. 보유 캐릭터의 생활 스킬 설명을 확인하고 매장에 넣습니다.</li>
+            <li><strong>재고:</strong> 메뉴별 생산 비용과 재료가 있습니다. 배송료가 크지 않다는 제보가 있어 초반에는 배송으로 시간을 절약하는 쪽이 좋습니다.</li>
+            <li><strong>장식:</strong> 인기도가 올라가면 방문객과 수익이 증가합니다. 장식 판매처 추적 기능을 활용합니다.</li>
+            <li><strong>수익 회수:</strong> 회수한 폰스가 관리 EXP로 연결된다는 제보가 있습니다. 접속할 때마다 매장 수익부터 확인합니다.</li>
+          </ul>
+          <p class="small">추천 행동: 카페 열림 → 기본 메뉴 설정 → 배송 재고 채우기 → 직원 배치 → 장식으로 인기도 확보 → 수익 회수 반복.</p>
+        </article>
+
+        <article class="card">
+          <h3>집/하우징</h3>
+          <p>하우징은 꾸미기만 있는 콘텐츠가 아닙니다. 이상 가구, 캐릭터 배치, 모듈 생성, 전투 보너스가 연결됩니다.</p>
+          <ul class="checklist">
+            <li><strong>첫 집:</strong> 비싼 곳보다 기능 개방이 우선입니다. 초반에는 작고 싼 집을 먼저 구매해 시스템을 엽니다.</li>
+            <li><strong>이상 가구:</strong> 일부 가구는 주간 폰스나 전투 관련 보너스와 연결된다고 언급됩니다. 설명에 보상이 붙은 가구부터 설치합니다.</li>
+            <li><strong>캐릭터 배치:</strong> 호감도 4 이상 캐릭터를 배치하면 상호작용과 호감도 루프가 열립니다.</li>
+            <li><strong>텔레포트:</strong> 보유 주택은 이동 거점으로 쓰일 수 있어 동선 절약에도 좋습니다.</li>
+          </ul>
+          <p class="small">추천 행동: 첫 집 구매 → 이상 가구 확인 → 기능형 가구 우선 → 호감 캐릭터 배치 → 고급 주택은 폰스 여유 후.</p>
+        </article>
+
+        <article class="card">
+          <h3>Pink Paws Heist</h3>
+          <p>주간 수입 루프의 핵심 후보입니다. 스탯 보정형으로 알려져 있어 “육성빨”보다 루트와 판단이 중요합니다.</p>
+          <ul class="checklist">
+            <li><strong>입장 전:</strong> 최강 캐릭터만 고집하지 말고 이동, 회피, 유틸이 편한 캐릭터를 고릅니다.</li>
+            <li><strong>진행:</strong> 순찰 루트를 보고 움직입니다. 무작정 전투하면 시간과 자원을 잃습니다.</li>
+            <li><strong>목표:</strong> 너무 빨리 추출하면 보상이 적고, 너무 늦으면 위험합니다. 첫 주는 루트 학습이 먼저입니다.</li>
+            <li><strong>협동:</strong> 가능하면 친구와 역할을 나누세요. 정찰, 수집, 추출 담당을 나누면 효율이 좋습니다.</li>
+          </ul>
+          <p class="small">추천 행동: 타이쿤 10 전후 해금 → 첫 주 1회 루트 학습 → 주간 초기화 전 보상 회수.</p>
+        </article>
+
+        <article class="card">
+          <h3>헌터 교환소</h3>
+          <p>월간 제한 보상이 걸릴 수 있어서 늦게 열수록 손해가 커집니다. 타이쿤 6 전후 해금 제보가 많습니다.</p>
+          <ul class="checklist">
+            <li><strong>우선 확인:</strong> 뽑기 재화, 육성 재료, 생활 스킬 재료, 희귀 상점 재화를 먼저 봅니다.</li>
+            <li><strong>구매 순서:</strong> 기간 제한 재화 → 캐릭터 성장 병목 재료 → 도시 성장 재료 → 소모품 순서가 무난합니다.</li>
+            <li><strong>주의:</strong> 일부 타이쿤 목표가 교환소 해금 전 특정 구매를 요구할 수 있다는 제보가 있습니다. 막히면 계정 레벨/스토리부터 진행합니다.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>택시/Swift Travel</h3>
+          <p>승객을 태워 목적지에 내려주는 운전 콘텐츠입니다. 폰스, 타이쿤 EXP, 도시 지형 학습을 한 번에 해결합니다.</p>
+          <ul class="checklist">
+            <li><strong>운영법:</strong> 이동하려던 방향과 비슷한 손님을 받아 동선을 합칩니다.</li>
+            <li><strong>수익:</strong> 장거리와 부드러운 운전이 팁/보상에 유리합니다.</li>
+            <li><strong>주의:</strong> 교통법규 위반, 사고, 위험 운전은 수배/감점으로 이어질 수 있습니다.</li>
+            <li><strong>날씨:</strong> 비가 오면 제동 거리가 길어집니다. 코너 전 감속을 빨리 합니다.</li>
+          </ul>
+          <p class="small">추천 행동: 길을 외우는 초반에는 택시를 자주 섞고, 타이쿤 EXP가 급하면 짧게 여러 번 돕니다.</p>
+        </article>
+
+        <article class="card">
+          <h3>배달/City Delivery</h3>
+          <p>화물을 싣고 목적지까지 이동합니다. 택시보다 화물 파손 페널티가 중요합니다.</p>
+          <ul class="checklist">
+            <li><strong>운전 스타일:</strong> 택시보다 감속을 넉넉히 하고 충돌을 피합니다.</li>
+            <li><strong>동선:</strong> 지도에서 직선거리보다 도로 폭, 교차로 수, 급커브 수를 봅니다.</li>
+            <li><strong>추천 상황:</strong> 운전에 익숙하고 도시 스태미나를 빠르게 큰 보상으로 바꾸고 싶을 때.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>레이싱</h3>
+          <p>폰스, 차량 보상, 타이쿤 진행, 운전 숙련도를 올리는 콘텐츠입니다. 멀티플레이도 지원되는 축으로 정리됩니다.</p>
+          <ul class="checklist">
+            <li><strong>초반 목표:</strong> 최고 보상 조건까지 무리하지 말고 클리어 보상부터 챙깁니다.</li>
+            <li><strong>날씨:</strong> 비가 오면 미끄러집니다. 젖은 노면 대응 타이어나 보수적인 코너링이 필요합니다.</li>
+            <li><strong>차량:</strong> 최고 속도만 보지 말고 코너 안정성과 제동을 봅니다.</li>
+            <li><strong>연습:</strong> 택시로 도로 감각을 익힌 뒤 레이싱에 들어가면 편합니다.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>낚시/Sea Angler</h3>
+          <p>낮은 도시 스태미나로 여러 번 돌 수 있는 여유형 콘텐츠입니다. 물고기는 판매, 요리, 카페/식당 재료로 연결됩니다.</p>
+          <ul class="checklist">
+            <li><strong>기본 루프:</strong> 낚시터 이동 → 미끼 선택 → 타이밍 미니게임 → 물고기 수집.</li>
+            <li><strong>효율:</strong> 주간 스태미나가 남았을 때 짧게 돌기 좋습니다.</li>
+            <li><strong>장소:</strong> 해안, 공원 연못, 강변, 항구 쪽에 분포. 장소별 어종이 다를 가능성이 큽니다.</li>
+            <li><strong>보상:</strong> 폰스 외에 낚시 전용 재화 Scale Coins가 언급됩니다. 낚싯대/미끼/장식에 사용될 수 있습니다.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>리듬/Super Sound</h3>
+          <p>노트 판정, 콤보, 난도 보상으로 구성된 리듬 콘텐츠입니다. 밴드 서브 스토리와 연결되는 점이 장점입니다.</p>
+          <ul class="checklist">
+            <li><strong>초반:</strong> 쉬운 난도에서 타이밍과 곡 패턴을 익힙니다.</li>
+            <li><strong>보상:</strong> 점수와 콤보가 높을수록 보상이 좋아집니다.</li>
+            <li><strong>팁:</strong> 헤드폰을 쓰면 빠른 곡의 판정 맞추기가 쉬워집니다.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>마작/Tetris/클로 머신</h3>
+          <p>취향형 저비용 취미입니다. 필수 성장 루프 뒤에 일일/주간 목표를 채우는 용도로 좋습니다.</p>
+          <ul class="checklist">
+            <li><strong>마작:</strong> Little Sparrow 메이드 카페 쪽에서 플레이. 출시 버전에는 AI 대전 지원이 추가된 것으로 정리됩니다.</li>
+            <li><strong>Tetris:</strong> 아케이드 기반 퍼즐로, 멀티 중심으로 언급됩니다.</li>
+            <li><strong>클로 머신:</strong> 낮은 스태미나로 장식/수집 보상용으로 적합합니다.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="routine">
+      <h2>일일/주간 루틴</h2>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>매일 접속 루틴</h3>
+          <ol>
+            <li>우편, 쿠폰, 이벤트 보상 수령.</li>
+            <li>일일 퀘스트 1500 XP 계열을 먼저 완료.</li>
+            <li>카페/상점 수익 회수, 재고 확인, 직원 배치 확인.</li>
+            <li>Pixel을 레벨/승급/아크 재료에 사용. 초반 콘솔 파밍 과투자 금지.</li>
+            <li>메인/서브 퀘스트로 헌터 레벨을 올리고 막히면 도시 활동으로 전환.</li>
+            <li>도시 스태미나를 택시, 배달, 레이싱, 낚시, 리듬 중 좋아하는 것으로 소모.</li>
+            <li>타워, 공중전화, 까마귀/수집품은 이동 중 보이는 대로 처리.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>주간 루틴</h3>
+          <ol>
+            <li>주간 초기화 직후 도시 스태미나 총량과 타이쿤 목표 확인.</li>
+            <li>Pink Paws Heist 해금 시 보상부터 회수.</li>
+            <li>카페 수익 구조 업그레이드: 메뉴, 직원, 장식, 추가 매장 순으로 점검.</li>
+            <li>도시 스태미나를 큰 보상 활동과 짧은 취미로 나눠 소모.</li>
+            <li>헌터 교환소/월간 교환품 남은 수량 확인.</li>
+            <li>숨겨진 폰스 금고, 까마귀 반납, 미완료 파란 퀘스트를 정리.</li>
+            <li>타이쿤 18/21/45 장기 목표를 향해 레벨 조건을 밀기.</li>
+          </ol>
+        </article>
+      </div>
+
+      <div class="callout blue">
+        <strong>추천 배분:</strong> 운전이 편하면 택시/배달/레이싱으로 빠르게 폰스와 타이쿤 EXP를 챙기고, 운전이 피곤하면 낚시/리듬/Owner Selection처럼 짧은 취미로 도시 스태미나를 털면 됩니다. 중요한 건 “주간 스태미나를 놀리지 않는 것”입니다.
+      </div>
+    </section>
+
+    <section id="fons">
+      <h2>폰스 파밍과 지출 우선순위</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>숨겨진 폰스 금고 후보</h3>
+          <p>NTEBUILD가 정리한 초기 파밍 루트 기준, 아래 장소들이 큰 폰스 덩어리로 언급됩니다. 정확한 위치는 게임 내 지도와 원문 스크린샷을 함께 보세요.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>장소</th>
+                <th>언급 보상</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="장소">Pink Claw Bank Head Office 2층</td>
+                <td data-label="언급 보상">200,000 폰스</td>
+              </tr>
+              <tr>
+                <td data-label="장소">Midas Solitary Workshop 2층</td>
+                <td data-label="언급 보상">100,000 폰스</td>
+              </tr>
+              <tr>
+                <td data-label="장소">Nameless Hospital 이상 구역</td>
+                <td data-label="언급 보상">100,000 폰스</td>
+              </tr>
+              <tr>
+                <td data-label="장소">Miguel District 공사장</td>
+                <td data-label="언급 보상">55,000 폰스 내외</td>
+              </tr>
+              <tr>
+                <td data-label="장소">Miguel District 몬스터 방</td>
+                <td data-label="언급 보상">51,250 폰스 내외</td>
+              </tr>
+              <tr>
+                <td data-label="장소">Eikyou-cho 몬스터 방</td>
+                <td data-label="언급 보상">51,250 폰스 내외</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="small">주의: 금고/숨겨진 보상은 서버 패치나 계정 진행도에 따라 조건이 있을 수 있습니다.</p>
+        </article>
+
+        <article class="card">
+          <h3>폰스 지출 우선순위</h3>
+          <ol>
+            <li><strong>카페/상점 수익 증가:</strong> 메뉴, 재고, 직원, 장식, 추가 매장.</li>
+            <li><strong>타이쿤 진행 요구 아이템:</strong> 목표를 막는 필수 구매.</li>
+            <li><strong>헌터 교환소 월간 제한:</strong> 뽑기/성장/희귀 재화.</li>
+            <li><strong>기능형 집/이상 가구:</strong> 전투 보너스와 주간 수익 보조.</li>
+            <li><strong>이동 효율 차량:</strong> 값비싼 최고급 차량은 수익 구조 후.</li>
+            <li><strong>순수 장식/코스메틱:</strong> 초반에는 보류. 인기도에 연결되는 장식은 예외.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="mistakes">
+      <h2>초반 실수 방지</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>도시 타이쿤 방치</h3>
+          <p>가장 큰 실수입니다. 치즈, 카페 수익, 주간 강도, 교환소, 하우징 보너스가 모두 늦어집니다.</p>
+        </article>
+        <article class="card">
+          <h3>카페 재고 끊김</h3>
+          <p>패시브 수입이 멈추면 관리 EXP도 늦어집니다. 접속 시 수익 회수와 재고 보충을 습관화하세요.</p>
+        </article>
+        <article class="card">
+          <h3>비싼 차 먼저 구매</h3>
+          <p>차량은 재미와 이동 편의가 크지만, 초반 폰스는 수익 구조와 타이쿤 진행에 먼저 들어가는 편이 효율적입니다.</p>
+        </article>
+        <article class="card">
+          <h3>도시 스태미나 미사용</h3>
+          <p>주간 자원이라 오래 놀리면 성장 속도가 늦어집니다. 짧은 취미라도 돌려 타이쿤 EXP를 챙기세요.</p>
+        </article>
+        <article class="card">
+          <h3>콘솔 파밍 과투자</h3>
+          <p>초반에는 RNG 장비보다 캐릭터 레벨, 아크 레벨, 스킬 레벨처럼 확정 성장이 더 좋습니다.</p>
+        </article>
+        <article class="card">
+          <h3>선택권 즉시 사용</h3>
+          <p>S급 선택권은 표준 배너 추가 결과를 본 뒤 빈 역할을 채우는 쪽이 안전합니다. 도시 쪽은 치즈가 무료로 들어오는 점도 계산하세요.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>출처와 신뢰도 메모</h2>
+      <div class="callout warn">
+        출시 당일 정보라 세부 수치와 해금 레벨은 패치로 바뀔 수 있습니다. 공식/대형 가이드에서 공통으로 확인되는 내용은 “확정”, 커뮤니티 1주차 팁은 “초기 제보”로 취급했습니다.
+      </div>
+      <ul class="source-list">
+        <li><a href="https://thegameswiki.com/nte/wiki/city-tycoon" target="_blank" rel="noopener">The Games Wiki - City Tycoon</a>: 타이쿤 개요, 치즈 레벨 18, 집/차량/수입원/취미 목록.</li>
+        <li><a href="https://mobalytics.gg/neverness-to-everness/guides/beginner-guide" target="_blank" rel="noopener">Mobalytics - NTE Beginner Guide</a>: 도시 타이쿤 진행, 치즈 레벨 18, 레벨 21 무기 목표, 초반 루틴.</li>
+        <li><a href="https://www.ntebuild.com/news/nte-leveling-guide" target="_blank" rel="noopener">NTEBUILD - Leveling Guide</a>: 일일 XP, 도시 타이쿤 XP, 숨겨진 진행 병목, 치즈 장기 보상.</li>
+        <li><a href="https://www.ntebuild.com/news/nte-fons-farming-guide" target="_blank" rel="noopener">NTEBUILD - Fons Farming Guide</a>: 숨겨진 폰스 금고 위치와 보상 규모.</li>
+        <li><a href="https://thegameswiki.com/nte/wiki/hethereau-hobbies" target="_blank" rel="noopener">The Games Wiki - Hethereau Hobbies</a>: 취미 목록, 스태미나 비용대, 싱글/멀티 구분.</li>
+        <li><a href="https://thegameswiki.com/nte/wiki/pink-paws-heist" target="_blank" rel="noopener">The Games Wiki - Pink Paws Heist</a>: 강도 콘텐츠 구조, 스탯 보정, 은신/추출 팁.</li>
+        <li><a href="https://thegameswiki.com/nte/wiki/taxi-driver" target="_blank" rel="noopener">The Games Wiki - Taxi Driver / Swift Travel</a>: 택시 수익, 스태미나 비용, 날씨와 운전 팁.</li>
+        <li><a href="https://thegameswiki.com/nte/wiki/street-racing" target="_blank" rel="noopener">The Games Wiki - Street Racing</a>: 레이싱, 날씨, 타이어, 차량 보상.</li>
+        <li><a href="https://thegameswiki.com/nte/wiki/fishing" target="_blank" rel="noopener">The Games Wiki - Fishing / Sea Angler</a>: 낚시 루프, 장소 유형, 스태미나, Scale Coins.</li>
+        <li><a href="https://www.reddit.com/r/NevernessToEverness/comments/1sxus81/week_1_step_by_step_tycoon_city_guide/" target="_blank" rel="noopener">Reddit - Week 1 Tycoon City Guide</a>: 1주차 커뮤니티 동선, 타이쿤 4/5/6/10 제보, 카페 운영 팁.</li>
+        <li><a href="https://www.reddit.com/r/NevernessToEverness/comments/1svhpbl/first_week_guide_based_on_cn_experience/" target="_blank" rel="noopener">Reddit - CN 경험 기반 1주차 가이드</a>: 주간 강도, 카페 우선, 타이쿤 11/18 목표 등 초기 제보.</li>
+      </ul>
+      <p class="footer-note">작성 방식: 위 출처를 교차 확인해 “게임 안에서 눌러야 할 행동” 중심으로 재구성했습니다. 원문별 표현은 인용하지 않고 요약했습니다.</p>
+    </section>
+  </main>
+</body>
+</html>
