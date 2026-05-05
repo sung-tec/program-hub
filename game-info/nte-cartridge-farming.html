@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이환 카트리지 획득처 정리 - 2026-05-05</title>
+  <meta
+    name="description"
+    content="이환 1.0 기준 카트리지 12종의 토끼굴 획득처, 노드별 드롭표, 국내 한글 명칭 정리"
+  />
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5f6d82;
+      --line: #dce4ef;
+      --accent: #315f9c;
+      --accent-2: #0f766e;
+      --accent-3: #8a4a0f;
+      --soft: #edf4ff;
+      --soft-green: #eef8f5;
+      --soft-amber: #fff7e8;
+      --shadow: 0 18px 48px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    header {
+      color: #fff;
+      background: linear-gradient(135deg, #243b72 0%, #0f766e 100%);
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .back-link {
+      margin: 0 0 16px;
+    }
+
+    .back-link a,
+    .toc a {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 999px;
+    }
+
+    .back-link a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 42px 0 14px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    header p {
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .meta,
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta {
+      margin-top: 18px;
+    }
+
+    .pill,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .pill {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.10);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-weight: 800;
+    }
+
+    .notice,
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 18px;
+      border-left: 5px solid var(--accent-3);
+      background: var(--soft-amber);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .card {
+      padding: 18px;
+    }
+
+    .card strong {
+      color: #0f5f55;
+    }
+
+    .chip {
+      min-height: 28px;
+      padding: 2px 9px;
+      color: var(--ink);
+      background: #eef3f9;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .chip.good {
+      background: var(--soft-green);
+      color: #0f5f55;
+    }
+
+    .chip.warn {
+      background: var(--soft-amber);
+      color: #8a4a0f;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--paper);
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: #243149;
+      background: #eef2f7;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .node {
+      font-weight: 900;
+    }
+
+    .source-name {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .element {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      min-height: 26px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #243149;
+      font-weight: 900;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 12px 36px;
+      }
+
+      header {
+        padding: 24px 18px;
+      }
+
+      table {
+        min-width: 820px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="back-link"><a href="../game-info.html">&larr; 게임정보 목록</a></p>
+      <h1>이환 카트리지 획득처 정리</h1>
+      <p>
+        이환 1.0 기준 카트리지 12종을 어디서 파밍하는지, 토끼굴 노드별 드롭표와
+        국내 한글 카트리지명을 맞춰 정리했습니다.
+      </p>
+      <div class="meta">
+        <span class="pill">기준일: 2026-05-05 한국시간</span>
+        <span class="pill">대상: 카트리지 12종</span>
+        <span class="pill">핵심 획득처: 토끼굴 이상 경계</span>
+      </div>
+      <nav class="toc" aria-label="문서 목차">
+        <a href="#summary">핵심 요약</a>
+        <a href="#table">획득처 표</a>
+        <a href="#priority">파밍 우선순위</a>
+        <a href="#notes">주의사항</a>
+        <a href="#sources">출처</a>
+      </nav>
+    </header>
+
+    <section class="notice">
+      <strong>정확도 메모:</strong>
+      카트리지명과 효과명은 국내 한글 도감 표기를 기준으로 맞췄습니다. 획득 노드는 게임8의
+      토끼굴 노드별 드롭표와 게임위드·닷이스포츠의 토끼굴 설명을 교차 확인했습니다.
+      단, 토끼굴 세부 노드의 국내 정식 한글 표기는 공개 웹자료에서 일괄 확인되지 않아
+      한글 풀이명과 원문 노드명을 함께 적었습니다.
+    </section>
+
+    <section id="summary">
+      <h2>핵심 요약</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>어디서 얻나</h3>
+          <p>
+            카트리지는 <strong>토끼굴 이상 경계</strong>에서 직접 드롭됩니다.
+            토끼굴은 뉴 헤를랜드 지역 쪽 콘텐츠로, 게임8 기준 헌터 랭크 10부터 진입 조건이 열립니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>노드 선택이 중요</h3>
+          <p>
+            토끼굴 안에서도 노드마다 나오는 카트리지가 다릅니다.
+            목표 세트가 정해졌다면 무작정 아무 노드를 돌지 말고 해당 노드만 반복하는 것이 맞습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>본격 파밍 타이밍</h3>
+          <p>
+            게임위드 기준 <strong>헌터 레벨 30</strong>에 열리는 토끼굴 난이도 III부터
+            S등급 카트리지를 얻을 수 있어, 최종 세팅 파밍은 이 시점 이후가 효율적입니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="table">
+      <h2>카트리지별 획득처 표</h2>
+      <p>
+        국내 한글명 기준으로 정리했습니다. 괄호 안의 원문 노드명은 게임8 드롭표 대조용입니다.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>획득 노드</th>
+              <th>카트리지</th>
+              <th>분류</th>
+              <th>주요 효과 요약</th>
+              <th>추천 활용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="node">시계 트릭<span class="source-name">원문: Clock Tricks</span></td>
+              <td>디아볼로스</td>
+              <td><span class="element">암</span></td>
+              <td>암속성 이능력 피해, 암속성 저항 무시. 노바·스코치 반응 참여 시 저항 무시 강화.</td>
+              <td>다포딜처럼 암속성 딜러를 키울 때 우선 확인.</td>
+            </tr>
+            <tr>
+              <td class="node">시계 트릭<span class="source-name">원문: Clock Tricks</span></td>
+              <td>잃어버린 빛</td>
+              <td><span class="element">빛</span></td>
+              <td>빛속성 이능력 피해, 울티메이트 후 대상 방어력 일부 무시.</td>
+              <td>「제로」, 치즈, 에드가의 빛속성 세팅 후보.</td>
+            </tr>
+            <tr>
+              <td class="node">조각상 갤러리<span class="source-name">원문: Sculpture Gallery</span></td>
+              <td>악마의 피: 저주</td>
+              <td><span class="element">혼</span></td>
+              <td>혼속성 이능력 피해, 노바·스테인 대상 공격 시 피해 증가 강화.</td>
+              <td>우미츠키처럼 혼속성 공격형 세팅에 사용.</td>
+            </tr>
+            <tr>
+              <td class="node">조각상 갤러리<span class="source-name">원문: Sculpture Gallery</span></td>
+              <td>스트리트 복서</td>
+              <td><span class="element">상</span></td>
+              <td>상속성 이능력 피해, 치명 확률 상승. 레모라·스테인 발동 후 추가 치명 확률.</td>
+              <td>하토르, 스키아처럼 상속성 딜러를 키울 때 파밍.</td>
+            </tr>
+            <tr>
+              <td class="node">위도 베틀<span class="source-name">원문: Latitude Loom</span></td>
+              <td>진홍: 쌍둥이 나비</td>
+              <td><span class="element">주</span></td>
+              <td>주속성 이능력 피해, 근처 적이 주속성 피해를 받을 때 공격력 중첩.</td>
+              <td>백장, 사키리, 아들러 세팅 후보. 주속성 파티를 짤 때 효율이 높습니다.</td>
+            </tr>
+            <tr>
+              <td class="node">위도 베틀<span class="source-name">원문: Latitude Loom</span></td>
+              <td>숲속 반딧불의 마음</td>
+              <td><span class="element">령</span></td>
+              <td>령속성 이능력 피해, 파티가 령속성 피해를 줄 때 치명 피해 중첩.</td>
+              <td>나나리, 구원, 민트처럼 령속성 딜러를 키울 때 최우선 후보.</td>
+            </tr>
+            <tr>
+              <td class="node">무 지키기<span class="source-name">원문: Defend the Radish</span></td>
+              <td>왕국 수호자</td>
+              <td><span class="element">방어</span></td>
+              <td>방어력 증가, 착용자의 방어막 효과 증가.</td>
+              <td>아들러처럼 보호막 기반 생존 캐릭터에게 사용.</td>
+            </tr>
+            <tr>
+              <td class="node">무 지키기<span class="source-name">원문: Defend the Radish</span></td>
+              <td>티아의 심야 선술집</td>
+              <td><span class="element">치유</span></td>
+              <td>HP 증가, 착용자의 치료 효율 증가.</td>
+              <td>에드가처럼 순수 힐러 세팅에 사용.</td>
+            </tr>
+            <tr>
+              <td class="node">정신 지도<span class="source-name">원문: Mental Map</span></td>
+              <td>고요한 산장</td>
+              <td><span class="element">정신</span></td>
+              <td>정신 피해 증가, 일반 공격 시 정신 피해 증가 중첩.</td>
+              <td>정신 피해를 주력으로 쓰는 캐릭터가 추가되거나 해당 빌드가 필요할 때 보관.</td>
+            </tr>
+            <tr>
+              <td class="node">정신 지도<span class="source-name">원문: Mental Map</span></td>
+              <td>음속 블루 고슴도치</td>
+              <td><span class="element">충전</span></td>
+              <td>에너지 충전 효율 증가, 울티메이트 후 파티 공격력 증가.</td>
+              <td>사키리, 하니엘 등 서포트 캐릭터의 핵심 후보.</td>
+            </tr>
+            <tr>
+              <td class="node">철도의 밤<span class="source-name">원문: Night of the Rails</span></td>
+              <td>그림자 신조</td>
+              <td><span class="element">공격</span></td>
+              <td>공격력 증가, 바이레일 스킬 시전 후 공격력 증가.</td>
+              <td>전용 속성 세트가 애매한 딜러의 범용 공격 세팅 후보.</td>
+            </tr>
+            <tr>
+              <td class="node">철도의 밤<span class="source-name">원문: Night of the Rails</span></td>
+              <td>작은 대모험</td>
+              <td><span class="element">HP</span></td>
+              <td>HP 증가, HP 감소 시 HP 상한 중첩. 울티메이트 시 즉시 최대 중첩.</td>
+              <td>파디아처럼 HP와 피해 분담이 중요한 생존 캐릭터에게 사용.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="priority">
+      <h2>파밍 우선순위</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>1순위: 위도 베틀</h3>
+          <p>
+            <strong>숲속 반딧불의 마음</strong>과 <strong>진홍: 쌍둥이 나비</strong>가 함께 나옵니다.
+            나나리·구원·민트 쪽 령속성 딜러와 사키리·백장 쪽 주속성 축을 동시에 준비할 수 있어
+            현재 캐릭터 풀이 넓을수록 효율이 좋습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>2순위: 정신 지도</h3>
+          <p>
+            <strong>음속 블루 고슴도치</strong>가 핵심입니다. 울티메이트 후 파티 공격력 증가라
+            사키리·하니엘 같은 서포트 캐릭터를 키울 때 먼저 챙길 가치가 큽니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>3순위: 목표 딜러 노드</h3>
+          <p>
+            빛·암은 시계 트릭, 혼·상은 조각상 갤러리로 갑니다.
+            딜러 속성이 정해져 있으면 해당 노드에 집중하고, 아직 주력 딜러가 없으면 S등급 파밍 전
+            적당한 세트만 맞춰도 충분합니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>생존 보강: 무 지키기와 철도의 밤</h3>
+          <p>
+            아들러는 왕국 수호자, 에드가는 티아의 심야 선술집, 파디아는 작은 대모험을 봅니다.
+            고난도에서 버티는 힘이 부족할 때 생존 세트부터 보강하면 체감이 큽니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="notes">
+      <h2>주의사항</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>카트리지와 드라이브 모듈</td>
+              <td>
+                카트리지는 세트 효과를 담당하고, 드라이브 모듈은 콘솔 보드에 끼우는 블록입니다.
+                카트리지 효과를 켜려면 요구되는 드라이브 모듈 형태를 맞춰야 합니다.
+              </td>
+            </tr>
+            <tr>
+              <td>드라이브 모듈 획득</td>
+              <td>
+                드라이브 모듈은 카트리지처럼 특정 세트로 직접 드롭되는 방식이 아니라,
+                토끼굴에서 얻는 재화로 콘솔 화면의 되감기 기능을 사용해 뽑는 구조입니다.
+              </td>
+            </tr>
+            <tr>
+              <td>S등급 파밍</td>
+              <td>
+                초반에는 세트 효과를 켜는 정도로 충분합니다. 최종 옵션을 노리는 S등급 파밍은
+                토끼굴 난이도 III와 S등급 카트리지가 열리는 헌터 레벨 30 이후가 효율적입니다.
+              </td>
+            </tr>
+            <tr>
+              <td>노드명 표기</td>
+              <td>
+                카트리지명은 국내 한글 도감 기준으로 맞췄습니다. 세부 노드명은 공개 한글 자료가
+                부족해 한글 풀이명과 원문명을 병기했으니, 게임 안에서는 아이콘과 원문 노드명도 함께 확인하세요.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>출처</h2>
+      <ul class="source-list">
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598325" target="_blank" rel="noopener">게임8 - 카트리지 획득·강화</a>:
+          토끼굴 이상 경계, 헌터 랭크 10 조건, 노드별 카트리지 드롭표 기준.
+        </li>
+        <li>
+          <a href="https://gamewith.net/nte/74169" target="_blank" rel="noopener">게임위드 - 콘솔 세팅 최적화</a>:
+          토끼굴 난이도 III와 S등급 카트리지, 노드별 카트리지 확인 방식 기준.
+        </li>
+        <li>
+          <a href="https://dotesports.com/neverness-to-everness/news/nte-cartridges-modules" target="_blank" rel="noopener">닷이스포츠 - 콘솔 가이드</a>:
+          토끼굴 파밍, 카트리지와 드라이브 모듈 획득 구조, 되감기 설명 참고.
+        </li>
+        <li>
+          <a href="https://alkapa.gg/neverness-to-everness/consoles" target="_blank" rel="noopener">알카파 - 콘솔 도감</a>:
+          국내 한글 카트리지명과 2피스·4피스 효과 표기 기준.
+        </li>
+        <li>
+          <a href="https://alkapa.gg/neverness-to-everness/guide/console" target="_blank" rel="noopener">알카파 - 콘솔 시스템 가이드</a>:
+          카트리지·드라이브 모듈 구조와 국내 한글 용어 대조 기준.
+        </li>
+      </ul>
+      <p class="small">
+        출시 초기 1.0 자료라 패치나 서버 표기 변경에 따라 노드명, 드롭표, 난이도 보상은 바뀔 수 있습니다.
+        게임 안에서 노드 보상 미리보기와 함께 최종 확인하는 것을 권장합니다.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
