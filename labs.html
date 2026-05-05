@@ -162,6 +162,7 @@
         <a href="about.html">소개</a>
         <a href="projects.html">프로젝트</a>
         <a href="downloads.html">다운로드</a>
+        <a href="game-info.html">게임정보</a>
         <a href="labs.html" class="active">실험실</a>
       </nav>
     </div>
@@ -209,6 +210,7 @@
     const REPO = "program-hub";
     const BRANCH = "main";
     const LABS_DIR = "labs";
+    const EXCLUDED_LAB_FILES = new Set(["nte-city-guide.html"]);
 
     const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${LABS_DIR}?ref=${BRANCH}`;
     const labsGrid = document.getElementById("labsGrid");
@@ -334,7 +336,8 @@
           (item) =>
             item.type === "file" &&
             item.name.toLowerCase().endsWith(".html") &&
-            !item.name.startsWith("_")
+            !item.name.startsWith("_") &&
+            !EXCLUDED_LAB_FILES.has(item.name.toLowerCase())
         );
 
         if (!htmlFiles.length) {
