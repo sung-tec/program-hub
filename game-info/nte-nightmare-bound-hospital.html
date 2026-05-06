@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이환 냉산 병원: 악몽의 속박 공략 - 2026-05-06</title>
+  <meta
+    name="description"
+    content="이환 이상 의뢰 냉산 병원: 악몽의 속박 위치, 1번 엔딩 빠른 클리어, 4엔딩 회수, 발전기·금고·영사기 기믹 공략"
+  />
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5f6d82;
+      --line: #dce4ef;
+      --accent: #315f9c;
+      --accent-2: #0f766e;
+      --accent-3: #8a4a0f;
+      --soft: #edf4ff;
+      --soft-green: #eef8f5;
+      --soft-amber: #fff7e8;
+      --shadow: 0 18px 48px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    header {
+      color: #fff;
+      background: linear-gradient(135deg, #26365f 0%, #7c2d12 100%);
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .back-link {
+      margin: 0 0 16px;
+    }
+
+    .back-link a,
+    .toc a {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 999px;
+    }
+
+    .back-link a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 42px 0 14px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    header p {
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .meta,
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta {
+      margin-top: 18px;
+    }
+
+    .pill,
+    .chip,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .pill {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.10);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-weight: 800;
+    }
+
+    .notice,
+    .card,
+    .step-box {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 18px;
+      border-left: 5px solid var(--accent-3);
+      background: var(--soft-amber);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .card,
+    .step-box {
+      padding: 18px;
+    }
+
+    .card strong,
+    .step-box strong {
+      color: #0f5f55;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .step-box h3 {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--accent);
+      font-size: 14px;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .chip {
+      min-height: 28px;
+      padding: 2px 9px;
+      color: var(--ink);
+      background: #eef3f9;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .chip.good {
+      background: var(--soft-green);
+      color: #0f5f55;
+    }
+
+    .chip.warn {
+      background: var(--soft-amber);
+      color: #8a4a0f;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--paper);
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: #243149;
+      background: #eef2f7;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .badge {
+      min-height: 26px;
+      padding: 0 8px;
+      background: var(--soft);
+      color: #243149;
+      font-weight: 900;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 12px 36px;
+      }
+
+      header {
+        padding: 24px 18px;
+      }
+
+      table {
+        min-width: 820px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="back-link"><a href="../game-info.html">&larr; 게임정보 목록</a></p>
+      <h1>이환 냉산 병원: 악몽의 속박 공략</h1>
+      <p>
+        이상 의뢰 「악몽의 속박」의 진입 위치, 1번 엔딩 빠른 클리어,
+        발전기·2층 침수·조각 맞추기·숨겨진 책장 기믹을 한 번에 정리했습니다.
+      </p>
+      <div class="meta">
+        <span class="pill">기준일: 2026-05-06 한국시간</span>
+        <span class="pill">콘텐츠: 이상 의뢰 / 냉산 병원</span>
+        <span class="pill">목표: 1엔딩 클리어 + 4엔딩 회수</span>
+      </div>
+      <nav class="toc" aria-label="문서 목차">
+        <a href="#summary">핵심 요약</a>
+        <a href="#entry">진입·보상</a>
+        <a href="#ending1">1번 엔딩 빠른 길</a>
+        <a href="#endings">4엔딩 회수</a>
+        <a href="#gimmicks">기믹·금고</a>
+        <a href="#sources">출처</a>
+      </nav>
+    </header>
+
+    <section class="notice">
+      <strong>스포일러 주의:</strong>
+      이 페이지는 냉산 병원 「악몽의 속박」의 엔딩 조건과 숨겨진 방 기믹을 직접 정리합니다.
+      국내 공식 자료에서 확인되는 명칭은 「냉산 병원: 악몽의 속박」과 이상 의뢰 표기를 우선 사용했습니다.
+      엔딩명과 일부 단서명은 해외 공략의 원문명을 기능적으로 옮긴 임시 표기라, 게임 안 표기가 다르면 번호와 루트를 기준으로 보면 됩니다.
+    </section>
+
+    <section id="summary">
+      <h2>핵심 요약</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>어디서 시작하나</h3>
+          <p>
+            에소라마치의 병원으로 들어가 접수대 기준 왼쪽 계단실로 갑니다.
+            구석에서 벽을 보고 있는 환자형 NPC에게 말을 걸고 <strong>눈 감기</strong> 선택지를 고르면 냉산 병원 악몽 구역으로 들어갑니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>처음 목표</h3>
+          <p>
+            처음에는 1번 엔딩만 빠르게 보는 것이 좋습니다.
+            1번 엔딩을 보면 <strong>직원 엘리베이터 카드</strong>가 열려 이후 2~4번 엔딩 루트가 훨씬 짧아집니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>혼자 할 때 주의</h3>
+          <p>
+            구조 자체는 1~4인 협동 공포 콘텐츠에 가깝습니다.
+            솔로도 가능하지만 추격자, 랜덤 2층 구조, 방 열쇠 때문에 길을 잃기 쉬워서 엔딩 하나씩 나눠서 보는 편이 안전합니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>최종 엔딩 준비물</h3>
+          <p>
+            4번 엔딩은 높은 곳에 올라가야 하는 구간이 있습니다.
+            <strong>「제로」, 우미츠키, 나나리</strong> 중 한 명을 파티에 넣고 들어가면 막히지 않습니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="entry">
+      <h2>진입·보상</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>국내 명칭</td>
+              <td>냉산 병원: 악몽의 속박 / 이상 의뢰 악몽의 속박</td>
+            </tr>
+            <tr>
+              <td>해외 자료명</td>
+              <td>Nameless Hospital / Nightmare-Bound</td>
+            </tr>
+            <tr>
+              <td>시작 위치</td>
+              <td>에소라마치 병원 내부. 접수대에서 왼쪽 계단실로 들어가 벽을 바라보는 NPC와 대화.</td>
+            </tr>
+            <tr>
+              <td>기본 완료</td>
+              <td>엔딩 1개만 봐도 의뢰 완료 취급. 다만 엔딩별 첫 보상이 따로 있어 4개를 모두 보는 것이 좋습니다.</td>
+            </tr>
+            <tr>
+              <td>엔딩별 보상</td>
+              <td>각 엔딩 첫 클리어 기준 환석 50개와 폰즈 5,000개가 확인됩니다.</td>
+            </tr>
+            <tr>
+              <td>의뢰 보상 표기</td>
+              <td>게임위드 기준 헌터 경험치 450, 환석 60, 폰즈 20,000, 당근 은화 160, U-00NE 40, 비틀 코인 10,000, 이상 재료 선택상자 I 6개가 정리되어 있습니다.</td>
+            </tr>
+            <tr>
+              <td>추가 보상</td>
+              <td>병원 내부 금고에서 대량의 폰즈를 얻을 수 있습니다. 확인된 금고는 5만 폰즈 단위입니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ending1">
+      <h2>1번 엔딩 빠른 길</h2>
+      <p>
+        1번 엔딩은 솔로 기준 가장 빠른 클리어 루트입니다.
+        목표는 <strong>단서 3개를 모아 2층 영사기 방에 넣는 것</strong>입니다.
+      </p>
+
+      <div class="steps">
+        <article class="step-box">
+          <h3><span class="num">1</span> 첫 단서와 발전실 방향 잡기</h3>
+          <p>
+            악몽 구역에 들어가면 시작 지점 오른쪽 책상 모니터에서 첫 단서를 얻습니다.
+            이후 왼쪽 통로로 나가 긴 복도를 따라가되, 자동으로 닫히는 문은 무시하고 지나가 큰 대기실과 로비 쪽으로 갑니다.
+          </p>
+        </article>
+        <article class="step-box">
+          <h3><span class="num">2</span> 열쇠 뭉치와 두 번째 단서 챙기기</h3>
+          <p>
+            큰 로비에서 <strong>열쇠 뭉치</strong>를 먼저 먹습니다.
+            바로 복도로 빠지지 말고 주변 방을 확인해 두 번째 단서를 챙긴 뒤, 초록빛이 보이는 발전실로 이동합니다.
+          </p>
+        </article>
+        <article class="step-box">
+          <h3><span class="num">3</span> 발전기 켜기</h3>
+          <p>
+            발전실 안의 꺼진 발전기 4개를 순서대로 켭니다.
+            국내 공략 기준 방 입장 방향에서 <strong>12시 → 6시 → 9시 → 3시</strong> 순서로 누르면 됩니다.
+            불이 켜지면 추격자가 들어오니 발전기를 엄폐물로 쓰고 문 밖으로 빠져나갑니다.
+          </p>
+        </article>
+        <article class="step-box">
+          <h3><span class="num">4</span> 세 번째 단서와 2층 열쇠</h3>
+          <p>
+            불을 켠 뒤 복도에서 열쇠로 여는 방으로 들어가 진료실을 지나 EXIT 방향으로 갑니다.
+            중간 기습은 캐비닛에 숨거나, 잡혀서 시작점으로 돌아가도 단서 진행이 크게 망가지지 않습니다.
+            세 번째 단서를 먹고, 마지막 방 캐비닛에서 2층 계단 열쇠를 얻습니다.
+          </p>
+        </article>
+        <article class="step-box">
+          <h3><span class="num">5</span> 쓰레기 치우고 영사기 방으로</h3>
+          <p>
+            막힌 문 앞의 쓰레기는 공격해서 부술 수 있습니다.
+            문을 열고 나오면 빨간 방 쪽으로 바로 이동해 계단을 올라가고,
+            2층 대기실 뒤쪽의 영사기 방에 들어가 모은 단서 3개를 영사기에 하나씩 넣으면 1번 엔딩이 끝납니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="endings">
+      <h2>4엔딩 회수표</h2>
+      <p>
+        1번 엔딩 이후에는 엘리베이터가 열리므로 같은 병원을 다시 들어가 각 엔딩용 단서 세트를 모으면 됩니다.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>엔딩</th>
+              <th>핵심 단서</th>
+              <th>짧은 진행 순서</th>
+              <th>주의점</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge">1번</span></td>
+              <td>이상 혼란 단서 3개</td>
+              <td>1층 모니터 단서 → 로비 열쇠 뭉치 → 발전실 전원 복구 → 2층 열쇠 → 2층 영사기</td>
+              <td>완료하면 직원 엘리베이터 카드가 열립니다. 먼저 이 루트를 끝내세요.</td>
+            </tr>
+            <tr>
+              <td><span class="badge">2번</span></td>
+              <td>감시 기록 단서 3개</td>
+              <td>다시 진입 → 자동으로 닫히는 문 안 선반 미로에서 첫 단서 → 엘리베이터 2층 → 복도·방·발전실 쪽 단서 회수 → 영사기</td>
+              <td>2층은 몬스터 배치나 침수 상태가 달라질 수 있습니다. 물이 차면 우회해서 밸브를 잠급니다.</td>
+            </tr>
+            <tr>
+              <td><span class="badge">3번</span></td>
+              <td>이상 실험 단서 3개</td>
+              <td>엘리베이터 3층 → 파란 소화기 근처 봉인 용기에서 북쪽 열쇠 → 단서와 조각 회수 → 조각 탁자에 조립 → 남쪽 열쇠·사무실 열쇠 → 실험 단서 회수 → 2층 영사기</td>
+              <td>3층 일부 방은 시간 제한으로 밖으로 쫓겨납니다. 쫓겨나도 재진입하면 되니 빠르게 열쇠와 단서만 집으세요.</td>
+            </tr>
+            <tr>
+              <td><span class="badge">4번</span></td>
+              <td>악몽의 목소리 단서 + 이상 실험 단서</td>
+              <td>「제로」·우미츠키·나나리 중 1명 편성 → 2층 열쇠 확보 → 천장 파손 방에서 위층 진입 → 조각과 숨겨진 노트 회수 → 조각 3개 조립 → 숨겨진 책장 문 개방 → 2층 영사기</td>
+              <td>고지대 진입 스킬이 필요합니다. 단서 번호는 자료별 표기가 갈리므로 4번 루트에서 얻은 악몽 단서와 실험 단서 2개를 기준으로 넣으세요.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="gimmicks">
+      <h2>기믹·금고 메모</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>추격자 대처</h3>
+          <p>
+            정면 대결하는 콘텐츠가 아닙니다. 문을 닫고, 코너에서 기다리고, 캐비닛에 숨는 방식으로 시선을 끊습니다.
+            잡혀도 단서 진행이 저장되는 경우가 있어 너무 무리해서 도망치지 않아도 됩니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>2층 침수</h3>
+          <p>
+            2층은 물이 차는 패턴이 나올 수 있습니다.
+            외곽 복도를 따라가 부서진 벽이 보이는 방으로 들어가고, 정비실 안쪽의 밸브를 잠그면 물이 빠집니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>숨겨진 책장 스위치</h3>
+          <p>
+            4번 엔딩의 책장 문은 스위치 입력이 필요합니다.
+            순서는 <strong>빠르게 2번 → 1초 간격으로 1번씩 4회 → 빠르게 2번</strong>입니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>금고 위치</h3>
+          <p>
+            1층은 열쇠 뭉치를 먹은 로비에서 갈 수 있는 복도 중 빨간 형광등이 떨어진 방 바로 뒤쪽에 5만 폰즈 금고방이 있습니다.
+            2층 계단 잠긴 문 근처 복도, 4번 엔딩의 천장 위 방에도 각각 5만 폰즈 금고가 확인되어 총 15만 폰즈를 추가로 챙길 수 있습니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>출처</h2>
+      <ul class="source-list">
+        <li>
+          <a href="https://www.inven.co.kr/board/powerbbs.php?come_idx=6518&l=72&vtype=pc" target="_blank" rel="noopener">이환 인벤 - 악몽의 속박 빠른 엔딩 공략</a>:
+          국내 명칭, 진입 위치, 1번 엔딩 빠른 루트, 발전기 순서, 1층 금고 위치 기준.
+        </li>
+        <li>
+          <a href="https://blog.ko.playstation.com/2026/04/20/20260420-nte/" target="_blank" rel="noopener">PlayStation Blog 한국어 - 냉산 병원: 악몽의 속박 소개</a>:
+          공식 소개명과 몰입형 공포 콘텐츠 성격, 추격·은신 중심 설명 기준.
+        </li>
+        <li>
+          <a href="https://sayo-nyaa.tistory.com/2156" target="_blank" rel="noopener">SAYO - 이환 이상 의뢰 리스트</a>:
+          에소라마치 이상 의뢰 목록 안의 악몽의 속박 표기 확인.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598047" target="_blank" rel="noopener">Game8 - 무명 병원 전체 엔딩 가이드</a>:
+          4개 엔딩 구조, 시작 위치, 보상과 단서 세트 기준.
+        </li>
+        <li>
+          <a href="https://gamewith.net/nte/74955" target="_blank" rel="noopener">GameWith - Nightmare-Bound 전체 공략</a>:
+          전체 의뢰 보상, 2층 랜덤 침수, 5만 폰즈 금고 3곳 기준.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598049" target="_blank" rel="noopener">Game8 - 1번 엔딩 공략</a>:
+          직원 엘리베이터 카드, 1번 엔딩 단서·영사기 흐름 기준.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598236" target="_blank" rel="noopener">Game8 - 2번 엔딩 공략</a>:
+          감시 기록 단서와 2층 진행 기준.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598321" target="_blank" rel="noopener">Game8 - 3번 엔딩 공략</a>:
+          3층 열쇠, 조각 조립, 이상 실험 단서 기준.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/598322" target="_blank" rel="noopener">Game8 - 4번 엔딩 공략</a>:
+          「제로」·우미츠키·나나리 편성, 2층 분기, 숨겨진 책장 스위치 기준.
+        </li>
+        <li>
+          <a href="https://www.icy-veins.com/neverness-to-everness/nightmare-bound-anomaly-commission" target="_blank" rel="noopener">Icy Veins - Nightmare-Bound 공략</a>:
+          시작 NPC, 발전실, 1번 엔딩 기본 루트 보조 확인.
+        </li>
+      </ul>
+      <p class="small">
+        출시 초기 1.0 기준 공략입니다. 병원 내부 일부 방 배치와 2층 상태는 회차마다 달라질 수 있으니,
+        실제 진행 중에는 획득한 단서명과 영사기 방 제출 가능 단서를 우선 확인하세요.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
