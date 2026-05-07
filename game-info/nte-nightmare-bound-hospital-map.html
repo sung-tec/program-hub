@@ -504,6 +504,168 @@
       font-size: 13px;
     }
 
+    .simple-guide {
+      margin-top: 28px;
+    }
+
+    .simple-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+      margin: 18px 0;
+    }
+
+    .simple-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+      overflow: hidden;
+    }
+
+    .simple-card-head {
+      padding: 16px 18px;
+      color: #fff;
+      background: #243b72;
+    }
+
+    .simple-card:nth-child(2) .simple-card-head {
+      background: #0f766e;
+    }
+
+    .simple-card-head h3 {
+      margin: 0 0 6px;
+    }
+
+    .simple-card-head p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+    }
+
+    .simple-body {
+      padding: 18px;
+    }
+
+    .simple-map {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .simple-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .simple-row.four {
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    }
+
+    .simple-zone {
+      display: flex;
+      min-height: 74px;
+      padding: 12px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #f8fafc;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .simple-zone.goal {
+      background: #eef8f5;
+      border-color: #9bd3c7;
+      color: #0f5f55;
+    }
+
+    .simple-zone.key {
+      background: #edf4ff;
+      border-color: #9db9df;
+      color: #315f9c;
+    }
+
+    .simple-zone.warn {
+      background: #fff7e8;
+      border-color: #e7bd79;
+      color: #8a4a0f;
+    }
+
+    .simple-arrow {
+      display: flex;
+      align-items: center;
+      color: #516074;
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .simple-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .simple-list li {
+      padding: 11px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .quick-routes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .quick-route {
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px rgba(23, 32, 51, 0.05);
+    }
+
+    .quick-route strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #0f5f55;
+    }
+
+    .advanced-details {
+      margin-top: 34px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+    }
+
+    .advanced-details > summary {
+      cursor: pointer;
+      padding: 18px 20px;
+      color: #243149;
+      background: #eef2f7;
+      border-radius: var(--radius);
+      font-weight: 900;
+    }
+
+    .advanced-details[open] > summary {
+      border-bottom: 1px solid var(--line);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .advanced-inner {
+      padding: 0 18px 22px;
+    }
+
     @media (max-width: 720px) {
       .page {
         padding: 18px 12px 36px;
@@ -524,6 +686,16 @@
       .timeline-item {
         grid-template-columns: 1fr;
       }
+
+      .simple-row,
+      .simple-row.four {
+        grid-template-columns: 1fr;
+      }
+
+      .simple-arrow {
+        justify-content: center;
+        transform: rotate(90deg);
+      }
     }
   </style>
 </head>
@@ -536,8 +708,8 @@
       </p>
       <h1>이환 냉산 병원: 악몽의 속박 병원 지도</h1>
       <p>
-        이상 의뢰 「악몽의 속박」을 길 찾기 기준으로 다시 정리한 지도 페이지입니다.
-        1층·2층은 공개 지도와 공략 동선을 대조해 약도로 그렸고, 3층은 공개 지도 부족 때문에 구역별 진행 순서도로 정리했습니다.
+        복잡한 설명보다 길 찾기에 먼저 쓸 수 있게 다시 정리했습니다.
+        처음에는 아래의 쉬운 지도만 보고, 막히는 구간이 있을 때 상세 지도를 펼쳐 보세요.
       </p>
       <div class="meta">
         <span class="pill">기준일: 2026-05-08 한국시간</span>
@@ -545,23 +717,102 @@
         <span class="pill">목표: 단서·열쇠·금고 위치 빠른 확인</span>
       </div>
       <nav class="toc" aria-label="문서 목차">
-        <a href="#read">지도 읽는 법</a>
-        <a href="#floor1">1층 지도</a>
-        <a href="#floor2">2층 지도</a>
-        <a href="#floor3">3층 구역도</a>
-        <a href="#video">영상 루트</a>
-        <a href="#routes">목적별 동선</a>
-        <a href="#tables">위치표</a>
+        <a href="#quick">쉬운 지도</a>
+        <a href="#floor2-simple">2층 보기</a>
+        <a href="#floor3-simple">3층 보기</a>
+        <a href="#advanced">상세 펼치기</a>
         <a href="#sources">출처</a>
       </nav>
     </header>
 
     <section class="notice">
       <strong>중요:</strong>
-      이 지도는 게임 내 원본 미니맵을 복제한 것이 아니라, 공략용으로 방 배치와 연결 관계를 단순화한 약도입니다.
-      1층·2층 방 비율은 실제와 다를 수 있고, 2층은 침수/비침수 분기가 있어 같은 위치라도 열쇠 획득 조건이 달라질 수 있습니다.
-      국내 공식 명칭이 확인되는 것은 「냉산 병원: 악몽의 속박」이며, 일부 단서·열쇠명은 해외 공략명을 한국어로 옮긴 임시 표기입니다.
+      지도는 실제 방 크기보다 “어느 구역에서 무엇을 챙기는지”를 쉽게 보려고 단순화했습니다.
+      2층은 왼쪽·가운데·오른쪽, 3층은 조각 탁자 방을 기준으로 보면 됩니다.
     </section>
+
+    <section id="quick" class="simple-guide">
+      <h2>쉬운 지도</h2>
+      <p>
+        이 페이지는 여기만 봐도 됩니다.
+        2층은 <strong>왼쪽 뒤 복도, 가운데 영사기, 오른쪽 천장 구멍</strong>,
+        3층은 <strong>조각 탁자 방을 중심으로 왔다 갔다</strong> 한다고 생각하세요.
+      </p>
+
+      <div class="simple-grid">
+        <article id="floor2-simple" class="simple-card">
+          <div class="simple-card-head">
+            <h3>2층은 세 구역만 기억</h3>
+            <p>영사기 방을 가운데에 두고 왼쪽은 감시 기록, 오른쪽은 4번 엔딩입니다.</p>
+          </div>
+          <div class="simple-body">
+            <div class="simple-map">
+              <div class="simple-row">
+                <div class="simple-zone key">왼쪽 뒤 복도<br />감시 기록<br />2층 열쇠 뭉치</div>
+                <div class="simple-arrow">→</div>
+                <div class="simple-zone goal">가운데 대기실<br />영사기 방<br />단서 제출</div>
+                <div class="simple-arrow">→</div>
+                <div class="simple-zone warn">오른쪽 병동<br />벽 구멍<br />천장 구멍</div>
+              </div>
+            </div>
+            <ul class="simple-list">
+              <li><strong>2번 엔딩:</strong> 왼쪽 뒤 복도에서 감시 기록을 챙기고 가운데 영사기에 넣습니다.</li>
+              <li><strong>4번 엔딩 준비:</strong> 왼쪽 뒤 복도에서 2층 열쇠 뭉치를 먹고 오른쪽 병동으로 갑니다.</li>
+              <li><strong>천장 구멍:</strong> 오른쪽 병동의 벽 구멍을 넘은 다음, 이동기 캐릭터로 위층에 올라갑니다.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article id="floor3-simple" class="simple-card">
+          <div class="simple-card-head">
+            <h3>3층은 조각 탁자 중심</h3>
+            <p>길을 잃으면 무조건 조각 탁자 방으로 돌아오면 됩니다.</p>
+          </div>
+          <div class="simple-body">
+            <div class="simple-map">
+              <div class="simple-row four">
+                <div class="simple-zone key">엘리베이터<br />북쪽 열쇠</div>
+                <div class="simple-arrow">→</div>
+                <div class="simple-zone goal">조각 탁자 방<br />기준점</div>
+                <div class="simple-arrow">→</div>
+                <div class="simple-zone key">위쪽 방<br />실험 II<br />조각 I</div>
+                <div class="simple-arrow">→</div>
+                <div class="simple-zone warn">열린 복도<br />실험 III<br />미스티</div>
+              </div>
+            </div>
+            <ul class="simple-list">
+              <li><strong>3번 엔딩:</strong> 실험 II → 조각 I → 실험 III → 남쪽 구역 실험 IV 순서로 보면 됩니다.</li>
+              <li><strong>4번 엔딩:</strong> 2층 천장 위에서 조각 IV를 가져와 조각 탁자에 넣고 V???의 노트를 챙깁니다.</li>
+              <li><strong>마지막:</strong> 미스티를 조각 II로 바꾸고 책장 스위치를 풀어 실험 VI를 얻은 뒤 2층 영사기로 갑니다.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <h2>엔딩별 한 줄 길찾기</h2>
+      <div class="quick-routes">
+        <article class="quick-route">
+          <strong>1번 엔딩</strong>
+          1층에서 열쇠와 단서 3개를 챙기고 2층 가운데 영사기 방으로 갑니다.
+        </article>
+        <article class="quick-route">
+          <strong>2번 엔딩</strong>
+          2층 왼쪽 뒤 복도에서 감시 기록 3개를 모아 가운데 영사기 방에 넣습니다.
+        </article>
+        <article class="quick-route">
+          <strong>3번 엔딩</strong>
+          3층 조각 탁자 방을 기준으로 실험 단서를 모은 뒤 2층 영사기 방에 넣습니다.
+        </article>
+        <article class="quick-route">
+          <strong>4번 엔딩</strong>
+          2층 오른쪽 천장 구멍 → 3층 조각 IV/미스티/책장 → 2층 영사기 순서입니다.
+        </article>
+      </div>
+    </section>
+
+    <details id="advanced" class="advanced-details">
+      <summary>상세 지도와 위치표 펼쳐보기</summary>
+      <div class="advanced-inner">
 
     <section id="read">
       <h2>지도 읽는 법</h2>
@@ -1884,6 +2135,9 @@
         </table>
       </div>
     </section>
+
+      </div>
+    </details>
 
     <section id="sources">
       <h2>출처</h2>
