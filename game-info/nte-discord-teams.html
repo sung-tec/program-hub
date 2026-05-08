@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이환 디스코드 조합·발동조건·운용법 - 2026-05-08</title>
+  <meta
+    name="description"
+    content="이환 디스코드 에스퍼 사이클 발동조건, 추천 조합, 조합 티어표, 각 조합별 운용방식 정리"
+  />
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5f6d82;
+      --line: #dce4ef;
+      --accent: #315f9c;
+      --accent-2: #0f766e;
+      --accent-3: #8a4a0f;
+      --danger: #a72828;
+      --soft: #edf4ff;
+      --soft-green: #eef8f5;
+      --soft-amber: #fff7e8;
+      --shadow: 0 18px 48px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    header {
+      color: #fff;
+      background: linear-gradient(135deg, #25264e 0%, #6f2f12 100%);
+      border-radius: var(--radius);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .back-link {
+      margin: 0 0 16px;
+    }
+
+    .back-link a,
+    .toc a {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 999px;
+    }
+
+    .back-link a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 42px 0 14px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    header p {
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .meta,
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta {
+      margin-top: 18px;
+    }
+
+    .pill,
+    .chip,
+    .tier {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .pill {
+      min-height: 30px;
+      padding: 4px 10px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.10);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-weight: 800;
+    }
+
+    .notice,
+    .card,
+    .flow,
+    .combo-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 18px;
+      border-left: 5px solid var(--accent-3);
+      background: var(--soft-amber);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .card,
+    .combo-card {
+      padding: 18px;
+    }
+
+    .card strong,
+    .combo-card strong {
+      color: #0f5f55;
+    }
+
+    .simple-answer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .answer-box {
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.10);
+    }
+
+    .answer-box h3 {
+      color: #fff;
+    }
+
+    .answer-box p {
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 0;
+    }
+
+    .flow {
+      padding: 18px;
+      margin: 16px 0;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .flow-step {
+      min-height: 92px;
+      padding: 14px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fafc;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .flow-step small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .flow-step.hot {
+      background: #fff2ef;
+      border-color: #e4aaa3;
+      color: #9b2c2c;
+    }
+
+    .flow-step.burst {
+      background: #edf4ff;
+      border-color: #9db9df;
+      color: #315f9c;
+    }
+
+    .flow-step.result {
+      background: #eef8f5;
+      border-color: #9bd3c7;
+      color: #0f5f55;
+    }
+
+    .arrow {
+      color: #516074;
+      font-size: 24px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .chip {
+      min-height: 28px;
+      padding: 2px 9px;
+      color: var(--ink);
+      background: #eef3f9;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .chip.core {
+      background: #fff0ee;
+      color: #9b2c2c;
+    }
+
+    .chip.safe {
+      background: #eef8f5;
+      color: #0f5f55;
+    }
+
+    .chip.flex {
+      background: #fff7e8;
+      color: #8a4a0f;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      min-width: 920px;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--paper);
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: #243149;
+      background: #eef2f7;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .tier {
+      min-width: 42px;
+      justify-content: center;
+      min-height: 26px;
+      padding: 0 8px;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .tier.s {
+      background: #b42318;
+    }
+
+    .tier.a {
+      background: #0f766e;
+    }
+
+    .tier.b {
+      background: #516074;
+    }
+
+    .combo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .combo-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .combo-card ol {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .source-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 18px 12px 36px;
+      }
+
+      header {
+        padding: 24px 18px;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+
+      table {
+        min-width: 860px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="back-link"><a href="../game-info.html">&larr; 게임정보 목록</a></p>
+      <h1>이환 디스코드 조합·발동조건·운용법</h1>
+      <p>
+        디스코드는 암·주·혼 속성을 엮어 보스의 브레이크를 빠르게 당기는 3속성 에스퍼 사이클입니다.
+        복잡한 속성표보다 바로 조합을 짤 수 있게 발동 조건, 추천 조합, 티어, 운용 순서를 한 화면 기준으로 정리했습니다.
+      </p>
+      <div class="meta">
+        <span class="pill">기준일: 2026-05-08 한국시간</span>
+        <span class="pill">핵심: 암 + 주 + 혼</span>
+        <span class="pill">용도: 보스 브레이크 / 패리 폭딜</span>
+      </div>
+      <nav class="toc" aria-label="문서 목차">
+        <a href="#summary">핵심 요약</a>
+        <a href="#condition">발동조건</a>
+        <a href="#tier">조합 티어</a>
+        <a href="#rotation">운용법</a>
+        <a href="#trouble">실패 체크</a>
+        <a href="#sources">출처</a>
+      </nav>
+
+      <div class="simple-answer">
+        <article class="answer-box">
+          <h3>한 줄 결론</h3>
+          <p>디스코드는 <strong>스코치 + 노바</strong>가 같은 대상에게 겹칠 때 터지는 브레이크 특화 반응입니다.</p>
+        </article>
+        <article class="answer-box">
+          <h3>필수 캐릭터</h3>
+          <p>현재는 암속성 축 때문에 <strong>다포딜</strong>이 사실상 고정입니다.</p>
+        </article>
+        <article class="answer-box">
+          <h3>추천 시작 조합</h3>
+          <p><strong>다포딜 / 사키리 / 나나리 / 하니엘</strong>이 가장 무난합니다.</p>
+        </article>
+      </div>
+    </header>
+
+    <section class="notice">
+      <strong>표기 기준:</strong>
+      국내 표기는 암·주·혼, 다포딜, 사키리, 하니엘, 백장, 나나리, 구원, 우미츠키를 우선 사용했습니다.
+      해외 자료의 Chaos/Incantation/Psyche는 각각 암/주/혼으로 옮겼습니다.
+      일부 해외 팀 페이지는 디스코드 설명에 오타성 표기가 섞여 있어, 발동조건은 인벤의 속성 구조와 Prydwen·AllClash의 스코치+노바 설명을 기준으로 정리했습니다.
+    </section>
+
+    <section id="summary">
+      <h2>핵심 요약</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>무엇이 좋은가</h3>
+          <p>
+            디스코드는 체력 자체를 녹이는 반응이라기보다 <strong>브레이크 게이지를 크게 압박</strong>하는 반응입니다.
+            보스가 빨리 브레이크되면 이후 궁극기와 폭딜을 안전하게 넣을 수 있습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>언제 쓰나</h3>
+          <p>
+            잡몹보다는 <strong>보스, 주간 보스, 궤도 너머, 브레이크 창이 중요한 전투</strong>에서 가치가 큽니다.
+            잡몹은 차지/블라썸처럼 단순하고 넓은 조합이 더 편할 수 있습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>가장 쉬운 기억법</h3>
+          <p>
+            <strong>다포딜 + 주속성 1명 + 혼속성 1명</strong>이면 디스코드 준비가 됩니다.
+            4번째 자리는 메인 딜러, 버퍼, 생존 보강 중 부족한 것을 넣습니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="condition">
+      <h2>발동조건</h2>
+      <p>
+        디스코드는 3속성 반응이지만, 전투에서는 먼저 2속성 반응을 만들고 그 위에 다른 2속성 반응을 겹치는 느낌으로 보면 쉽습니다.
+      </p>
+
+      <div class="flow">
+        <div class="flow-row">
+          <div class="flow-step hot">
+            스코치
+            <small>암 + 주<br />예: 다포딜 + 사키리/백장/아들러</small>
+          </div>
+          <div class="arrow">+</div>
+          <div class="flow-step burst">
+            노바
+            <small>암 + 혼<br />예: 다포딜 + 하니엘/파디아/우미츠키</small>
+          </div>
+          <div class="arrow">=</div>
+          <div class="flow-step result">
+            디스코드
+            <small>같은 대상에게 둘이 겹치면<br />브레이크를 크게 깎음</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>조건</th>
+              <th>쉬운 설명</th>
+              <th>추천 캐릭터</th>
+              <th>주의점</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>암속성</td>
+              <td>스코치와 노바 양쪽에 모두 끼는 중심축입니다.</td>
+              <td>다포딜</td>
+              <td>현재 공개 1.0 기준 디스코드는 다포딜 의존도가 매우 높습니다.</td>
+            </tr>
+            <tr>
+              <td>주속성</td>
+              <td>암속성과 만나 스코치를 만듭니다.</td>
+              <td>사키리, 백장, 아들러</td>
+              <td>사키리는 버프/제어, 백장은 고점 딜, 아들러는 생존과 디버프 쪽입니다.</td>
+            </tr>
+            <tr>
+              <td>혼속성</td>
+              <td>암속성과 만나 노바를 만듭니다.</td>
+              <td>하니엘, 파디아, 우미츠키</td>
+              <td>하니엘은 버프, 파디아는 생존, 우미츠키는 공격형 대체입니다.</td>
+            </tr>
+            <tr>
+              <td>같은 대상</td>
+              <td>스코치와 노바가 같은 적에게 겹쳐야 디스코드가 의미 있게 터집니다.</td>
+              <td>보스전 권장</td>
+              <td>여러 잡몹에게 흩어지면 체감이 크게 떨어집니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tier">
+      <h2>조합 티어표</h2>
+      <p>
+        티어는 공개 공략, 현재 캐릭터 평가, 발동 안정성, 조작 난이도를 같이 본 실전 추천도입니다.
+        보유 캐릭터와 각성 상태에 따라 순위는 달라질 수 있습니다.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>티어</th>
+              <th>조합</th>
+              <th>핵심 장점</th>
+              <th>추천 대상</th>
+              <th>대체</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tier s">S</span></td>
+              <td>다포딜 / 사키리 / 나나리 / 하니엘</td>
+              <td>GameWith 추천 디스코드 축. 사키리와 하니엘 버프, 나나리 지속딜, 다포딜 브레이크 압박이 안정적입니다.</td>
+              <td>가장 무난한 디스코드 입문/실전 조합</td>
+              <td>민트는 나나리 대체, 아들러는 사키리 대체, 우미츠키는 하니엘 공격형 대체</td>
+            </tr>
+            <tr>
+              <td><span class="tier s">S</span></td>
+              <td>백장 / 다포딜 / 사키리 / 하니엘</td>
+              <td>스코치 고점과 디스코드를 함께 노리는 공격형 보스 조합입니다.</td>
+              <td>백장 운용에 익숙하고 딜 고점을 보고 싶은 유저</td>
+              <td>아들러는 백장/사키리 한 자리 대체 가능하지만 총딜은 내려갑니다.</td>
+            </tr>
+            <tr>
+              <td><span class="tier a">A+</span></td>
+              <td>다포딜 / 하니엘 / 아들러 / 구원</td>
+              <td>아들러 보호막과 디버프, 구원 군중 제어로 운용이 편합니다. 풀 S급 조합보다 접근성이 좋습니다.</td>
+              <td>백장이나 사키리가 없고 안정성을 챙기고 싶은 유저</td>
+              <td>구원 자리는 나나리, 파디아, 우미츠키로 조정 가능</td>
+            </tr>
+            <tr>
+              <td><span class="tier a">A</span></td>
+              <td>백장 / 다포딜 / 하니엘 / 파디아</td>
+              <td>파디아로 생존을 보강한 보스전 안정형입니다. 사키리 버프가 빠져 고점은 낮습니다.</td>
+              <td>맞딜이 힘든 고난도 전투</td>
+              <td>파디아 대신 우미츠키를 넣으면 공격형, 아들러를 넣으면 보호막형</td>
+            </tr>
+            <tr>
+              <td><span class="tier a">A</span></td>
+              <td>다포딜 / 사키리 / 우미츠키 / 하니엘</td>
+              <td>혼속성 공격을 늘린 빠른 교대형입니다. 생존 보강이 적어 조작 의존도가 있습니다.</td>
+              <td>패리와 교대 타이밍에 익숙한 유저</td>
+              <td>우미츠키 대신 나나리나 파디아로 안정화</td>
+            </tr>
+            <tr>
+              <td><span class="tier b">B</span></td>
+              <td>다포딜 / 아들러 / 파디아 / 자유 딜러</td>
+              <td>디스코드 발동은 가능하지만 딜 버프와 스코치 고점이 부족합니다.</td>
+              <td>초반 임시 조합</td>
+              <td>사키리, 백장, 하니엘을 얻는 대로 교체</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="rotation">
+      <h2>각 조합별 운용방식</h2>
+      <div class="combo-grid">
+        <article class="combo-card">
+          <div class="combo-head">
+            <h3>다포딜 / 사키리 / 나나리 / 하니엘</h3>
+            <span class="chip core">추천</span>
+          </div>
+          <p>
+            나나리가 평소 딜을 담당하고, 디스코드 타이밍에는 사키리·다포딜·하니엘 축으로 반응을 터뜨립니다.
+          </p>
+          <ol>
+            <li>하니엘 스킬/궁으로 버프를 깔고 시작합니다.</li>
+            <li>나나리로 필드 딜을 하며 사이클 게이지를 채웁니다.</li>
+            <li>사키리와 다포딜로 스코치를 먼저 준비합니다.</li>
+            <li>하니엘과 다포딜로 노바를 겹쳐 디스코드를 터뜨립니다.</li>
+            <li>브레이크 직전이나 패리 타이밍에 다포딜로 들어가 폭딜을 넣습니다.</li>
+          </ol>
+        </article>
+
+        <article class="combo-card">
+          <div class="combo-head">
+            <h3>백장 / 다포딜 / 사키리 / 하니엘</h3>
+            <span class="chip core">고점</span>
+          </div>
+          <p>
+            백장과 사키리의 스코치 축을 강하게 쓰는 조합입니다. 손이 바쁘지만 보스전 고점이 좋습니다.
+          </p>
+          <ol>
+            <li>하니엘 버프를 깔고 사키리로 제어/버프를 준비합니다.</li>
+            <li>백장으로 필드 딜을 하며 스코치 기반 피해를 누적합니다.</li>
+            <li>다포딜을 교대/패리 타이밍에 넣어 암속성 축을 유지합니다.</li>
+            <li>스코치가 붙은 대상에게 하니엘-다포딜 노바를 겹쳐 디스코드를 터뜨립니다.</li>
+            <li>브레이크 후 백장과 다포딜의 강한 스킬을 몰아칩니다.</li>
+          </ol>
+        </article>
+
+        <article class="combo-card">
+          <div class="combo-head">
+            <h3>다포딜 / 하니엘 / 아들러 / 구원</h3>
+            <span class="chip safe">안정</span>
+          </div>
+          <p>
+            백장·사키리 없이 디스코드를 굴리는 접근성 조합입니다. 아들러가 보호막과 주속성 자리를 동시에 봅니다.
+          </p>
+          <ol>
+            <li>구원으로 몹을 모으거나 보스 주변을 정리합니다.</li>
+            <li>아들러로 보호막을 켜고 주속성 반응을 준비합니다.</li>
+            <li>하니엘 스킬로 공격 버프와 노바 축을 준비합니다.</li>
+            <li>다포딜을 패리/교대 타이밍에 넣어 스코치와 노바를 이어 줍니다.</li>
+            <li>디스코드로 브레이크를 앞당긴 뒤 구원 또는 다포딜로 마무리합니다.</li>
+          </ol>
+        </article>
+
+        <article class="combo-card">
+          <div class="combo-head">
+            <h3>백장 / 다포딜 / 하니엘 / 파디아</h3>
+            <span class="chip flex">생존</span>
+          </div>
+          <p>
+            생존을 크게 올린 보스전 조합입니다. 사키리가 없어서 최고 딜은 낮지만 안정성이 좋습니다.
+          </p>
+          <ol>
+            <li>파디아로 위험 패턴 대응과 생존을 보강합니다.</li>
+            <li>하니엘 버프 후 백장으로 딜을 이어 갑니다.</li>
+            <li>다포딜로 스코치/노바 연결을 유지합니다.</li>
+            <li>디스코드는 무리해서 첫 사이클에 터뜨리기보다 패리 후 게이지가 찼을 때 노립니다.</li>
+            <li>브레이크 창에는 백장 딜을 우선하고, 다포딜은 패리/폭딜 보조로 씁니다.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="trouble">
+      <h2>발동이 안 될 때 체크</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>스코치를 먼저 붙이기</h3>
+          <p>
+            스코치는 지속시간이 길고, 노바는 짧게 터지는 쪽입니다.
+            그래서 보통 <strong>스코치 → 노바 → 디스코드</strong> 순서가 더 쉽습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>같은 적을 때리기</h3>
+          <p>
+            여러 적에게 반응이 흩어지면 디스코드가 잘 안 보입니다.
+            보스나 큰 적 하나를 고정하고 같은 대상에게 스코치와 노바를 겹치세요.
+          </p>
+        </article>
+        <article class="card">
+          <h3>패리로 게이지 채우기</h3>
+          <p>
+            디스코드는 사이클 게이지가 늦게 차면 실패하기 쉽습니다.
+            보스의 패리 가능 공격에 맞춰 교대/패리를 성공시키면 다음 반응을 훨씬 빨리 만들 수 있습니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>첫 사이클 집착 금지</h3>
+          <p>
+            전투 시작하자마자 무조건 디스코드를 터뜨릴 필요는 없습니다.
+            버프를 깔고 게이지를 준비한 뒤, 브레이크를 앞당기고 싶을 때 넣는 편이 안정적입니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>출처</h2>
+      <ul class="source-list">
+        <li>
+          <a href="https://www.inven.co.kr/board/nte/6518/32" target="_blank" rel="noopener">이환 인벤 - 속성과 에스퍼 사이클 정리</a>:
+          국내 속성명, 암·주·혼 디스코드 구조, 속성 인접 반응 기준.
+        </li>
+        <li>
+          <a href="https://www.prydwen.gg/neverness-to-everness/guides/esper-cycles/" target="_blank" rel="noopener">Prydwen - Esper Cycles</a>:
+          스코치/노바/디스코드 발동조건, 다포딜 디스코드 강화 효과, 브레이크 감소 기준.
+        </li>
+        <li>
+          <a href="https://gamewith.net/nte/74215" target="_blank" rel="noopener">GameWith - Best Team Builds</a>:
+          다포딜·사키리·나나리·하니엘 디스코드 조합, 대체 캐릭터와 기본 운용 기준.
+        </li>
+        <li>
+          <a href="https://game8.co/games/Neverness-to-Everness/archives/596606" target="_blank" rel="noopener">Game8 - Best Team Compositions</a>:
+          다포딜 팀의 브레이크 게이지 압박 역할과 프리미엄 조합 비교 기준.
+        </li>
+        <li>
+          <a href="https://www.allclash.com/best-discord-core-reaction-team-in-neverness-to-everness-incl-builds/" target="_blank" rel="noopener">AllClash - Discord Core Team</a>:
+          스코치와 노바를 같은 대상에게 겹쳐 디스코드를 발동한다는 조건 보조 확인.
+        </li>
+        <li>
+          <a href="https://mobalytics.gg/neverness-to-everness/teams" target="_blank" rel="noopener">Mobalytics - NTE Teams</a>:
+          다포딜 중심 퀵스왑, 백장·다포딜·사키리 계열 조합, 보스 브레이크 운용 참고.
+        </li>
+        <li>
+          <a href="https://www.youtube.com/watch?v=MJrnDCWE4-M" target="_blank" rel="noopener">엔코르 nCore - 속성 시너지/파티 조합 가이드</a>,
+          <a href="https://www.youtube.com/watch?v=XqYemNEH-as" target="_blank" rel="noopener">퀴디온 - 백장 없이 쓰는 다포딜 디스코드 파티</a>:
+          국내 영상 기준 디스코드 파트, 백장 없이 쓰는 다포딜 조합, 실전 운용 흐름 참고.
+        </li>
+      </ul>
+      <p class="small">
+        출시 초기 1.0 기준 정리입니다. 캐릭터 추가, 각성 연구, 밸런스 패치에 따라 디스코드 조합 평가는 달라질 수 있습니다.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
