@@ -1,47 +1,34 @@
-# AI Weekly Update - 2026-10-12
+# AI Weekly Update - 2026-10-19
 
-Generated: 2026-10-12T14:32:16+09:00
+Generated: 2026-10-19T13:14:57+09:00
 
-Period: 2026-10-05 ~ 2026-10-12
+Period: 2026-10-12 ~ 2026-10-19
 
 ## 3줄 요약
 
-- OpenAI Codex GitHub Releases: Bug Fixes - Fixed a TUI crash when asynchronous questions contain multiple lines, preserving line breaks and complete hyperlink destinations. (51866) - Fixed startup failures caus...
-- Claude Code Changelog: 2.1.296 October 9, 2026 Added Added a code key to the Claude apps gateway’s managed.policies[] : the same settings as cli , also applied in Claude Desktop’s Code tab; beside deskt...
-- Anthropic API Release Notes: October 9, 2026 
+- Claude Code Changelog: 2.1.303 October 18, 2026 Bug fixes and reliability improvements
+- OpenAI Codex GitHub Releases: New Features - Open /config to search preferences across categories, change supported settings immediately, and see which changes require a restart. (52990, 53429) - Send a follow...
+- Anthropic API Release Notes: October 15, 2026  The Compliance API now returns the text each organization member saved as Instructions for Claude in claude.ai and as Global instructions in Cowork, in beta for...
 
 ## 주요 변경 후보
 
 | Date | Source | Change |
 | --- | --- | --- |
-| 2026-10-10 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.162.1) | Bug Fixes - Fixed a TUI crash when asynchronous questions contain multiple lines, preserving line breaks and complete hyperlink destinations. (51866) - Fixed startup failures caused by differences between a running back... |
-| 2026-10-09 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.162.0) | New Features - Add tools for creating and listing managed Git worktrees from trusted local projects when the worktrees feature is enabled. (50148) - Pin tasks in the agent Command Center with p and keep them in a shared... |
-| 2026-10-09 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.296 October 9, 2026 Added Added a code key to the Claude apps gateway’s managed.policies[] : the same settings as cli , also applied in Claude Desktop’s Code tab; beside desktop , it turns on Claude Desktop’s gatewa... |
-| 2026-10-09 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 9, 2026  |
-| 2026-10-08 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.161.0) | New Features - GPT-6.1 Sol is now the default model in the bundled and Amazon Bedrock catalogs. (49318, 49339) - Amazon Bedrock supports multi-agent V2 and Ultra reasoning on compatible models; Bedrock Mantle also accep... |
-| 2026-10-08 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 8, 2026 Gemini 3.7 Flash deprecation : gemini-3.7-flash is deprecated and has been replaced by gemini-3.8-flash . All requests to gemini-3.7-flash are automatically routed to gemini-3.8-flash . Update your model... |
-| 2026-10-08 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.295 October 8, 2026 Added Added onFailure: "block" for command and HTTP hooks: a hook that can’t start, times out, or exits with an unexpected code blocks the action instead of letting it through Added Program Statu... |
-| 2026-10-08 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.294 October 8, 2026 Fixed prompt and agent hooks written as instructions (such as “Block commands that…”) allowing what they should block Improved how prompt hooks on Stop and SubagentStop written as instructions (s... |
-| 2026-10-08 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 8, 2026  The Compliance API chat endpoints now also return chats from the unified Claude experience, in beta for Claude Enterprise organizations, with your existing Compliance Access Key. See Retrieve and delet... |
-| 2026-10-07 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.293 October 7, 2026 Added Added Claude Haiku 5.5 ( claude-haiku-5-5 ), now the default Haiku model on the Anthropic API — 1M context, 0.10 / 0.10/ 0.10/ 0.50 per Mtok ( 0.50 / 0.50/ 0.50/ 2.50 for prompts over 100K)... |
-| 2026-10-07 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 7, 2026  We've lowered the price of prompt cache reads on Claude Sonnet 5.5 from $0.20 USD to $0.10 USD per million tokens: 0.05x the base input price instead of 0.1x. Cache writes and all other prices are unch... |
-| 2026-10-06 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.160.1) | Bug Fixes - Preserve SYSTEMROOT, TEMP, and TMP when launching remote stdio MCP servers with explicitly configured remote environment variables, allowing Unix hosts to retain the Windows executor's startup environment. C... |
-| 2026-10-06 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between September 22, 2026, and October 06, 2026. Microsoft 365 Copilot Seamless Search and Chat Integration [Windows, Web] Microsoft 365 Chat brings the power of conversational AI directly into Microso... |
-| 2026-10-06 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between September 22, 2026, and October 06, 2026. Microsoft 365 Copilot Regenerate response for alternative answers [Web] The Regenerate action lets you quickly get an alternative response to your lates... |
-| 2026-10-06 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between September 22, 2026, and October 06, 2026. PowerPoint Reference files saved in SharePoint libraries and OneDrive folders when creating a presentation with Copilot in PowerPoint [Mac] You can now... |
-| 2026-10-06 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 6, 2026 Gemini Nano Banana 2.1 generally available (GA) : Released Gemini Nano Banana 2.1 ( gemini-nano-banana-2.1 ), the latest high-efficiency image generation and conversational editing model. An update to Na... |
-| 2026-10-06 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.292 October 6, 2026 Added Added --marketplace <source> to claude plugin install : adds the marketplace if needed, under the same policy checks as claude plugin marketplace add , then installs the plugin from it Adde... |
-| 2026-10-06 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.291 October 6, 2026 Fixed a regression in 2.1.290 where cloud sessions could drop answers to permission prompts Fixed a regression in 2.1.288 where the last messages of a session could be lost when quitting |
-| 2026-10-06 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 6, 2026  We've added capabilities.server_tools to the Models API . GET /v1/models and GET /v1/models/{model_id} now report whether each model accepts the web search and code execution tools. To check whether a... |
-| 2026-10-05 | [OpenAI API Changelog](https://platform.openai.com/docs/changelog) | Standard pricing is $5 per 1M input tokens, $0.50 per 1M cached input tokens, and $25 per 1M output tokens. Billing begins on October 5, 2026. See pricing for details. Sep 3 Feature gpt-6-astra v1/responses v1/chat/comp... |
-| 2026-10-05 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | antigravity-preview-05-2026 shuts down on October 5, 2026, tracked on the deprecations page. |
-| 2026-10-05 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.290 October 5, 2026 Added Added serverToolUses to the result of a mod’s turn.step hook: the tool calls the API ran itself (the advisor), each with its id, name, input, start and end Added agentId to the tool.check e... |
-| 2026-10-05 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 5, 2026  We've added capabilities.thinking.types.disabled to the Models API . GET /v1/models and GET /v1/models/{model_id} now report whether each model accepts thinking: {type: "disabled"} , which turns thinki... |
+| 2026-10-18 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.303 October 18, 2026 Bug fixes and reliability improvements |
+| 2026-10-16 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.163.0) | New Features - Open /config to search preferences across categories, change supported settings immediately, and see which changes require a restart. (52990, 53429) - Send a follow-up while Codex is responding to steer i... |
+| 2026-10-16 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.302 October 16, 2026 Added Added CLAUDE_CODE_AUTO_MODE_MODEL to choose the model the client-side auto mode classifier uses; it does not change the model for server-side auto mode Added an Idle compaction row to /con... |
+| 2026-10-15 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.301 October 15, 2026 Added Added CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS so unattended retry mode ( CLAUDE_CODE_RETRY_WATCHDOG ) ends a request at a usage limit that resets too far away instead of waiting... |
+| 2026-10-15 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 15, 2026  The Compliance API now returns the text each organization member saved as Instructions for Claude in claude.ai and as Global instructions in Cowork, in beta for Claude Enterprise organizations. Call G... |
+| 2026-10-14 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.300 October 14, 2026 Added Added virtualText to a mod’s prompt decorations: text drawn in the prompt box that never enters the draft or the submitted prompt Added cache_creation_5m_tokens and cache_creation_1h_token... |
+| 2026-10-14 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.299 October 14, 2026 Added Added CLAUDE_CODE_DISABLE_FILE_MENTIONS environment variable: Claude gets the paths of @ file mentions to read with its file tools, not the files’ contents Added idle compaction in the ter... |
+| 2026-10-14 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 14, 2026  We've launched OpenTelemetry export in beta, so you can trace Messages API requests and Claude Managed Agents sessions in your observability backend. The Claude SDK emits spans in Python, TypeScript,... |
+| 2026-10-13 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 13, 2026 Gemini 4 Argon ( gemini-4-argon ) generally available (GA) : Released Gemini 4 Argon ( gemini-4-argon ), our most capable model built for complex coding, agentic, math, and science tasks. For API change... |
+| 2026-10-13 | [Gemini App Release Notes](https://gemini.google/release-notes/) | 2026.10.13 Introducing Gemini 4 Argon: our frontier model for complex tasks What: Starting today, Gemini 4 Argon is rolling out globally for Google AI Pro & Ultra subscribers in the Gemini app. 4 Argon is our newest fro... |
 
 
 ## 업데이트가 감지된 출처
 
-Anthropic API Release Notes, Claude Code Changelog, Google Gemini API Changelog, Microsoft 365 Copilot Release Notes, OpenAI API Changelog, OpenAI Codex GitHub Releases
+Anthropic API Release Notes, Claude Code Changelog, Gemini App Release Notes, Google Gemini API Changelog, OpenAI Codex GitHub Releases
 
 ## Collection Errors
 
