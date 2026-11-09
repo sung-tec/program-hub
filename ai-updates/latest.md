@@ -1,43 +1,33 @@
-# AI Weekly Update - 2026-11-02
+# AI Weekly Update - 2026-11-09
 
-Generated: 2026-11-02T14:34:53+09:00
+Generated: 2026-11-09T14:48:29+09:00
 
-Period: 2026-10-26 ~ 2026-11-02
+Period: 2026-11-02 ~ 2026-11-09
 
 ## 3줄 요약
 
-- Claude Code Changelog: 2.1.316 October 31, 2026 Added Added CLAUDE_CODE_DISABLE_ULTRATHINK , which turns the ultrathink keyword off Added pooled group budgets to the Claude apps gateway: one monthly bud...
-- OpenAI Codex GitHub Releases: New Features - Added keyboard-driven transcript selection with word, line, and page motions, integrated search, and configurable shortcuts. (57221, 57222, 57223, 57224) - Rendered...
-- Google Gemini API Changelog: October 30, 2026 Computer Use generally available (GA) : Released the Computer Use tool to general availability (GA) across the Interactions and GenerateContent APIs.
+- OpenAI Codex GitHub Releases: New Features - Open the agent command center with codex agents --no-daemon. The command center and session picker now mark unread results (58238, 58239, 58263, 58264). - Switch be...
+- Claude Code Changelog: 2.1.319 November 6, 2026 Added Added support for MCP tasks in the terminal: when an MCP server runs a tool call as a task, Claude Code moves it to the background right away and te...
+- Anthropic API Release Notes: November 5, 2026  You can now set up an IP allowlist for your organization in the Claude Console, in beta. Requests to covered services from addresses not on your list are refuse...
 
 ## 주요 변경 후보
 
 | Date | Source | Change |
 | --- | --- | --- |
-| 2026-10-31 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.316 October 31, 2026 Added Added CLAUDE_CODE_DISABLE_ULTRATHINK , which turns the ultrathink keyword off Added pooled group budgets to the Claude apps gateway: one monthly budget that a group’s members share, on top... |
-| 2026-10-31 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | {"docsConfig":{"theme":"mint","$schema":"https://mintlify.com/docs.json","name":"Claude Code Docs","description":"Official documentation for Claude Code, Anthropic's agentic coding tool available in the terminal, IDE, d... |
-| 2026-10-30 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.166.0) | New Features - Added keyboard-driven transcript selection with word, line, and page motions, integrated search, and configurable shortcuts. (57221, 57222, 57223, 57224) - Rendered Markdown consistently in async question... |
-| 2026-10-30 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 30, 2026 Computer Use generally available (GA) : Released the Computer Use tool to general availability (GA) across the Interactions and GenerateContent APIs. |
-| 2026-10-30 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | Deprecated fast mode for Opus 4.8 as of October 30, 2026; it will be removed on November 30, 2026. After removal, fast mode requests on Opus 4.8 return an error and do not fall back to standard Opus 4.8. Migrate to Opus... |
-| 2026-10-30 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.314 October 30, 2026 Added Added permissions.blockWritesOutsideWorkingDirectories : Write, Edit and NotebookEdit refuse paths outside the working directories in every permission mode Added an optional groups list to... |
-| 2026-10-30 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 30, 2026  |
-| 2026-10-29 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 29, 2026  |
-| 2026-10-28 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.165.0) | New Features - Added a built-in Google Cloud Vertex AI provider, configured with model_provider = "gcp". (56265) - Added GPT-6.1 Terra to the model catalogs. (57337) - Added a repository filter to the session picker and... |
-| 2026-10-28 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | October 28, 2026  We’ve raised the maximum request size for the Messages API and the Token Counting API from 32 MB to 128 MB on the first-party Claude API. |
-| 2026-10-27 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 13, 2026, and October 27, 2026. Microsoft 365 Copilot Learning Agent in Microsoft 365 Copilot [Windows] The Learning agent helps employees build skills through personalized microlearning... |
-| 2026-10-27 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 13, 2026, and October 27, 2026. Microsoft 365 Copilot Insights - New Copilot Metrics Available [Web] We are bringing a set of new Copilot metrics including actions taken in Microsoft 365... |
-| 2026-10-27 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 13, 2026, and October 27, 2026. OneNote Multimodal capture in Copilot Notebooks (Android) [Android] Multimodal capture enables users to transcribe audio, take images, and type notes in a... |
-| 2026-10-27 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 13, 2026, and October 27, 2026. Microsoft 365 Copilot App New Copilot Notebooks design in the Microsoft Copilot App (iOS) [iOS] Copilot Notebooks in the Microsoft Copilot app (iOS) now l... |
-| 2026-10-27 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 13, 2026, and October 27, 2026. Microsoft 365 Copilot extensibility Work IQ APIs: Usage-based billing [Windows, Linux, Mac, Web] Enables usage-based billing for Work IQ endpoints, allowi... |
-| 2026-10-27 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 27, 2026 Gemini API CLI ( gemini-api ) beta : Released the Gemini API CLI ( gemini-api ), a stateless, zero-dependency command-line client for AI coding agents, scripts, and CI pipelines. Use gemini-api on the I... |
-| 2026-10-27 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.312 October 27, 2026 Added Added oidc.user_id_claim to the Claude apps gateway, to identify people by an id_token claim other than sub , such as Microsoft Entra ID’s oid Added click to send: in fullscreen, clicking... |
-| 2026-10-26 | [Google Gemini API Changelog](https://ai.google.dev/gemini-api/docs/changelog) | October 26, 2026 Generate Content API storage on by default : New projects using the Generate Content API ( generateContent , streamGenerateContent , and batchGenerateContent ) on the paid tier now store requests by def... |
-| 2026-10-26 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.311 October 26, 2026 Added Added --hold-idle-file and --max-hold-min to self-hosted-runner , to keep an idle session while your host reports processes it left running Added a tip for the Explanatory output style, sh... |
+| 2026-11-06 | [OpenAI Codex GitHub Releases](https://github.com/openai/codex/releases/tag/rust-v0.167.0) | New Features - Open the agent command center with codex agents --no-daemon. The command center and session picker now mark unread results (58238, 58239, 58263, 58264). - Switch between connected backends from the termin... |
+| 2026-11-06 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.319 November 6, 2026 Added Added support for MCP tasks in the terminal: when an MCP server runs a tool call as a task, Claude Code moves it to the background right away and tells Claude the result when it finishes A... |
+| 2026-11-06 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | {"docsConfig":{"theme":"mint","$schema":"https://mintlify.com/docs.json","name":"Claude Code Docs","description":"Official documentation for Claude Code, Anthropic's agentic coding tool available in the terminal, IDE, d... |
+| 2026-11-05 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | November 5, 2026  You can now set up an IP allowlist for your organization in the Claude Console, in beta. Requests to covered services from addresses not on your list are refused, which limits where a leaked API key c... |
+| 2026-11-04 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.318 November 4, 2026 Added Added a record of your answer when Claude Code asks to turn on the mods it writes in a session Added assume_role on mantle upstreams of the Claude apps gateway, for a role in another AWS a... |
+| 2026-11-03 | [Microsoft 365 Copilot Release Notes](https://learn.microsoft.com/en-us/copilot/microsoft-365/release-notes) | Updates released between October 28, 2026 and November 3, 2026. Excel Navigate to your workbook changes directly from the Copilot chat pane response [Windows, Web, Mac] In Copilot in Excel, the response contains links t... |
+| 2026-11-03 | [Claude Code Changelog](https://code.claude.com/docs/en/changelog) | 2.1.317 November 3, 2026 Added Added a warning to /schedule when a new cloud scheduled task gets connectors you did not ask for, with how to remove them Added a check that asks before a web or shell tool call sends your... |
+| 2026-11-03 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | November 3, 2026  Text generated by Claude Mythos 5, Claude Opus 4.7, and Claude Sonnet 4.6 carries Anthropic’s text watermark on the platforms listed in How Claude marks AI-generated content . On Claude Sonnet 4.6, te... |
+| 2026-11-02 | [Anthropic API Release Notes](https://docs.anthropic.com/en/release-notes/api) | November 2, 2026  |
 
 
 ## 업데이트가 감지된 출처
 
-Anthropic API Release Notes, Claude Code Changelog, Google Gemini API Changelog, Microsoft 365 Copilot Release Notes, OpenAI Codex GitHub Releases
+Anthropic API Release Notes, Claude Code Changelog, Microsoft 365 Copilot Release Notes, OpenAI Codex GitHub Releases
 
 ## Collection Errors
 
